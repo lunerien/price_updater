@@ -1,5 +1,7 @@
 from kivy.uix.button import Button
 
+from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
+
 
 class CoinButton(Button):
     COIN_HEIGHT = 40
@@ -9,12 +11,14 @@ class CoinButton(Button):
         self.scrollapp = scrollapp
         self.text: str = name
         self.height = self.COIN_HEIGHT
-        self.background_color=(4,2,0,0.7)
+        self.background_color=UNPRESSED_COLOR
 
     def on_release(self):
-        self.background_color=(4,2,0,0.6)
+        self.background_color=UNPRESSED_COLOR
         print("modify")
         pass
 
     def on_press(self):
-        self.background_color=(4,1,0,0.9)
+        self.background_color=PRESSED_COLOR
+
+    
