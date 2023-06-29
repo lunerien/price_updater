@@ -24,7 +24,7 @@ class TopBar(BoxLayout):
         print('change xlsx sheet')
 
     def add_new_coin(self, dt):
-        add_coin_menu = Popup(size_hint=(None, None), size=(600, 300), auto_dismiss=True)
+        add_coin_menu = Popup(size_hint=(None, None), size=(250, 250), auto_dismiss=True, title='Add new coin', background_color = UNPRESSED_COLOR)
         add_menu = AddMenu(self.scrollapp, add_coin_menu)
         add_coin_menu.content = add_menu
         add_coin_menu.open(animation=True)
