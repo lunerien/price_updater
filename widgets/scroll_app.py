@@ -6,22 +6,22 @@ from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 
 
 class ScrollApp(ScrollView):
-    AMOUNT_OF_COINS = 0
     SPACING = 2
-
+    
     def __init__(self):
         super().__init__()
+        self.amount_of_coins = 0
         self.coins = GridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
         self.add_widget(self.coins)
         self.coins_counter = 0
         self.initialize_coins()
-        self.coins.height = self.SPACING + CoinButton.COIN_HEIGHT * self.AMOUNT_OF_COINS
+        self.coins.height = self.SPACING + CoinButton.COIN_HEIGHT * self.amount_of_coins
         self.bar_color = PRESSED_COLOR
         self.bar_width=5
         
 
     def initialize_coins(self):
-        for _ in range(self.AMOUNT_OF_COINS):
+        for _ in range(self.amount_of_coins):
             coin_button = CoinButton(scrollapp=self)
             self.coins.add_widget(coin_button)
             self.coins_counter += 1

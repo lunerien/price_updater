@@ -14,19 +14,22 @@ class AddMenu(BoxLayout):
         self.popup = popup
         self.orientation = "vertical"
         self.opacity = 0.8
-        self.coin_name_input = TextInput(text="Coin name", size_hint=(1, 0.2))
-        self.workbook_name_input = TextInput(text="workbook name", size_hint=(1, 0.2))
-        self.cell_input = TextInput(text="Cell", size_hint=(1, 0.2))
+        self.coin_name_input = TextInput(text="Coin name", size_hint=(1, 0.5))
+        self.workbook_name_input = TextInput(text="workbook name", size_hint=(1, 0.5))
+        self.cell_input = TextInput(text="Cell", size_hint=(1, 0.5))
         self.add_widget(self.coin_name_input)
         self.add_widget(self.workbook_name_input)
         self.add_widget(self.cell_input)
-        self.add_widget(Button(text="Add!", on_release=self.add_this_coin, size_hint=(0.4, 0.2),
-                               pos_hint={'center_x': 0.5, 'center_y': 0.5}, background_color=UNPRESSED_COLOR))
+        buttons = BoxLayout(orientation='horizontal')
+        self.add_widget(buttons)
+        buttons.add_widget(Button(text="Add!", on_release=self.add_this_coin, size_hint=(0.4, 0.7),
+                               background_color=UNPRESSED_COLOR))
+        
 
     def add_this_coin(self, dt):
         dt.background_color=PRESSED_COLOR
-        new_button = CoinButton(scrollapp=self.scrollapp, name=self.coin_name_input.text)
-        self.scrollapp.coins.add_widget(new_button)
+        new_coin_button = CoinButton(scrollapp=self.scrollapp, name=self.coin_name_input.text)
+        self.scrollapp.coins.add_widget(new_coin_button)
         self.scrollapp.coins_counter += 1
         self.scrollapp.coins.height = ScrollApp.SPACING + CoinButton.COIN_HEIGHT * self.scrollapp.coins_counter
         self.popup.dismiss()
