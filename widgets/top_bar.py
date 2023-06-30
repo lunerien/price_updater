@@ -10,7 +10,7 @@ class TopBar(BoxLayout):
     def __init__(self, scrollapp:ScrollApp, **kwargs):
         super(TopBar, self).__init__(**kwargs)
         self.scrollapp = scrollapp
-        change_loc_button = Button(text='Change xlsx sheet', size_hint=(0.45, 1), background_color=UNPRESSED_COLOR)
+        change_loc_button = Button(text='Change xlsx workbook', size_hint=(0.45, 1), background_color=UNPRESSED_COLOR)
         add_new_coin_button = Button(text='Add new coin', size_hint=(0.45, 1), background_color=UNPRESSED_COLOR)
         change_lang_button = Button(text='EN', size_hint=(0.1, 1), background_color=UNPRESSED_COLOR)
         change_loc_button.bind(on_release=self.change_loc)
@@ -21,7 +21,7 @@ class TopBar(BoxLayout):
         self.add_widget(change_lang_button)
 
     def change_loc(self, dt):
-        print('change xlsx sheet')
+        print('Change xlsx workbook')
 
     def add_new_coin(self, dt):
         add_coin_menu = Popup(size_hint=(None, None), size=(250, 250), auto_dismiss=True, title='Add new coin', background_color = UNPRESSED_COLOR)
