@@ -1,5 +1,5 @@
 {
-    "path_to_xlsx": "",
+    "path_to_xlsx": "C:/Users/Tomek/Desktop/Nowy OpenDocument Arkusz kalkulacyjny.xlsx",
     "chosen_language": "PL",
     "EN": {
         "update": "Update",
@@ -11,7 +11,9 @@
         "cell": "Cell",
         "add": "Add",
         "add_new_coin": "Add new coin",
-        "change_xlsx_workbook": "Change xlsx workbook"
+        "change_xlsx_workbook": "Change xlsx workbook",
+        "path_to_xlsx": "Path to xlsx file",
+        "search": "Search"
     },
     "PL": {
         "update": "Aktualizuj",
@@ -23,6 +25,8 @@
         "cell": "Komorka",
         "add": "Dodaj",
         "add_new_coin": "Dodaj nowa monete",
-        "change_xlsx_workbook": "Zmien arkusz xlsx"
+        "change_xlsx_workbook": "Zmien arkusz xlsx",
+        "path_to_xlsx": "Sciezka do pliku xlsx",
+        "search": "Szukaj"
     }
 }

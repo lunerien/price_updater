@@ -27,7 +27,7 @@ class MainApp(App):
         Window.maximum_width, Window.maximum_height = WIDTH, HEIGHT
         Window.set_title(TITLE)
         Window.size = (WIDTH, HEIGHT)
-        register_topmost(Window, TITLE)
+        # register_topmost(Window, TITLE)
         user32 = ctypes.windll.user32
         screen_width = user32.GetSystemMetrics(0)
         screen_height = user32.GetSystemMetrics(1)

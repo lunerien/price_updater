@@ -6,7 +6,9 @@ from kivy.uix.dropdown import DropDown
 from widgets.scroll_app import ScrollApp
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from widgets.add_menu import AddMenu
+from widgets.change_xlsx_menu import ChangeXlsxMenu
 from lib.language import language, Languages, Text
+
 
 class TopBar(BoxLayout):
     def __init__(self, scrollapp:ScrollApp, **kwargs):
@@ -33,7 +35,10 @@ class TopBar(BoxLayout):
         self.add_widget(mainbutton)
 
     def change_loc(self, dt):
-        pass
+        change_xlsx_menu = Popup(size_hint=(None, None), size=(450, 150), auto_dismiss=True, title=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value), background_color = UNPRESSED_COLOR)
+        add_menu = ChangeXlsxMenu(self.scrollapp, change_xlsx_menu)
+        change_xlsx_menu.content = add_menu
+        change_xlsx_menu.open(animation=True)
 
     def add_new_coin(self, dt):
         add_coin_menu = Popup(size_hint=(None, None), size=(250, 250), auto_dismiss=True, title=language.get_text(Text.ADD_NEW_COIN.value), background_color = UNPRESSED_COLOR)

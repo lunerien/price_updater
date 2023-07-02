@@ -18,6 +18,8 @@ class Text(Enum):
     ADD = "add"
     ADD_NEW_COIN = "add_new_coin"
     CHANGE_XLSX_WORKBOOK = "change_xlsx_workbook"
+    PATH_TO_XLSX = "path_to_xlsx"
+    SEARCH = "search"
 
 
 class Language:
@@ -31,8 +33,8 @@ class Language:
         return self.language_file[self.get_current_language()][word]
 
     def read_file(self) -> str:
-        language = open('data.json')
-        data = json.load(language)
+        file = open('data.json')
+        data = json.load(file)
         return data
     
     def change_language(self, new_language:Languages):
@@ -44,7 +46,6 @@ class Language:
             file.truncate()
         self.language_file = self.read_file()
         from main import main_app
-        print(self.get_text('update'))
         main_app.restart()
 
 
