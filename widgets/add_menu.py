@@ -4,8 +4,8 @@ from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
 from widgets.scroll_app import ScrollApp
-from widgets.coin_button import CoinButton
 from lib.coin import Coin
+from lib.language import language, Text
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 
 class AddMenu(BoxLayout):
@@ -15,15 +15,15 @@ class AddMenu(BoxLayout):
         self.popup = popup
         self.orientation = "vertical"
         self.opacity = 0.8
-        self.coin_name_input = TextInput(text="Coin name", size_hint=(1, 0.5), multiline=False)
-        self.worksheet_name_input = TextInput(text="Worksheet name", size_hint=(1, 0.5), multiline=False)
-        self.cell_input = TextInput(text="Cell", size_hint=(1, 0.5), multiline=False)
+        self.coin_name_input = TextInput(text=language.get_text(Text.COIN_NAME.value), size_hint=(1, 0.5), multiline=False)
+        self.worksheet_name_input = TextInput(text=language.get_text(Text.WORKSHEET_NAME.value), size_hint=(1, 0.5), multiline=False)
+        self.cell_input = TextInput(text=language.get_text(Text.CELL.value), size_hint=(1, 0.5), multiline=False)
         self.add_widget(self.coin_name_input)
         self.add_widget(self.worksheet_name_input)
         self.add_widget(self.cell_input)
         buttons = BoxLayout(orientation='horizontal')
         self.add_widget(buttons)
-        buttons.add_widget(Button(text="Add!", on_release=self.add_this_coin, size_hint=(0.4, 0.7),
+        buttons.add_widget(Button(text=language.get_text(Text.ADD.value), on_release=self.add_this_coin, size_hint=(0.4, 0.7),
                                background_color=UNPRESSED_COLOR))
         
 

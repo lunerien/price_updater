@@ -4,6 +4,7 @@ from kivy.uix.popup import Popup
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from widgets.modify_coin import ModifyCoin
 from lib.coin import Coin
+from lib.language import language, Text
 
 
 class CoinButton(Button):
@@ -22,7 +23,7 @@ class CoinButton(Button):
 
     def on_release(self):
         self.background_color=UNPRESSED_COLOR
-        modify_coin_menu = Popup(size_hint=(None, None), size=(250, 250), auto_dismiss=True, title='Modify coin', background_color = UNPRESSED_COLOR)
+        modify_coin_menu = Popup(size_hint=(None, None), size=(300, 250), auto_dismiss=True, title=language.get_text(Text.EDIT_COIN.value), background_color = UNPRESSED_COLOR)
         add_menu = ModifyCoin(scrollapp=self.scrollapp, popup=modify_coin_menu, coin=self.coin)
         modify_coin_menu.content = add_menu
         modify_coin_menu.open(animation=True)

@@ -32,9 +32,9 @@ class MainApp(App):
         screen_width = user32.GetSystemMetrics(0)
         screen_height = user32.GetSystemMetrics(1)
         Window.size = (WIDTH, HEIGHT)
-        Window.top = screen_height - 1.7 * HEIGHT
-        Window.left = screen_width - 1.3 * WIDTH
-        Window.borderless = False
+        Window.top = screen_height-HEIGHT*2
+        Window.left = screen_width-WIDTH*2
+        Window.borderless = True
  
     def build(self):
         self.window = BoxLayout(orientation="vertical")
@@ -53,7 +53,11 @@ class MainApp(App):
         self.menu.add_widget(self.scroll_and_menu)
         self.left_side.add_widget(self.scrollview)
         return self.window
+    
+    def restart(self):
+        App.get_running_app().stop()
+        MainApp().run()
 
-
+main_app = MainApp()
 if __name__ == '__main__':
-    MainApp().run()
+    main_app.run()

@@ -6,6 +6,8 @@ from kivy.utils import get_color_from_hex
 
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.coin import Coin
+from lib.language import language, Text
+
 DELETE_COLOR = get_color_from_hex("#FF0101e6")
 
 
@@ -25,9 +27,9 @@ class ModifyCoin(BoxLayout):
         self.add_widget(self.cell_input)
         buttons = BoxLayout(orientation='horizontal')
         self.add_widget(buttons)
-        buttons.add_widget(Button(text="Modify!", on_release=self.modify, size_hint=(0.4, 0.7),
+        buttons.add_widget(Button(text=language.get_text(Text.MODIFY.value), on_release=self.modify, size_hint=(0.4, 0.7),
                                background_color=UNPRESSED_COLOR))
-        buttons.add_widget(Button(text="Delete!", on_release=self.delete, size_hint=(0.4, 0.7),
+        buttons.add_widget(Button(text=language.get_text(Text.DELETE.value), on_release=self.delete, size_hint=(0.4, 0.7),
                                background_color=DELETE_COLOR))
         
 
