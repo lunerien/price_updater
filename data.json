@@ -1,0 +1,32 @@
+{
+    "path_to_xlsx": "C:/Users/Tomek/Desktop/lol.xlsx",
+    "chosen_language": "PL",
+    "EN": {
+        "update": "Update",
+        "edit_coin": "Edit coin",
+        "modify": "Modify",
+        "delete": "Delete",
+        "coin_name": "Coin name",
+        "worksheet_name": "Worksheet name",
+        "cell": "Cell",
+        "add": "Add",
+        "add_new_coin": "Add new coin",
+        "change_xlsx_workbook": "Change xlsx workbook",
+        "path_to_xlsx": "Path to xlsx file",
+        "search": "Search"
+    },
+    "PL": {
+        "update": "Aktualizuj",
+        "edit_coin": "Edytuj monete",
+        "modify": "Zatwierdz",
+        "delete": "Usun",
+        "coin_name": "Nazwa monety",
+        "worksheet_name": "Nazwa arkusza",
+        "cell": "Komorka",
+        "add": "Dodaj",
+        "add_new_coin": "Dodaj nowa monete",
+        "change_xlsx_workbook": "Zmien arkusz xlsx",
+        "path_to_xlsx": "Sciezka do pliku xlsx",
+        "search": "Szukaj"
+    }
+}
