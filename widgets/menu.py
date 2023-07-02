@@ -3,9 +3,11 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.utils import get_color_from_hex
 
 from lib.language import language, Text
+from lib.update import Update
 
 UNPRESSED_COLOR = get_color_from_hex("#5A56FBF6")
 PRESSED_COLOR = get_color_from_hex("#2D64F8F6")
+UPDATING = get_color_from_hex("#00ff4cF4")
 
 
 class Menu(RelativeLayout):
@@ -19,6 +21,7 @@ class Menu(RelativeLayout):
     
     def update(self, dt):
         dt.background_color=UNPRESSED_COLOR
+        Update().update()
 
     def on_button_press(self, dt):
-        dt.background_color=PRESSED_COLOR
+        dt.background_color=UPDATING
