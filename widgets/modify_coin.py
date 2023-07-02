@@ -3,6 +3,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.utils import get_color_from_hex
+from openpyxl import load_workbook
 
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.coin import Coin
@@ -32,18 +33,30 @@ class ModifyCoin(BoxLayout):
         buttons.add_widget(Button(text=language.get_text(Text.DELETE.value), on_release=self.delete, size_hint=(0.4, 0.7),
                                background_color=DELETE_COLOR))
         
-
     def modify(self, dt):
         dt.background_color=PRESSED_COLOR
-        modified_coin = Coin(name=self.coin_name_input.text, worksheet=self.workbook_name_input.text, cell=self.cell_input.text)
-        index = self.scrollapp.coins_tab.index(self.coin)
-        self.scrollapp.coins_tab[index] = modified_coin
+        
+        workbook = load_workbook(language.read_file()['path_to_xlsx'])
+        data = workbook['data']
+
+        data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text
+        data.cell(row=2, column=self.coin.id).value = self.workbook_name_input.text
+        data.cell(row=3, column=self.coin.id).value = self.cell_input.text
+        workbook.save(language.read_file()['path_to_xlsx'])
+
         self.scrollapp.initialize_coins()
         self.popup.dismiss()
 
     def delete(self, dt):
         dt.background_color=PRESSED_COLOR
-        self.scrollapp.coins_tab.remove(self.coin)
-        self.scrollapp.coins.height = self.scrollapp.SPACING + self.scrollapp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
+
+        workbook = load_workbook(language.read_file()['path_to_xlsx'])
+        data = workbook['data']
+        data.cell(row=1, column=self.coin.id).value = "-"
+        data.cell(row=2, column=self.coin.id).value = ""
+        data.cell(row=3, column=self.coin.id).value = ""
+        workbook.save(language.read_file()['path_to_xlsx'])
+
         self.scrollapp.initialize_coins()
+        self.scrollapp.coins.height = self.scrollapp.SPACING + self.scrollapp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
         self.popup.dismiss()

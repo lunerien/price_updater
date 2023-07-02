@@ -29,7 +29,7 @@ class Language:
     def get_current_language(self) -> str:
         return self.language_file['chosen_language']
     
-    def get_text(self, word:str):
+    def get_text(self, word:str) -> str:
         return self.language_file[self.get_current_language()][word]
 
     def read_file(self) -> str:

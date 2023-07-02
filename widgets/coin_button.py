@@ -8,8 +8,8 @@ from lib.language import language, Text
 
 
 class CoinButton(Button):
-    SPACING = 2
-    COIN_HEIGHT = 40
+    SPACING:int = 2
+    COIN_HEIGHT:int = 40
 
     def __init__(self, scrollapp, coin:Coin):
         super().__init__()
@@ -18,7 +18,7 @@ class CoinButton(Button):
         self.text: str = self.coin.name
         self.worksheet:str = self.coin.worksheet
         self.cell:str = self.coin.cell
-        self.height = self.COIN_HEIGHT
+        self.height:int = self.COIN_HEIGHT
         self.background_color=UNPRESSED_COLOR
 
     def on_release(self):

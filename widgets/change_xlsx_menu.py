@@ -23,7 +23,8 @@ class ChangeXlsxMenu(BoxLayout):
         self.add_widget(self.input_and_ask_open_file)
         self.path_xlsx_input = TextInput(text=self.load_current_path(), size_hint=(0.85, 0.7), multiline=False)
         self.input_and_ask_open_file.add_widget(self.path_xlsx_input)
-        self.open_file_button = Button(text=language.get_text(Text.SEARCH.value), on_release= self.choose_path, size_hint=(0.15, 0.7), background_color=UNPRESSED_COLOR)
+        self.open_file_button = Button(text=language.get_text(Text.SEARCH.value), 
+                                       on_release= self.choose_path, size_hint=(0.15, 0.7), background_color=UNPRESSED_COLOR)
         self.input_and_ask_open_file.add_widget(self.open_file_button)
         buttons = BoxLayout(orientation='horizontal')
         self.add_widget(buttons)
@@ -48,6 +49,8 @@ class ChangeXlsxMenu(BoxLayout):
             print("we need xlsx file!")
         except KeyError:
             print("please check xlsx format file!")
+        except FileNotFoundError:
+            print("file missing :D")
 
     def load_current_path(self) -> str:
         file = open('data.json')
