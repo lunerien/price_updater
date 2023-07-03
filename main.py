@@ -32,8 +32,8 @@ class MainApp(App):
         screen_width = user32.GetSystemMetrics(0)
         screen_height = user32.GetSystemMetrics(1)
         Window.size = (WIDTH, HEIGHT)
-        Window.top = screen_height-HEIGHT*2
-        Window.left = screen_width-WIDTH*2
+        Window.top = screen_height-HEIGHT*1.8
+        Window.left = screen_width-WIDTH*1.8
         Window.borderless = True
  
     def build(self):

@@ -1,12 +1,13 @@
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
 from typing import List
 from openpyxl import load_workbook
 
 from widgets.coin_button import CoinButton
 from lib.coin import Coin
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
-from lib.language import language
+from lib.language import language, Text
 
 
 class ScrollApp(ScrollView):
@@ -26,12 +27,20 @@ class ScrollApp(ScrollView):
     def initialize_coins(self):
         self.coins.clear_widgets()
         self.coins_tab:List[Coin] = self.get_coins_from_xlsx()
-        for coin in self.coins_tab:
-            coin_button = CoinButton(scrollapp=self, coin=coin)
-            self.coins.add_widget(coin_button)
+        if len(self.coins_tab):
+            for coin in self.coins_tab:
+                coin_button = CoinButton(scrollapp=self, coin=coin)
+                self.coins.add_widget(coin_button)
+        else:
+            self.coins.add_widget(Label(text=language.get_text(Text.EMPTY_LIST_TEXT.value)))
+            self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
 
     def get_coins_from_xlsx(self):
-        workbook = load_workbook(language.read_file()['path_to_xlsx'])
+        try:
+            workbook = load_workbook(language.read_file()['path_to_xlsx'])
+        except:
+            return []
+
         if 'data' in workbook.sheetnames:
             None
         else:

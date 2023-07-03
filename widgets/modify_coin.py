@@ -7,6 +7,7 @@ from openpyxl import load_workbook
 
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.coin import Coin
+from lib.update import Update
 from lib.language import language, Text
 
 DELETE_COLOR = get_color_from_hex("#FF0101e6")
@@ -39,13 +40,15 @@ class ModifyCoin(BoxLayout):
         workbook = load_workbook(language.read_file()['path_to_xlsx'])
         data = workbook['data']
 
-        data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text
-        data.cell(row=2, column=self.coin.id).value = self.workbook_name_input.text
-        data.cell(row=3, column=self.coin.id).value = self.cell_input.text
-        workbook.save(language.read_file()['path_to_xlsx'])
+        test_price = Update().get_token_price(self.coin_name_input.text)
+        if workbook != None and test_price != None:
+            data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text
+            data.cell(row=2, column=self.coin.id).value = self.workbook_name_input.text
+            data.cell(row=3, column=self.coin.id).value = self.cell_input.text
+            workbook.save(language.read_file()['path_to_xlsx'])
 
-        self.scrollapp.initialize_coins()
-        self.popup.dismiss()
+            self.scrollapp.initialize_coins()
+            self.popup.dismiss()
 
     def delete(self, dt):
         dt.background_color=PRESSED_COLOR

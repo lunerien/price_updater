@@ -1,5 +1,5 @@
 {
-    "path_to_xlsx": "C:/Users/Tomek/Desktop/lol.xlsx",
+    "path_to_xlsx": "C:/Users/user/Desktop/gg.xlsx",
     "chosen_language": "PL",
     "EN": {
         "update": "Update",
@@ -13,7 +13,8 @@
         "add_new_coin": "Add new coin",
         "change_xlsx_workbook": "Change xlsx workbook",
         "path_to_xlsx": "Path to xlsx file",
-        "search": "Search"
+        "search": "Search",
+        "your_coins_will_be_here": "\n\n\n\nYour coins will be here"
     },
     "PL": {
         "update": "Aktualizuj",
@@ -27,6 +28,7 @@
         "add_new_coin": "Dodaj nowa monete",
         "change_xlsx_workbook": "Zmien arkusz xlsx",
         "path_to_xlsx": "Sciezka do pliku xlsx",
-        "search": "Szukaj"
+        "search": "Szukaj",
+        "your_coins_will_be_here": "\n\n\n\nTwoje monety beda tutaj"
     }
 }

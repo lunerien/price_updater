@@ -20,6 +20,7 @@ class Text(Enum):
     CHANGE_XLSX_WORKBOOK = "change_xlsx_workbook"
     PATH_TO_XLSX = "path_to_xlsx"
     SEARCH = "search"
+    EMPTY_LIST_TEXT = "your_coins_will_be_here"
 
 
 class Language:

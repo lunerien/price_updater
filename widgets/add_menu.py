@@ -2,12 +2,12 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
-from openpyxl import load_workbook
 
 from widgets.scroll_app import ScrollApp
-from lib.coin import Coin
+from lib.update import Update
 from lib.language import language, Text
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
+
 
 class AddMenu(BoxLayout):
     def __init__(self, scrollApp:ScrollApp, popup:Popup, **kwargs):
@@ -29,25 +29,26 @@ class AddMenu(BoxLayout):
 
     def add_this_coin(self, dt):
         dt.background_color=PRESSED_COLOR
-
-        workbook = load_workbook(language.read_file()['path_to_xlsx'])
-        if 'data' in workbook.sheetnames:
-            None
-        else:
-            workbook.create_sheet('data')
-            hidden = workbook['data']
-            hidden.sheet_state = 'hidden'
+        workbook = Update().try_load_workbook()
+        test_price = Update().get_token_price(self.coin_name_input.text)
+        if workbook != None and test_price != None:
+            if 'data' in workbook.sheetnames:
+                None
+            else:
+                workbook.create_sheet('data')
+                hidden = workbook['data']
+                hidden.sheet_state = 'hidden'
+                workbook.save(language.read_file()['path_to_xlsx'])
+            
+            data = workbook['data']
+            i = 1
+            while data.cell(row=1, column=i).value != "-" and data.cell(row=1, column=i).value != None:
+                i += 1
+            
+            data.cell(row=1, column=i).value = self.coin_name_input.text
+            data.cell(row=2, column=i).value = self.worksheet_name_input.text
+            data.cell(row=3, column=i).value = self.cell_input.text
             workbook.save(language.read_file()['path_to_xlsx'])
-        
-        data = workbook['data']
-        i = 1
-        while data.cell(row=1, column=i).value != "-" and data.cell(row=1, column=i).value != None:
-            i += 1
-        
-        data.cell(row=1, column=i).value = self.coin_name_input.text
-        data.cell(row=2, column=i).value = self.worksheet_name_input.text
-        data.cell(row=3, column=i).value = self.cell_input.text
-        workbook.save(language.read_file()['path_to_xlsx'])
-        self.scrollapp.initialize_coins()
-        self.scrollapp.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
-        self.popup.dismiss()
+            self.scrollapp.initialize_coins()
+            self.scrollapp.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
+            self.popup.dismiss()
