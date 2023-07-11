@@ -28,11 +28,11 @@ class Update:
         page = get(url)
         bs = BeautifulSoup(page.content, "html.parser")
 
-        for nastronie in bs.find_all(
+        for web in bs.find_all(
             "td",
             class_="border-top-0 tw-text-right tw-text-sm tw-border-gray-200 dark:tw-border-opacity-10",
         ):
-            price = str(nastronie.find("span", class_="no-wrap"))
+            price = str(web.find("span", class_="no-wrap"))
             price = price.split("$", 1)[-1]
             price = price.replace("</span>", "")
             price = price.replace(" ", "")

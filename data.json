@@ -1,6 +1,6 @@
 {
-    "path_to_xlsx": "C:/Users/user/Desktop/gg.xlsx",
-    "chosen_language": "PL",
+    "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/lol2.xlsx",
+    "chosen_language": "EN",
     "EN": {
         "update": "Update",
         "edit_coin": "Edit coin",

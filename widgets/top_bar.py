@@ -41,16 +41,10 @@ class TopBar(BoxLayout):
         change_xlsx_menu.open(animation=True)
 
     def add_new_coin(self, dt):
-        add_coin_menu = Popup(size_hint=(None, None), size=(250, 250), auto_dismiss=True, title=language.get_text(Text.ADD_NEW_COIN.value), background_color = UNPRESSED_COLOR)
+        add_coin_menu = Popup(size_hint=(None, None), size=(300, 300), auto_dismiss=True, title=language.get_text(Text.ADD_NEW_COIN.value), background_color = UNPRESSED_COLOR)
         add_menu = AddMenu(self.scrollapp, add_coin_menu)
         add_coin_menu.content = add_menu
         add_coin_menu.open(animation=True)
 
     def change_language(self, dt):
-        self.dropdown.select(dt.text)
         language.change_language(Languages(dt.text))
-
-
-
-
-        

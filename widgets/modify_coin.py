@@ -11,6 +11,7 @@ from lib.update import Update
 from lib.language import language, Text
 
 DELETE_COLOR = get_color_from_hex("#FF0101e6")
+ERROR_COLOR = get_color_from_hex("##c91010F6")
 
 
 class ModifyCoin(BoxLayout):
@@ -41,14 +42,19 @@ class ModifyCoin(BoxLayout):
         data = workbook['data']
 
         test_price = Update().get_token_price(self.coin_name_input.text)
-        if workbook != None and test_price != None:
-            data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text
-            data.cell(row=2, column=self.coin.id).value = self.workbook_name_input.text
-            data.cell(row=3, column=self.coin.id).value = self.cell_input.text
-            workbook.save(language.read_file()['path_to_xlsx'])
+        if workbook != None:
+            if test_price != None:
+                data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text
+                data.cell(row=2, column=self.coin.id).value = self.workbook_name_input.text
+                data.cell(row=3, column=self.coin.id).value = self.cell_input.text
+                workbook.save(language.read_file()['path_to_xlsx'])
 
-            self.scrollapp.initialize_coins()
-            self.popup.dismiss()
+                self.scrollapp.initialize_coins()
+                self.popup.dismiss()
+            else:
+                self.coin_name_input.foreground_color = ERROR_COLOR
+        else:
+            print("brak arkusza do zapisania!")
 
     def delete(self, dt):
         dt.background_color=PRESSED_COLOR
