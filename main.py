@@ -34,7 +34,7 @@ class MainApp(App):
         Window.size = (WIDTH, HEIGHT)
         Window.top = screen_height-HEIGHT*1.8
         Window.left = screen_width-WIDTH*1.8
-        Window.borderless = False
+        Window.borderless = True
  
     def build(self):
         self.window = BoxLayout(orientation="vertical")

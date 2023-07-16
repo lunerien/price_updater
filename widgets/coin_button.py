@@ -5,6 +5,7 @@ from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from widgets.modify_coin import ModifyCoin
 from lib.coin import Coin
 from lib.language import language, Text
+from lib.update import Update
 
 
 class CoinButton(Button):
@@ -15,7 +16,8 @@ class CoinButton(Button):
         super().__init__()
         self.coin = coin
         self.scrollapp = scrollapp
-        self.text: str = self.coin.name
+        self.coin_price = 45.76
+        self.text: str = f"{self.coin.name:<100}${Update().get_token_price(self.coin.name):<10}"
         self.worksheet:str = self.coin.worksheet
         self.cell:str = self.coin.cell
         self.height:int = self.COIN_HEIGHT
@@ -23,7 +25,7 @@ class CoinButton(Button):
 
     def on_release(self):
         self.background_color=UNPRESSED_COLOR
-        modify_coin_menu = Popup(size_hint=(None, None), size=(300, 250), auto_dismiss=True, 
+        modify_coin_menu = Popup(size_hint=(None, None), size=(300, 300), auto_dismiss=True, 
                                  title=language.get_text(Text.EDIT_COIN.value), background_color = UNPRESSED_COLOR)
         add_menu = ModifyCoin(scrollapp=self.scrollapp, popup=modify_coin_menu, coin=self.coin)
         modify_coin_menu.content = add_menu

@@ -35,7 +35,7 @@ class TopBar(BoxLayout):
         self.add_widget(mainbutton)
 
     def change_loc(self, dt):
-        change_xlsx_menu = Popup(size_hint=(None, None), size=(450, 150), auto_dismiss=True, title=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value), background_color = UNPRESSED_COLOR)
+        change_xlsx_menu = Popup(size_hint=(None, None), size=(500, 150), auto_dismiss=True, title=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value), background_color = UNPRESSED_COLOR)
         add_menu = ChangeXlsxMenu(self.scrollapp, change_xlsx_menu)
         change_xlsx_menu.content = add_menu
         change_xlsx_menu.open(animation=True)

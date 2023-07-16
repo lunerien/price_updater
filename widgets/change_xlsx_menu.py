@@ -1,9 +1,10 @@
+import json
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
+from kivy.utils import get_color_from_hex
 from tkinter.filedialog import askopenfilename
-import json
 from openpyxl import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException
 
@@ -11,6 +12,7 @@ from widgets.scroll_app import ScrollApp
 from lib.language import language, Text
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 
+ERROR_COLOR = get_color_from_hex("##c91010F6")
 
 class ChangeXlsxMenu(BoxLayout):
     def __init__(self, scrollApp:ScrollApp, popup:Popup, **kwargs):
@@ -46,10 +48,13 @@ class ChangeXlsxMenu(BoxLayout):
             main_app.restart()
             self.popup.dismiss()
         except InvalidFileException:
+            self.path_xlsx_input.foreground_color = ERROR_COLOR
             print("we need xlsx file!")
         except KeyError:
+            self.path_xlsx_input.foreground_color = ERROR_COLOR
             print("please check xlsx format file!")
         except FileNotFoundError:
+            self.path_xlsx_input.foreground_color = ERROR_COLOR
             print("file missing :D")
 
     def load_current_path(self) -> str:

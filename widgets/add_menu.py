@@ -14,6 +14,7 @@ from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 
 ERROR_COLOR = get_color_from_hex("##c91010F6")
 SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
+WHITE = get_color_from_hex("#F9F6EEF6")
 
 class AddMenu(BoxLayout):
     def __init__(self, scrollApp:ScrollApp, popup:Popup, **kwargs):
@@ -22,8 +23,8 @@ class AddMenu(BoxLayout):
         self.popup = popup
         self.orientation = "vertical"
         self.opacity = 0.8
-        self.workbook = Update().try_load_workbook()
         self.spacing = 5
+        self.workbook = Update().try_load_workbook()
 
         if self.workbook != None:
             self.build()
@@ -56,15 +57,19 @@ class AddMenu(BoxLayout):
         buttons.add_widget(Button(text=language.get_text(Text.ADD.value), on_release=self.add_this_coin, size_hint=(1, 1),
                                background_color=UNPRESSED_COLOR))
     
-
     def chosen_sheet(self, dt):
         if dt.background_color == UNPRESSED_COLOR:
+            for sheet in self.sheets_widget.children:
+                sheet.color = WHITE
             dt.background_color = SHEET_CHOSEN
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
                     sheet.background_color = UNPRESSED_COLOR
         else:
+            for sheet in self.sheets_widget.children:
+                sheet.color = WHITE
+            self.worksheet_input = ""
             dt.background_color = UNPRESSED_COLOR
 
     def add_this_coin(self, dt):
@@ -105,8 +110,12 @@ class AddMenu(BoxLayout):
             self.workbook.save(language.read_file()['path_to_xlsx'])
         if self.worksheet_input != "":
             sheet_ok = True
+        else:
+            for sheet in self.sheets_widget.children:
+                sheet.color = ERROR_COLOR
         ##############################################
-        if re.match(r'^[a-z]\d*$', self.cell_input.text):
+        cell_pattern = r'^[A-Za-z]\d+$'
+        if re.match(cell_pattern, self.cell_input.text):
             self.cell_input.foreground_color = PRESSED_COLOR
             cell_ok = True
         else:
