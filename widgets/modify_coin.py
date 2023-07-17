@@ -95,7 +95,12 @@ class ModifyCoin(BoxLayout):
         self.popup.dismiss()
 
     def check_input_data(self) -> bool:
-        test_price: str | None = Update().get_token_price(self.coin_name_input.text)
+        if self.coin_name_input.text != self.coin.name:
+            print(self.coin_name_input)
+            print(self.coin.name)
+            test_price: str | None = Update().get_token_price(self.coin_name_input.text)
+        else:
+            test_price = self.coin.name
 
         name_ok: bool = False
         sheet_ok: bool = False

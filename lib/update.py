@@ -10,14 +10,14 @@ class Update:
     def __init__(self):
         self.workbook = self.try_load_workbook()
     
-    def update(self):
+    def update(self, coins):
         if self.workbook != None:
             data = self.workbook['data']
 
             i = 1
             while data.cell(row=1, column=i).value != None:
                 if data.cell(row=1, column=i).value != "-":
-                    price = self.get_token_price(data.cell(row=1, column=i).value)
+                    price = next(coin.price for coin in coins if coin.name == data.cell(row=1, column=i).value)
                     sheet = self.workbook[data.cell(row=2, column=i).value]
                     sheet[data.cell(row=3, column=i).value] = price
                 i += 1

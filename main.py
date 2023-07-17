@@ -47,7 +47,7 @@ class MainApp(App):
         self.window.add_widget(self.menu)
         self.scroll_and_menu = BoxLayout(orientation='horizontal')
         self.left_side = BoxLayout(size_hint=(0.8, 1))
-        self.right_side = Menu(size_hint=(0.3, 1))
+        self.right_side = Menu(self.scrollview.coins_tab, size_hint=(0.3, 1))
         self.scroll_and_menu.add_widget(self.left_side)
         self.scroll_and_menu.add_widget(self.right_side)
         self.menu.add_widget(self.scroll_and_menu)
