@@ -70,7 +70,7 @@ class ScrollApp(ScrollView):
         for coin in self.coins.children:
             if coin.coin.name == name:
                 coin.coin.price = price
-                coin.text = f"{coin.coin.name:<100}${price:<10}"
+                coin.text = f"{coin.coin.name:<115}${price}"
 
     async def return_prices(self):
         tasks = []

@@ -15,7 +15,7 @@ class CoinButton(Button):
         super().__init__()
         self.coin = coin
         self.scrollapp = scrollapp
-        self.text: str = f"{self.coin.name:<100}${self.coin.price:<10}"
+        self.text: str = f"{self.coin.name:<115}${self.coin.price}"
         self.worksheet:str = self.coin.worksheet
         self.cell:str = self.coin.cell
         self.height:int = self.COIN_HEIGHT
