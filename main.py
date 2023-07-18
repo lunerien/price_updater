@@ -24,7 +24,6 @@ class MainApp(App):
         HEIGHT = 385
         WIDTH = 850
         Window.minimum_width, Window.minimum_height = WIDTH, HEIGHT
-        Window.maximum_width, Window.maximum_height = WIDTH, HEIGHT
         Window.set_title(TITLE)
         Window.size = (WIDTH, HEIGHT)
         # register_topmost(Window, TITLE)
@@ -34,11 +33,11 @@ class MainApp(App):
         Window.size = (WIDTH, HEIGHT)
         Window.top = screen_height-HEIGHT*1.8
         Window.left = screen_width-WIDTH*1.8
-        Window.borderless = True
+        Window.borderless = False
  
     def build(self):
         self.window = BoxLayout(orientation="vertical")
-        background = Image(source='images/background.jpg')
+        background = Image(source='images/background.jpg', allow_stretch=True, keep_ratio=False)
         self.scrollview = ScrollApp()
         self.top_bar = TopBar(size_hint=(1, 0.08), scrollapp=self.scrollview)
         self.menu = RelativeLayout(size_hint=(1, 0.91))

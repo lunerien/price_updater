@@ -18,6 +18,7 @@ class Update:
             while data.cell(row=1, column=i).value != None:
                 if data.cell(row=1, column=i).value != "-":
                     price = next(coin.price for coin in coins if coin.name == data.cell(row=1, column=i).value)
+                    print(price)
                     sheet = self.workbook[data.cell(row=2, column=i).value]
                     sheet[data.cell(row=3, column=i).value] = price
                 i += 1

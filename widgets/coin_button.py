@@ -1,3 +1,4 @@
+import time
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 
@@ -22,6 +23,7 @@ class CoinButton(Button):
         self.background_color=UNPRESSED_COLOR
 
     def on_release(self):
+        time.sleep(0.15)
         self.background_color=UNPRESSED_COLOR
         modify_coin_menu = Popup(size_hint=(None, None), size=(300, 300), auto_dismiss=True, 
                                  title=language.get_text(Text.EDIT_COIN.value), background_color = UNPRESSED_COLOR)

@@ -76,7 +76,7 @@ class ModifyCoin(BoxLayout):
             data = self.workbook['data']
             data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text
             data.cell(row=2, column=self.coin.id).value = self.worksheet_input
-            data.cell(row=3, column=self.coin.id).value = self.cell_input.text
+            data.cell(row=3, column=self.coin.id).value = self.cell_input.text.upper()
             self.workbook.save(language.read_file()['path_to_xlsx'])
             self.scrollapp.initialize_coins()
             self.popup.dismiss()

@@ -84,7 +84,7 @@ class AddMenu(BoxLayout):
             print(self.worksheet_input)
             data.cell(row=1, column=i).value = self.coin_name_input.text
             data.cell(row=2, column=i).value = self.worksheet_input
-            data.cell(row=3, column=i).value = self.cell_input.text
+            data.cell(row=3, column=i).value = self.cell_input.text.upper()
             self.workbook.save(language.read_file()['path_to_xlsx'])
             self.scrollapp.initialize_coins()
             self.scrollapp.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(self.scrollapp.coins_tab)

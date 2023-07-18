@@ -9,6 +9,7 @@ from widgets.coin_button import CoinButton
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.coin import Coin
 from lib.language import language, Text
+from lib.update import Update
 
 
 class ScrollApp(ScrollView):
@@ -35,7 +36,6 @@ class ScrollApp(ScrollView):
         else:
             self.coins.add_widget(Label(text=language.get_text(Text.EMPTY_LIST_TEXT.value)))
             self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
-        asyncio.run(self.return_prices())
 
     def get_coins_from_xlsx(self):
         try:
@@ -60,22 +60,8 @@ class ScrollApp(ScrollView):
                 ticker = data.cell(row=1, column=i).value
                 worksheet = data.cell(row=2, column=i).value
                 cell = data.cell(row=3, column=i).value
-                coins.append(Coin(id=i, name=ticker, worksheet=worksheet, cell=cell))
+                price = Update().get_token_price(ticker)
+                coins.append(Coin(id=i, name=ticker, worksheet=worksheet, cell=cell, price=price))
             i += 1
         return coins
 
-    async def fetch_coin_price(self, name: str):
-        from lib.update import Update
-        price: str = Update().get_token_price(name)
-        for coin in self.coins.children:
-            if coin.coin.name == name:
-                coin.coin.price = price
-                coin.text = f"{coin.coin.name:<115}${price}"
-
-    async def return_prices(self):
-        tasks = []
-        
-        if len(self.coins_tab):
-            for coin in self.coins.children:
-                tasks.append(asyncio.create_task(self.fetch_coin_price(coin.coin.name)))
-        asyncio.gather(*tasks)

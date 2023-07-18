@@ -36,26 +36,29 @@ class ChangeXlsxMenu(BoxLayout):
 
     def add_path(self, dt):
         dt.background_color=PRESSED_COLOR
-        try:
-            wb = load_workbook(self.path_xlsx_input.text)
-            with open('data.json', 'r+') as file:
-                data = json.load(file)
-                data['path_to_xlsx'] = self.path_xlsx_input.text
-                file.seek(0)
-                json.dump(data, file, indent=4)
-                file.truncate()
-            from main import main_app
-            main_app.restart()
+        if self.path_xlsx_input.text != self.load_current_path():
+            try:
+                wb = load_workbook(self.path_xlsx_input.text)
+                with open('data.json', 'r+') as file:
+                    data = json.load(file)
+                    data['path_to_xlsx'] = self.path_xlsx_input.text
+                    file.seek(0)
+                    json.dump(data, file, indent=4)
+                    file.truncate()
+                from main import main_app
+                main_app.restart()
+                self.popup.dismiss()
+            except InvalidFileException:
+                self.path_xlsx_input.foreground_color = ERROR_COLOR
+                print("we need xlsx file!")
+            except KeyError:
+                self.path_xlsx_input.foreground_color = ERROR_COLOR
+                print("please check xlsx format file!")
+            except FileNotFoundError:
+                self.path_xlsx_input.foreground_color = ERROR_COLOR
+                print("file missing :D")
+        else:
             self.popup.dismiss()
-        except InvalidFileException:
-            self.path_xlsx_input.foreground_color = ERROR_COLOR
-            print("we need xlsx file!")
-        except KeyError:
-            self.path_xlsx_input.foreground_color = ERROR_COLOR
-            print("please check xlsx format file!")
-        except FileNotFoundError:
-            self.path_xlsx_input.foreground_color = ERROR_COLOR
-            print("file missing :D")
 
     def load_current_path(self) -> str:
         file = open('data.json')
