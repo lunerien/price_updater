@@ -30,7 +30,7 @@ class ChangeXlsxMenu(BoxLayout):
         self.input_and_ask_open_file.add_widget(self.open_file_button)
         buttons = BoxLayout(orientation='horizontal')
         self.add_widget(buttons)
-        buttons.add_widget(Button(text=language.get_text(Text.MODIFY.value), on_release=self.add_path, size_hint=(0.4, 0.7),
+        buttons.add_widget(Button(text=language.get_text(Text.MODIFY.value), on_release=self.add_path, size_hint=(0.4, 0.9),
                                background_color=UNPRESSED_COLOR))
         # self.choose_path(1)
 

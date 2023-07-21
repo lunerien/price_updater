@@ -6,9 +6,10 @@ from lib.language import language, Text
 from lib.update import Update
 
 
-UNPRESSED_COLOR = get_color_from_hex("#5A56FBF6")
-PRESSED_COLOR = get_color_from_hex("#2D64F8F6")
-UPDATING = get_color_from_hex("#00ff4cF4")
+UNPRESSED_COLOR = get_color_from_hex("#5AC4FB38")
+PRESSED_COLOR = get_color_from_hex("#5AC4FBF2")
+TOP_BAR_COLOR = get_color_from_hex("#5AC4FBFF")
+UPDATING = get_color_from_hex("#00C44cF4")
 
 
 class Menu(RelativeLayout):
@@ -22,8 +23,8 @@ class Menu(RelativeLayout):
         self.coins = coins
     
     def update(self, dt):
-        dt.background_color=UNPRESSED_COLOR
+        dt.background_color=PRESSED_COLOR
         Update().update(self.coins)
 
     def on_button_press(self, dt):
-        dt.background_color=UPDATING
+        dt.background_color=PRESSED_COLOR

@@ -21,8 +21,8 @@ if sys.platform == "win32":
 
 class MainApp(App):
     def on_start(self, *args):
-        HEIGHT = 385
-        WIDTH = 850
+        HEIGHT = 450
+        WIDTH = 900
         Window.minimum_width, Window.minimum_height = WIDTH, HEIGHT
         Window.set_title(TITLE)
         Window.size = (WIDTH, HEIGHT)
@@ -34,7 +34,6 @@ class MainApp(App):
         Window.top = screen_height-HEIGHT*1.8
         Window.left = screen_width-WIDTH*1.8
         Window.borderless = False
- 
     def build(self):
         self.window = BoxLayout(orientation="vertical")
         background = Image(source='images/background.jpg', allow_stretch=True, keep_ratio=False)
