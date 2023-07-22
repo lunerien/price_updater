@@ -1,5 +1,5 @@
 {
-    "path_to_xlsx": "C:/Users/Tomek/Desktop/dupa.xlsx",
+    "path_to_xlsx": "C:/Users/user/Documents/visual_studio_code/update_prices/aa.xlsx",
     "chosen_language": "EN",
     "EN": {
         "update": "Update",
@@ -14,7 +14,7 @@
         "change_xlsx_workbook": "Change xlsx workbook",
         "path_to_xlsx": "Path to xlsx file",
         "search": "Search",
-        "your_coins_will_be_here": "\n\n\n\nYour coins will be here",
+        "your_coins_will_be_here": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYour coins will be here",
         "please_select_workbook": "Please select workbook first"
     },
     "PL": {
@@ -30,7 +30,7 @@
         "change_xlsx_workbook": "Zmien arkusz xlsx",
         "path_to_xlsx": "Sciezka do pliku xlsx",
         "search": "Szukaj",
-        "your_coins_will_be_here": "\n\n\n\nTwoje monety beda tutaj",
+        "your_coins_will_be_here": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTwoje monety beda tutaj",
         "please_select_workbook": "Wybierz najpierw arkusz xlsx"
     }
 }

@@ -26,9 +26,9 @@ class ScrollApp(ScrollView):
         self.bar_color = PRESSED_COLOR
         self.bar_width=5
 
+
     def initialize_coins(self):
         self.coins.clear_widgets()
-        self.coins_tab:List[Coin] = self.get_coins_from_xlsx()
         if len(self.coins_tab):
             for coin in self.coins_tab:
                 coin_button = CoinButton(scrollapp=self, coin=coin)

@@ -9,6 +9,7 @@ import re
 
 from widgets.scroll_app import ScrollApp
 from lib.update import Update
+from lib.coin import Coin
 from lib.language import language, Text
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 
@@ -75,17 +76,23 @@ class AddMenu(BoxLayout):
     def add_this_coin(self, dt):
         dt.background_color=PRESSED_COLOR
         
-        if self.check_input_data():
+        price = self.check_input_data()
+        if price[0]:
             data = self.workbook['data']
             i = 1
             while data.cell(row=1, column=i).value != "-" and data.cell(row=1, column=i).value != None:
                 i += 1
         
             print(self.worksheet_input)
-            data.cell(row=1, column=i).value = self.coin_name_input.text
+            data.cell(row=1, column=i).value = self.coin_name_input.text.upper()
             data.cell(row=2, column=i).value = self.worksheet_input
             data.cell(row=3, column=i).value = self.cell_input.text.upper()
             self.workbook.save(language.read_file()['path_to_xlsx'])
+            self.scrollapp.coins_tab.append(Coin(id=i, 
+                                                 name=self.coin_name_input.text.upper(),
+                                                 worksheet=self.worksheet_input,
+                                                 cell=self.cell_input.text.upper(),
+                                                 price=price[1]))
             self.scrollapp.initialize_coins()
             self.scrollapp.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
             self.popup.dismiss()
@@ -121,4 +128,4 @@ class AddMenu(BoxLayout):
         else:
             self.cell_input.foreground_color = ERROR_COLOR
         ##############################################
-        return name_ok & sheet_ok & cell_ok
+        return [name_ok & sheet_ok & cell_ok, test_price]

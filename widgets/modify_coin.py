@@ -72,12 +72,20 @@ class ModifyCoin(BoxLayout):
         dt.background_color=PRESSED_COLOR
     
         data = self.workbook['data']
-        if self.check_input_data():
+        price = self.check_input_data()
+        if price[0]:
             data = self.workbook['data']
-            data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text
+            data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text.upper()
             data.cell(row=2, column=self.coin.id).value = self.worksheet_input
             data.cell(row=3, column=self.coin.id).value = self.cell_input.text.upper()
             self.workbook.save(language.read_file()['path_to_xlsx'])
+            for coin in self.scrollapp.coins_tab:
+                if coin.id == self.coin.id:
+                    coin.name = self.coin_name_input.text.upper()
+                    coin.worksheet = self.worksheet_input
+                    coin.cell = self.cell_input.text.upper()
+                    coin.price = price[1]
+                    break
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
 
@@ -89,18 +97,19 @@ class ModifyCoin(BoxLayout):
         data.cell(row=2, column=self.coin.id).value = ""
         data.cell(row=3, column=self.coin.id).value = ""
         self.workbook.save(language.read_file()['path_to_xlsx'])
-
+        for coin in self.scrollapp.coins_tab:
+                if coin.id == self.coin.id:
+                    self.scrollapp.coins_tab.remove(coin)
+                    break
         self.scrollapp.initialize_coins()
         self.scrollapp.coins.height = self.scrollapp.SPACING + self.scrollapp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
         self.popup.dismiss()
 
     def check_input_data(self) -> bool:
         if self.coin_name_input.text != self.coin.name:
-            print(self.coin_name_input)
-            print(self.coin.name)
             test_price: str | None = Update().get_token_price(self.coin_name_input.text)
         else:
-            test_price = self.coin.name
+            test_price = self.coin.price
 
         name_ok: bool = False
         sheet_ok: bool = False
@@ -130,4 +139,4 @@ class ModifyCoin(BoxLayout):
         else:
             self.cell_input.foreground_color = ERROR_COLOR
         ##############################################
-        return name_ok & sheet_ok & cell_ok
+        return [name_ok & sheet_ok & cell_ok, test_price]
