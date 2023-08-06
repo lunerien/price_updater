@@ -20,13 +20,13 @@ class ScrollApp(ScrollView):
         super().__init__()
         self.coins_tab:List[Coin] = self.get_coins_from_xlsx()
         self.coins = GridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
+        self.empty_list: Label = Label(text=language.get_text(Text.EMPTY_LIST_TEXT.value))
         self.add_widget(self.coins)
         self.initialize_coins()
         self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
         self.bar_color = PRESSED_COLOR
         self.bar_width=5
-
-
+        
     def initialize_coins(self):
         self.coins.clear_widgets()
         if len(self.coins_tab):
@@ -34,7 +34,7 @@ class ScrollApp(ScrollView):
                 coin_button = CoinButton(scrollapp=self, coin=coin)
                 self.coins.add_widget(coin_button)
         else:
-            self.coins.add_widget(Label(text=language.get_text(Text.EMPTY_LIST_TEXT.value)))
+            self.coins.add_widget(self.empty_list)
             self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
 
     def get_coins_from_xlsx(self):

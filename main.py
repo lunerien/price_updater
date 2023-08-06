@@ -10,6 +10,7 @@ import ctypes
 from widgets.scroll_app import ScrollApp
 from widgets.top_bar import TopBar
 from widgets.menu import Menu
+from lib.language import language, Text
 
 
 TITLE = "Price Updater"
@@ -20,6 +21,17 @@ if sys.platform == "win32":
 
 
 class MainApp(App):
+    def __init__(self, *args):
+        super(MainApp, self).__init__(*args)
+        self.window = BoxLayout(orientation="vertical")
+        self.scrollview = ScrollApp()
+        self.background = Image(source='images/background.jpg', allow_stretch=True, keep_ratio=False)
+        self.top_bar = TopBar(size_hint=(1, 0.08), scrollapp=self.scrollview)
+        self.menu = RelativeLayout(size_hint=(1, 0.91))
+        self.scroll_and_menu = BoxLayout(orientation='horizontal')
+        self.left_side = BoxLayout(size_hint=(0.8, 1))
+        self.right_side = Menu(self.scrollview.coins_tab, size_hint=(0.3, 1))
+
     def on_start(self, *args):
         HEIGHT = 450
         WIDTH = 900
@@ -33,19 +45,12 @@ class MainApp(App):
         Window.size = (WIDTH, HEIGHT)
         Window.top = screen_height-HEIGHT*1.8
         Window.left = screen_width-WIDTH*1.8
-        Window.borderless = False
+        Window.borderless = True
+
     def build(self):
-        self.window = BoxLayout(orientation="vertical")
-        background = Image(source='images/background.jpg', allow_stretch=True, keep_ratio=False)
-        self.scrollview = ScrollApp()
-        self.top_bar = TopBar(size_hint=(1, 0.08), scrollapp=self.scrollview)
-        self.menu = RelativeLayout(size_hint=(1, 0.91))
         self.window.add_widget(self.top_bar)
-        self.menu.add_widget(background)
+        self.menu.add_widget(self.background)
         self.window.add_widget(self.menu)
-        self.scroll_and_menu = BoxLayout(orientation='horizontal')
-        self.left_side = BoxLayout(size_hint=(0.8, 1))
-        self.right_side = Menu(self.scrollview.coins_tab, size_hint=(0.3, 1))
         self.scroll_and_menu.add_widget(self.left_side)
         self.scroll_and_menu.add_widget(self.right_side)
         self.menu.add_widget(self.scroll_and_menu)
