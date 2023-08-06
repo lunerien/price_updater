@@ -98,7 +98,10 @@ class AddMenu(BoxLayout):
             self.popup.dismiss()
         
     def check_input_data(self) -> bool:
-        test_price: str | None = Update().get_token_price(self.coin_name_input.text)
+        if self.coin_name_input.text != language.get_text(Text.COIN_NAME.value):
+            test_price: str | None = Update().get_token_price(self.coin_name_input.text)
+        else:
+            test_price: str | None = None
 
         name_ok: bool = False
         sheet_ok: bool = False

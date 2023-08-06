@@ -24,7 +24,7 @@ class CoinButton(Button):
         self.height:int = self.COIN_HEIGHT
         self.background_color=UNPRESSED_COLOR
 
-    def on_release(self):
+    def on_press(self):
         modify_coin_menu = Popup(size_hint=(None, None), size=(400, 300), auto_dismiss=True, 
                                  title=language.get_text(Text.EDIT_COIN.value), background_color = UNPRESSED_COLOR)
         add_menu = ModifyCoin(scrollapp=self.scrollapp, popup=modify_coin_menu, coin=self.coin)

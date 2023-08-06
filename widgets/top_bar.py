@@ -16,6 +16,17 @@ class TopBar(BoxLayout):
         self.scrollapp = scrollapp
         change_loc_button = Button(text=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value), size_hint=(0.45, 1), background_color=TOP_BAR_COLOR)
         add_new_coin_button = Button(text=language.get_text(Text.ADD_NEW_COIN.value), size_hint=(0.45, 1), background_color=TOP_BAR_COLOR)
+
+        self.dropdown2 = DropDown()
+        dollar_button = Button(text="USD", size_hint_y = None, height = 25, background_color=PRESSED_COLOR)
+        euro_button = Button(text="EUR", size_hint_y = None, height = 25, background_color=PRESSED_COLOR)
+        dollar_button.bind(on_release =self.change_currency)
+        euro_button.bind(on_release =self.change_currency)
+        self.dropdown2.add_widget(dollar_button)
+        self.dropdown2.add_widget(euro_button)
+        mainbutton2 = Button(text="USD", size_hint =(0.1, 1), pos =(350, 300), background_color=TOP_BAR_COLOR)
+        mainbutton2.bind(on_release = self.dropdown2.open)
+        self.dropdown2.bind(on_select = lambda instance, x: setattr(mainbutton2, 'text_currency', x))
         
         self.dropdown = DropDown()
         self.btn_en = Button(text=Languages.EN.value, size_hint_y = None, height = 25, background_color=PRESSED_COLOR)
@@ -32,8 +43,9 @@ class TopBar(BoxLayout):
         add_new_coin_button.bind(on_release=self.add_new_coin)
         self.add_widget(change_loc_button)
         self.add_widget(add_new_coin_button)
+        self.add_widget(mainbutton2)
         self.add_widget(mainbutton)
-
+        
     def change_loc(self, dt):
         change_xlsx_menu = Popup(size_hint=(None, None), size=(500, 150), auto_dismiss=True, title=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value), background_color = UNPRESSED_COLOR)
         add_menu = ChangeXlsxMenu(self.scrollapp, change_xlsx_menu)
@@ -48,3 +60,6 @@ class TopBar(BoxLayout):
 
     def change_language(self, dt):
         language.change_language(Languages(dt.text))
+
+    def change_currency(self, dt):
+        print(f"ustawiam walute: {dt.text}")

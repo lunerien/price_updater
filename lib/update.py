@@ -25,7 +25,7 @@ class Update:
             self.workbook.save(language.read_file()['path_to_xlsx'])
 
     def get_token_price(self, ticker:str):
-        url = f"https://www.coingecko.com/pl/waluty/{ticker}"
+        url = f"https://www.coingecko.com/pl/waluty/{ticker.lower()}"
         page = get(url)
         bs = BeautifulSoup(page.content, "html.parser")
 
