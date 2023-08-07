@@ -47,8 +47,6 @@ class Language:
             json.dump(data, file, indent=4)
             file.truncate()
         self.language_file = self.read_file()
-        from main import main_app
-        main_app.restart()
 
 
 language = Language()

@@ -16,11 +16,11 @@ UPDATING = get_color_from_hex("#00C44cF6")
 class Menu(RelativeLayout):
     def __init__(self, coins,**kwargs):
         super(Menu, self).__init__(**kwargs)
-        button = Button(text=language.get_text(Text.UPDATE.value), background_color=UNPRESSED_COLOR)
-        button.size_hint = (0.6, 0.2)
-        button.bind(on_release=self.update)
-        button.pos_hint = {'center_x': 0.5, 'center_y': 0.2}
-        self.add_widget(button)
+        self.button = Button(text=language.get_text(Text.UPDATE.value), background_color=UNPRESSED_COLOR)
+        self.button.size_hint = (0.6, 0.2)
+        self.button.bind(on_release=self.update)
+        self.button.pos_hint = {'center_x': 0.5, 'center_y': 0.2}
+        self.add_widget(self.button)
         self.coins = coins
     
     def update(self, dt):

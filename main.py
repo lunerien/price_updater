@@ -25,12 +25,12 @@ class MainApp(App):
         super(MainApp, self).__init__(*args)
         self.window = BoxLayout(orientation="vertical")
         self.scrollview = ScrollApp()
-        self.background = Image(source='images/background.jpg', allow_stretch=True, keep_ratio=False)
-        self.top_bar = TopBar(size_hint=(1, 0.08), scrollapp=self.scrollview)
-        self.menu = RelativeLayout(size_hint=(1, 0.91))
-        self.scroll_and_menu = BoxLayout(orientation='horizontal')
         self.left_side = BoxLayout(size_hint=(0.8, 1))
         self.right_side = Menu(self.scrollview.coins_tab, size_hint=(0.3, 1))
+        self.background = Image(source='images/background.jpg', allow_stretch=True, keep_ratio=False)
+        self.top_bar = TopBar(size_hint=(1, 0.08), scrollapp=self.scrollview, right_side=self.right_side)
+        self.menu = RelativeLayout(size_hint=(1, 0.91))
+        self.scroll_and_menu = BoxLayout(orientation='horizontal')
 
     def on_start(self, *args):
         HEIGHT = 450
@@ -56,10 +56,7 @@ class MainApp(App):
         self.menu.add_widget(self.scroll_and_menu)
         self.left_side.add_widget(self.scrollview)
         return self.window
-    
-    def restart(self):
-        App.get_running_app().stop()
-        MainApp().run()
+
 
 main_app = MainApp()
 if __name__ == '__main__':
