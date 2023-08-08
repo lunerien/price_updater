@@ -10,7 +10,7 @@ import ctypes
 from widgets.scroll_app import ScrollApp
 from widgets.top_bar import TopBar
 from widgets.menu import Menu
-from lib.language import language, Text
+
 
 
 TITLE = "Price Updater"

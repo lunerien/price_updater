@@ -5,7 +5,7 @@ from widgets.menu import UNPRESSED_COLOR
 from widgets.modify_coin import ModifyCoin
 from lib.coin import Coin
 from lib.language import language, Text
-from lib.currency import currency
+from lib.currency import currency, Currency
 
 
 class CoinButton(Button):
@@ -16,11 +16,11 @@ class CoinButton(Button):
         super().__init__()
         self.currency_logo = ""
         self.coin_price = ""
-        match currency.get_current_currency().value:
-            case "USD":
+        match currency.get_current_currency():
+            case Currency.USD:
                 self.currency_logo = "$"
                 self.coin_price = coin.price_usd
-            case "PLN":
+            case Currency.PLN:
                 self.currency_logo = "zł"
                 self.coin_price = coin.price_pln
         

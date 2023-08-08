@@ -46,7 +46,6 @@ class ChangeXlsxMenu(BoxLayout):
                     json.dump(data, file, indent=4)
                     file.truncate()
                 from main import main_app
-                main_app.restart()
                 self.popup.dismiss()
             except InvalidFileException:
                 self.path_xlsx_input.foreground_color = ERROR_COLOR

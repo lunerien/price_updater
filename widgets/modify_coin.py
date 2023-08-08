@@ -10,6 +10,7 @@ from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.coin import Coin
 from lib.update import Update
 from lib.language import language, Text
+from lib.currency import currency, Currency
 
 DELETE_COLOR = get_color_from_hex("#FF0101e6")
 ERROR_COLOR = get_color_from_hex("##c91010F6")
@@ -84,7 +85,8 @@ class ModifyCoin(BoxLayout):
                     coin.name = self.coin_name_input.text.upper()
                     coin.worksheet = self.worksheet_input
                     coin.cell = self.cell_input.text.upper()
-                    coin.price = price[1]
+                    coin.price_usd = price[1][Currency.USD]
+                    coin.price_pln = price[1][Currency.PLN]
                     break
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
@@ -109,7 +111,7 @@ class ModifyCoin(BoxLayout):
         if self.coin_name_input.text != self.coin.name:
             test_price: str | None = Update().get_token_price(self.coin_name_input.text)
         else:
-            test_price = self.coin.price
+            test_price = {Currency.USD: self.coin.price_usd, Currency.PLN: self.coin.price_pln}
 
         name_ok: bool = False
         sheet_ok: bool = False

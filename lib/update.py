@@ -9,6 +9,7 @@ from lib.currency import currency, Currency
 class Update:
     def __init__(self):
         self.workbook = self.try_load_workbook()
+        self.chosen_currency = currency.get_current_currency()
     
     def update(self, coins):
         if self.workbook != None:
@@ -17,8 +18,11 @@ class Update:
             i = 1
             while data.cell(row=1, column=i).value != None:
                 if data.cell(row=1, column=i).value != "-":
-                    price = next(coin.price for coin in coins if coin.name == data.cell(row=1, column=i).value)
-                    print(price)
+                    match self.chosen_currency:
+                        case Currency.USD:
+                            price = next(coin.price_usd for coin in coins if coin.name == data.cell(row=1, column=i).value)
+                        case Currency.PLN:
+                            price = next(coin.price_pln for coin in coins if coin.name == data.cell(row=1, column=i).value)
                     sheet = self.workbook[data.cell(row=2, column=i).value]
                     sheet[data.cell(row=3, column=i).value] = price
                 i += 1

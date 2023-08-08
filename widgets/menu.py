@@ -7,10 +7,10 @@ from lib.language import language, Text
 from lib.update import Update
 
 
-UNPRESSED_COLOR = get_color_from_hex("#5AC4FB38")
+UNPRESSED_COLOR = get_color_from_hex("#5AC4FB15")
 PRESSED_COLOR = get_color_from_hex("#5AC4FBF2")
-TOP_BAR_COLOR = get_color_from_hex("#5AC4FB4F")
-UPDATING = get_color_from_hex("#00C44cF6")
+TOP_BAR_COLOR = get_color_from_hex("#5AC4FB35")
+UPDATING = get_color_from_hex("#5AC4FBF2")
 
 
 class Menu(RelativeLayout):
@@ -22,7 +22,7 @@ class Menu(RelativeLayout):
         self.button.pos_hint = {'center_x': 0.5, 'center_y': 0.2}
         self.add_widget(self.button)
         self.coins = coins
-    
+
     def update(self, dt):
         Update().update(self.coins)
 
