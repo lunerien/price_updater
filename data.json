@@ -1,7 +1,7 @@
 {
     "path_to_xlsx": "C:/Users/user/Documents/visual_studio_code/update_prices/aa.xlsx",
     "chosen_language": "PL",
-    "chosen_currency": "PLN",
+    "chosen_currency": "USD",
     "EN": {
         "update": "Update",
         "edit_coin": "Edit coin",

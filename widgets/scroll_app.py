@@ -6,7 +6,7 @@ from typing import List
 from openpyxl import load_workbook
 
 from widgets.coin_button import CoinButton
-from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
+from widgets.menu import PRESSED_COLOR
 from lib.coin import Coin
 from lib.language import language, Text
 from lib.update import Update

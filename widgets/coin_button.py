@@ -5,6 +5,7 @@ from widgets.menu import UNPRESSED_COLOR
 from widgets.modify_coin import ModifyCoin
 from lib.coin import Coin
 from lib.language import language, Text
+from lib.currency import currency
 
 
 class CoinButton(Button):
@@ -13,11 +14,21 @@ class CoinButton(Button):
 
     def __init__(self, scrollapp, coin:Coin):
         super().__init__()
+        self.currency_logo = ""
+        self.coin_price = ""
+        match currency.get_current_currency().value:
+            case "USD":
+                self.currency_logo = "$"
+                self.coin_price = coin.price_usd
+            case "PLN":
+                self.currency_logo = "zł"
+                self.coin_price = coin.price_pln
+        
         self.coin = coin
         self.scrollapp = scrollapp
         self.font_size = 16
         self.text_size = (None, None)
-        self.text: str = f"{self.coin.name:<115}${self.coin.price}"
+        self.text: str = f"{self.coin.name:<115}{self.currency_logo} {self.coin_price}"
         self.worksheet:str = self.coin.worksheet
         self.halign = 'left'
         self.cell:str = self.coin.cell

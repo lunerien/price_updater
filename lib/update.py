@@ -4,7 +4,7 @@ from requests import get
 from openpyxl.utils.exceptions import InvalidFileException
 
 from lib.language import language
-
+from lib.currency import currency, Currency
 
 class Update:
     def __init__(self):
@@ -33,12 +33,22 @@ class Update:
             "td",
             class_="border-top-0 tw-text-right tw-text-sm tw-border-gray-200 dark:tw-border-opacity-10",
         ):
-            price = str(web.find("span", class_="no-wrap"))
-            price = price.split("$", 1)[-1]
-            price = price.replace("</span>", "")
-            price = price.replace(" ", "")
-            return price
-        
+            price_str = str(web.find("span", class_="no-wrap"))
+            price_str = price_str.split("$", 1)[-1]
+            price_str = price_str.replace("</span>", "")
+            price_str = price_str.replace(" ", "")
+            price_str = price_str.replace(",", ".")
+            price_float = float(price_str)
+
+            price_usd = str(round(price_float, 6)) if price_str[:2] == "0." else str(round(price_float, 2))
+            price_usd = price_usd.replace(".", ",")
+
+            price_pln_float = price_float * currency.return_price(Currency.PLN)
+            price_pln = str(round(price_pln_float, 6)) if price_str[:2] == "0." else str(round(price_pln_float, 2))
+            price_pln = price_pln.replace(".", ",")
+
+            return {Currency.USD: price_usd, Currency.PLN: price_pln}
+
     def try_load_workbook(self):
         try:
             workbook = load_workbook(language.read_file()['path_to_xlsx'])
