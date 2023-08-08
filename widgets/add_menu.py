@@ -16,6 +16,7 @@ from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 ERROR_COLOR = get_color_from_hex("##c91010F6")
 SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
 WHITE = get_color_from_hex("#F9F6EEF6")
+NAME_OK = get_color_from_hex("#0e9c17")
 
 class AddMenu(BoxLayout):
     def __init__(self, scrollApp:ScrollApp, popup:Popup, **kwargs):
@@ -108,7 +109,7 @@ class AddMenu(BoxLayout):
         cell_ok: bool = False
         ##############################################
         if test_price != None:
-            self.coin_name_input.foreground_color = PRESSED_COLOR
+            self.coin_name_input.foreground_color = NAME_OK
             name_ok = True
         else:
             self.coin_name_input.foreground_color = ERROR_COLOR
