@@ -1,4 +1,5 @@
 import json
+from typing import List
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
@@ -10,6 +11,7 @@ from openpyxl.utils.exceptions import InvalidFileException
 
 from widgets.scroll_app import ScrollApp
 from lib.language import language, Text
+from lib.coin import Coin
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 
 ERROR_COLOR = get_color_from_hex("##c91010F6")
@@ -45,8 +47,9 @@ class ChangeXlsxMenu(BoxLayout):
                     file.seek(0)
                     json.dump(data, file, indent=4)
                     file.truncate()
-                from main import main_app
                 self.popup.dismiss()
+                self.scrollapp.coins_tab:List[Coin] = self.scrollapp.get_coins_from_xlsx()
+                self.scrollapp.initialize_coins()
             except InvalidFileException:
                 self.path_xlsx_input.foreground_color = ERROR_COLOR
                 print("we need xlsx file!")

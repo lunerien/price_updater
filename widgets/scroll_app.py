@@ -28,6 +28,7 @@ class ScrollApp(ScrollView):
         self.bar_width=5
         
     def initialize_coins(self):
+        self.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(self.coins_tab)
         self.coins.clear_widgets()
         if len(self.coins_tab):
             for coin in self.coins_tab:

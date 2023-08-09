@@ -1,7 +1,7 @@
 {
-    "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/aa.xlsx",
-    "chosen_language": "EN",
-    "chosen_currency": "USD",
+    "path_to_xlsx": "C:/Users/user/Documents/visual_studio_code/update_prices/aa.xlsx",
+    "chosen_language": "PL",
+    "chosen_currency": "PLN",
     "EN": {
         "update": "Update",
         "edit_coin": "Edit coin",
