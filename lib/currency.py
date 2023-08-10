@@ -13,7 +13,7 @@ class Currency(Enum):
 class CCurrency:
     def __init__(self):
         self.data_file = self.read_file()
-        self.usd_pln:float = self.get_currency(Currency.USD)
+        self.usd_pln:float = 0.0
     
     def get_currency(self, currency:Currency):
         try:

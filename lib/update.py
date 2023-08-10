@@ -24,6 +24,7 @@ class Update:
                         case Currency.PLN:
                             price = next(coin.price_pln for coin in coins if coin.name == data.cell(row=1, column=i).value)
                     sheet = self.workbook[data.cell(row=2, column=i).value]
+                    print(price)
                     sheet[data.cell(row=3, column=i).value] = price
                 i += 1
             self.workbook.save(language.read_file()['path_to_xlsx'])

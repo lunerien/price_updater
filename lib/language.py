@@ -21,6 +21,7 @@ class Text(Enum):
     PATH_TO_XLSX = "path_to_xlsx"
     SEARCH = "search"
     EMPTY_LIST_TEXT = "your_coins_will_be_here"
+    LOADING_LIST_TEXT = "please_wait"
     PLEASE_SELECT_WORKBOOK = "please_select_workbook"
 
 

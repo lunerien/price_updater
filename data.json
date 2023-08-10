@@ -1,7 +1,7 @@
 {
     "path_to_xlsx": "C:/Users/user/Documents/visual_studio_code/update_prices/aa.xlsx",
     "chosen_language": "PL",
-    "chosen_currency": "PLN",
+    "chosen_currency": "USD",
     "EN": {
         "update": "Update",
         "edit_coin": "Edit coin",
@@ -16,6 +16,7 @@
         "path_to_xlsx": "Path to xlsx file",
         "search": "Search",
         "your_coins_will_be_here": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYour coins will be here",
+        "please_wait": "Please wait..",
         "please_select_workbook": "Please select workbook first"
     },
     "PL": {
@@ -32,6 +33,7 @@
         "path_to_xlsx": "Sciezka do pliku xlsx",
         "search": "Szukaj",
         "your_coins_will_be_here": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTwoje monety beda tutaj",
+        "please_wait": "Prosze czekaj..",
         "please_select_workbook": "Wybierz najpierw arkusz xlsx"
     }
 }

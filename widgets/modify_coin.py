@@ -1,4 +1,5 @@
 import re
+from typing import List, Union, Dict
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
@@ -108,9 +109,9 @@ class ModifyCoin(BoxLayout):
         self.scrollapp.coins.height = self.scrollapp.SPACING + self.scrollapp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
         self.popup.dismiss()
 
-    def check_input_data(self) -> bool:
+    def check_input_data(self) -> List[Union[bool, Dict[Currency, str]]]:
         if self.coin_name_input.text != self.coin.name:
-            test_price: str | None = Update().get_token_price(self.coin_name_input.text)
+            test_price: Dict[Currency, str] = Update().get_token_price(self.coin_name_input.text)
         else:
             test_price = {Currency.USD: self.coin.price_usd, Currency.PLN: self.coin.price_pln}
 
