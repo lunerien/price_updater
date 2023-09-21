@@ -14,7 +14,6 @@ class Update:
     def update(self, coins):
         if self.workbook != None:
             data = self.workbook['data']
-
             i = 1
             while data.cell(row=1, column=i).value != None:
                 if data.cell(row=1, column=i).value != "-":
@@ -30,20 +29,19 @@ class Update:
             self.workbook.save(language.read_file()['path_to_xlsx'])
 
     def get_token_price(self, ticker:str):
-        url = f"https://www.coingecko.com/pl/waluty/{ticker.lower()}"
+        url = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
         page = get(url)
         bs = BeautifulSoup(page.content, "html.parser")
-
         for web in bs.find_all(
-            "td",
-            class_="border-top-0 tw-text-right tw-text-sm tw-border-gray-200 dark:tw-border-opacity-10",
+            "div",
+            class_="sc-16891c57-0 hqcKQB flexStart alignBaseline",
         ):
-            price_str = str(web.find("span", class_="no-wrap"))
-            price_str = price_str.split("$", 1)[-1]
-            price_str = price_str.replace("</span>", "")
-            price_str = price_str.replace(" ", "")
-            price_str = price_str.replace(",", ".")
+            price_str = str(web.find("span", class_="sc-16891c57-0 dxubiK base-text"))
+            price_str = price_str.replace('<span class="sc-16891c57-0 dxubiK base-text">$', "")
+            price_str = price_str.replace('</span>', "")
+            price_str = price_str.replace(",", "")
             price_float = float(price_str)
+            print(price_float)
 
             price_usd = str(round(price_float, 6)) if price_str[:2] == "0." else str(round(price_float, 2))
             price_usd = price_usd.replace(".", ",")
