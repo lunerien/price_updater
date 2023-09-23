@@ -2,7 +2,6 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
-from kivy.uix.dropdown import DropDown
 from kivy.uix.scrollview import ScrollView
 from kivy.utils import get_color_from_hex
 from kivy.uix.label import Label
@@ -10,10 +9,11 @@ import re
 from typing import Union, List
 
 from widgets.scroll_app import ScrollApp
+from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.update import Update
 from lib.coin import Coin
 from lib.language import language, Text
-from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
+from lib.auto_suggestion_text import AutoSuggestionText
 
 ERROR_COLOR = get_color_from_hex("##c91010F6")
 SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
@@ -49,7 +49,6 @@ class AddMenu(BoxLayout):
         for sheet in self.sheets:
             sheet_button = Button(text=sheet, background_color=UNPRESSED_COLOR, size_hint_y = None, height = 35, on_release=self.chosen_sheet)
             self.sheets_widget.add_widget(sheet_button)
-        
         self.coin_name_input = AutoSuggestionText(text='', size_hint=(1, 0.3), multiline=False)
         self.worksheet_input:str = ""
         self.cell_input = TextInput(text=language.get_text(Text.CELL.value), size_hint=(1, 0.3), multiline=False)
@@ -87,12 +86,12 @@ class AddMenu(BoxLayout):
                 i += 1
         
             print(self.worksheet_input)
-            data.cell(row=1, column=i).value = self.coin_name_input.text.upper()
+            data.cell(row=1, column=i).value = self.coin_name_input.text.lower()
             data.cell(row=2, column=i).value = self.worksheet_input
             data.cell(row=3, column=i).value = self.cell_input.text.upper()
             self.workbook.save(language.read_file()['path_to_xlsx'])
             self.scrollapp.coins_tab.append(Coin(id=i, 
-                                                 name=self.coin_name_input.text.upper(),
+                                                 name=self.coin_name_input.text.lower(),
                                                  worksheet=self.worksheet_input,
                                                  cell=self.cell_input.text.upper(),
                                                  price=price[1]))
@@ -136,35 +135,3 @@ class AddMenu(BoxLayout):
             self.cell_input.foreground_color = ERROR_COLOR
         ##############################################
         return [name_ok & sheet_ok & cell_ok, test_price]
-        
-
-class AutoSuggestionText(TextInput):
-    def __init__(self, **kwargs):
-        super(AutoSuggestionText, self).__init__(**kwargs)
-        self.suggestion_coins = ("bitcoin", "bnb", "ethereum", "litecoin", "synapse-2", "mover", "monero")
-        self.text_chosen = None
-        self.dropdown = None
-
-    @staticmethod
-    def on_text(self, value):
-        if self.dropdown:
-            self.dropdown.dismiss()
-
-        self.dropdown = DropDown()
-
-        def push(dt):
-            self.dropdown.dismiss()
-            self.text_chosen = dt.text
-            self.push_text(dt)
-
-        if self.text_chosen != value:
-            for suggestion in self.suggestion_coins:
-                if suggestion.startswith(value):
-                    button = Button(text=suggestion, size_hint_y=None, height=44, on_release=push, background_color=NAME_OK)
-                    self.dropdown.add_widget(button)
-            if self.dropdown.children:
-                self.dropdown.open(self)
-
-    def push_text(self, dt):
-        self.text = dt.text
-        self.dropdown = None

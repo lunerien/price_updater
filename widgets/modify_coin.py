@@ -11,14 +11,14 @@ from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.coin import Coin
 from lib.update import Update
 from lib.language import language, Text
-from lib.currency import currency, Currency
+from lib.currency import Currency
+from lib.auto_suggestion_text import AutoSuggestionText
 
 DELETE_COLOR = get_color_from_hex("#FF0101e6")
 ERROR_COLOR = get_color_from_hex("##c91010F6")
 SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
 WHITE = get_color_from_hex("#F9F6EEF6")
 NAME_OK = get_color_from_hex("#0e9c17")
-
 
 class ModifyCoin(BoxLayout):
     def __init__(self, scrollapp, popup:Popup, coin:Coin):
@@ -30,7 +30,7 @@ class ModifyCoin(BoxLayout):
         self.opacity = 0.8
         self.spacing = 5
         self.workbook = Update().try_load_workbook()
-        self.coin_name_input = TextInput(text=self.coin.name, size_hint=(1, 0.3))
+        self.coin_name_input = AutoSuggestionText(text='', size_hint=(1, 0.3))
         self.worksheet_input:str = ""
         self.cell_input = TextInput(text=self.coin.cell, size_hint=(1, 0.3))
         self.scroll_sheets = ScrollView()
@@ -78,13 +78,13 @@ class ModifyCoin(BoxLayout):
         price = self.check_input_data()
         if price[0]:
             data = self.workbook['data']
-            data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text.upper()
+            data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text.lower() if self.coin_name_input.text != '' else self.coin.name.lower()
             data.cell(row=2, column=self.coin.id).value = self.worksheet_input
             data.cell(row=3, column=self.coin.id).value = self.cell_input.text.upper()
             self.workbook.save(language.read_file()['path_to_xlsx'])
             for coin in self.scrollapp.coins_tab:
                 if coin.id == self.coin.id:
-                    coin.name = self.coin_name_input.text.upper()
+                    coin.name = self.coin_name_input.text.lower() if self.coin_name_input.text != '' else self.coin.name
                     coin.worksheet = self.worksheet_input
                     coin.cell = self.cell_input.text.upper()
                     coin.price_usd = price[1][Currency.USD]
@@ -110,7 +110,7 @@ class ModifyCoin(BoxLayout):
         self.popup.dismiss()
 
     def check_input_data(self) -> List[Union[bool, Dict[Currency, str]]]:
-        if self.coin_name_input.text != self.coin.name:
+        if not self.coin_name_input.text in (self.coin.name, ''):
             test_price: Dict[Currency, str] = Update().get_token_price(self.coin_name_input.text)
         else:
             test_price = {Currency.USD: self.coin.price_usd, Currency.PLN: self.coin.price_pln}

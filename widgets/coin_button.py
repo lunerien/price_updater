@@ -37,7 +37,7 @@ class CoinButton(Button):
 
     def on_press(self):
         modify_coin_menu = Popup(size_hint=(None, None), size=(400, 300), auto_dismiss=True, 
-                                 title=language.get_text(Text.EDIT_COIN.value), background_color = UNPRESSED_COLOR)
+                                 title=f"{language.get_text(Text.EDIT_COIN.value)} {self.coin.name}", background_color = UNPRESSED_COLOR)
         add_menu = ModifyCoin(scrollapp=self.scrollapp, popup=modify_coin_menu, coin=self.coin)
         modify_coin_menu.content = add_menu
         modify_coin_menu.open(animation=True)
