@@ -5,11 +5,11 @@ from openpyxl.utils.exceptions import InvalidFileException
 
 from lib.language import language
 from lib.currency import currency, Currency
+from lib.asset import Asset
 
 class Update:
     def __init__(self):
         self.workbook = self.try_load_workbook()
-        self.chosen_currency = currency.get_current_currency()
     
     def update(self, coins):
         if self.workbook != None:
@@ -17,18 +17,25 @@ class Update:
             i = 1
             while data.cell(row=1, column=i).value != None:
                 if data.cell(row=1, column=i).value != "-":
-                    match self.chosen_currency:
-                        case Currency.USD:
-                            price = next(coin.price_usd for coin in coins if coin.name == data.cell(row=1, column=i).value)
-                        case Currency.PLN:
-                            price = next(coin.price_pln for coin in coins if coin.name == data.cell(row=1, column=i).value)
+                    price = next(self.get_price(coin) for coin in coins if coin.name == data.cell(row=1, column=i).value)
                     sheet = self.workbook[data.cell(row=2, column=i).value]
                     print(price)
                     sheet[data.cell(row=3, column=i).value] = price
                 i += 1
             self.workbook.save(language.read_file()['path_to_xlsx'])
 
-    def get_token_price(self, ticker:str):
+    def get_price(self, coin:Asset):
+        match coin.chosen_currency:
+            case Currency.USD:
+                return coin.price_usd
+            case Currency.PLN:
+                return coin.price_pln
+            case Currency.EUR:
+                return coin.price_eur
+            case Currency.GBP:
+                return coin.price_gbp
+
+    def get_asset_price(self, ticker:str):
         url = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
         page = get(url)
         bs = BeautifulSoup(page.content, "html.parser")
@@ -42,16 +49,23 @@ class Update:
                 price_str = price_str.replace('</span>', "")
                 price_str = price_str.replace(",", "")
                 price_float = float(price_str)
-                print(price_float)
-
+                ######################################################
                 price_usd = str(round(price_float, 6)) if price_str[:2] == "0." else str(round(price_float, 2))
                 price_usd = price_usd.replace(".", ",")
-
-                price_pln_float = price_float * currency.return_price(Currency.PLN)
+                ######################################################
+                price_pln_float = price_float * currency.return_price(Currency.USD)
                 price_pln = str(round(price_pln_float, 6)) if price_str[:2] == "0." else str(round(price_pln_float, 2))
                 price_pln = price_pln.replace(".", ",")
-
-                return {Currency.USD: price_usd, Currency.PLN: price_pln}
+                ######################################################
+                price_eur_float = price_float * (currency.return_price(Currency.USD) / currency.return_price(Currency.EUR))
+                price_eur = str(round(price_eur_float, 6)) if price_str[:2] == "0." else str(round(price_eur_float, 2))
+                price_eur = price_eur.replace(".", ",")
+                ######################################################
+                price_gbp_float = price_float * (currency.return_price(Currency.USD) / currency.return_price(Currency.GBP))
+                price_gbp = str(round(price_gbp_float, 6)) if price_str[:2] == "0." else str(round(price_gbp_float, 2))
+                price_gbp = price_gbp.replace(".", ",")
+                ######################################################
+                return {Currency.USD: price_usd, Currency.PLN: price_pln, Currency.EUR: price_eur, Currency.GBP: price_gbp}
         except ValueError as e:
             print(e)
 

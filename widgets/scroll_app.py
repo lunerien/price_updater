@@ -32,6 +32,8 @@ class ScrollApp(ScrollView):
     def show_coins(self, dt):
         Clock.unschedule(self.show_coins)
         currency.usd_pln = currency.get_currency(Currency.USD)
+        currency.eur_pln = currency.get_currency(Currency.EUR)
+        currency.gbp_pln = currency.get_currency(Currency.GBP)
         self.coins_tab:List[Asset] = self.get_coins_from_xlsx()
         self.initialize_coins()
         self.clear_widgets()
@@ -71,8 +73,9 @@ class ScrollApp(ScrollView):
                 ticker = data.cell(row=1, column=i).value
                 worksheet = data.cell(row=2, column=i).value
                 cell = data.cell(row=3, column=i).value
-                price = Update().get_token_price(ticker)
-                coins.append(Asset(id=i, name=ticker, worksheet=worksheet, cell=cell, price=price))
+                currency = data.cell(row=4, column=i).value
+                price = Update().get_asset_price(ticker)
+                coins.append(Asset(id=i, name=ticker, worksheet=worksheet, cell=cell, price=price, currency=Currency(currency)))
             i += 1
         return coins
 

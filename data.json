@@ -4,7 +4,7 @@
     "chosen_currency": "USD",
     "EN": {
         "update": "Update",
-        "edit_asset": "Edit asset: ",
+        "edit_asset": "Editing asset: ",
         "modify": "Modify",
         "delete": "Delete",
         "asset_name": "Asset name",
@@ -21,7 +21,7 @@
     },
     "PL": {
         "update": "Aktualizuj",
-        "edit_asset": "Edytuj aktywo: ",
+        "edit_asset": "Edytujesz aktywo: ",
         "modify": "Zatwierdz",
         "delete": "Usun",
         "asset_name": "Nazwa aktywa",

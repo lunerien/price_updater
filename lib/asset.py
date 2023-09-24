@@ -11,4 +11,5 @@ class Asset:
         self.chosen_currency:Currency = currency
         self.price_usd: str = price[Currency.USD]
         self.price_pln: str = price[Currency.PLN]
-
+        self.price_eur: str = price[Currency.EUR]
+        self.price_gbp: str = price[Currency.GBP]

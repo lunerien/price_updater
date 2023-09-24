@@ -48,8 +48,8 @@ class ChangeXlsxMenu(BoxLayout):
                     json.dump(data, file, indent=4)
                     file.truncate()
                 self.popup.dismiss()
-                self.scrollapp.Assets_tab:List[Asset] = self.scrollapp.get_Assets_from_xlsx()
-                self.scrollapp.initialize_Assets()
+                self.scrollapp.coins_tab:List[Asset] = self.scrollapp.get_coins_from_xlsx()
+                self.scrollapp.initialize_coins()
             except InvalidFileException:
                 self.path_xlsx_input.foreground_color = ERROR_COLOR
                 print("we need xlsx file!")

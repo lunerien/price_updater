@@ -16,13 +16,19 @@ class CoinButton(Button):
         super().__init__()
         self.currency_logo = ""
         self.coin_price = ""
-        match currency.get_current_currency():
+        match coin.chosen_currency:
             case Currency.USD:
                 self.currency_logo = "$"
                 self.coin_price = coin.price_usd
             case Currency.PLN:
                 self.currency_logo = "zł"
                 self.coin_price = coin.price_pln
+            case Currency.GBP:
+                self.currency_logo = "£"
+                self.coin_price = coin.price_gbp
+            case Currency.EUR:
+                self.currency_logo = "€"
+                self.coin_price = coin.price_eur
         
         self.coin = coin
         self.scrollapp = scrollapp
@@ -36,7 +42,7 @@ class CoinButton(Button):
         self.background_color=UNPRESSED_COLOR
 
     def on_press(self):
-        modify_coin_menu = Popup(size_hint=(None, None), size=(400, 300), auto_dismiss=True, 
+        modify_coin_menu = Popup(size_hint=(None, None), size=(400, 400), auto_dismiss=True, 
                                  title=f"{language.get_text(Text.EDIT_COIN.value)} {self.coin.name}", background_color = UNPRESSED_COLOR)
         add_menu = ModifyCoin(scrollapp=self.scrollapp, popup=modify_coin_menu, coin=self.coin)
         modify_coin_menu.content = add_menu

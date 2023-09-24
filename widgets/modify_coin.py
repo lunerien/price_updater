@@ -3,6 +3,8 @@ from typing import List, Union, Dict
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
+from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.utils import get_color_from_hex
 from kivy.uix.scrollview import ScrollView
@@ -31,9 +33,34 @@ class ModifyCoin(BoxLayout):
         self.opacity = 0.8
         self.spacing = 5
         self.workbook = Update().try_load_workbook()
-        self.coin_name_input = AutoSuggestionText(text='', suggestions=coins_list, size_hint=(1, 0.3))
+        self.coin_name_input = AutoSuggestionText(text='', suggestions=coins_list, size_hint=(1, 0.2))
         self.worksheet_input:str = ""
-        self.cell_input = TextInput(text=self.coin.cell, size_hint=(1, 0.3))
+        self.cell_input = TextInput(text=self.coin.cell, size_hint=(1, 0.2))
+
+        chosen_currency = self.get_chosen_currency()
+        self.checkboxes_currency = BoxLayout(orientation="horizontal", size_hint=(1, 0.15))
+        self.checkbox_currency_labels = BoxLayout(orientation="horizontal", size_hint=(1, 0.07))
+        self.checkbox_usd = CheckBox(active=True if chosen_currency == Currency.USD else False)
+        self.checkbox_usd.bind(active=self.on_checkbox_active)
+        self.checkbox_eur = CheckBox(active=True if chosen_currency == Currency.EUR else False)
+        self.checkbox_eur.bind(active=self.on_checkbox_active)
+        self.checkbox_gbp = CheckBox(active=True if chosen_currency == Currency.GBP else False)
+        self.checkbox_gbp.bind(active=self.on_checkbox_active)
+        self.checkbox_pln = CheckBox(active=True if chosen_currency == Currency.PLN else False)
+        self.checkbox_pln.bind(active=self.on_checkbox_active)
+        self.label_usd = Label(text="USD", color=NAME_OK)
+        self.label_eur = Label(text="EUR", color=NAME_OK)
+        self.label_gbp = Label(text="GBP", color=NAME_OK)
+        self.label_pln = Label(text="PLN", color=NAME_OK)
+        self.checkbox_currency_labels.add_widget(self.label_usd)
+        self.checkbox_currency_labels.add_widget(self.label_eur)
+        self.checkbox_currency_labels.add_widget(self.label_gbp)
+        self.checkbox_currency_labels.add_widget(self.label_pln)
+        self.checkboxes_currency.add_widget(self.checkbox_usd)
+        self.checkboxes_currency.add_widget(self.checkbox_eur)
+        self.checkboxes_currency.add_widget(self.checkbox_gbp)
+        self.checkboxes_currency.add_widget(self.checkbox_pln)
+
         self.scroll_sheets = ScrollView()
         self.sheets_widget = BoxLayout(orientation='vertical', size_hint_y=None, spacing=2)
         self.sheets_widget.bind(minimum_height=self.sheets_widget.setter('height'))
@@ -49,12 +76,51 @@ class ModifyCoin(BoxLayout):
         self.add_widget(self.coin_name_input)
         self.add_widget(self.scroll_sheets)
         self.add_widget(self.cell_input)
+
+        self.add_widget(self.checkboxes_currency)
+        self.add_widget(self.checkbox_currency_labels)
+
         buttons = BoxLayout(orientation='horizontal', size_hint=(1, 0.4))
         self.add_widget(buttons)
-        buttons.add_widget(Button(text=language.get_text(Text.MODIFY.value), on_release=self.modify, size_hint=(0.5, 1),
+        buttons.add_widget(Button(text=language.get_text(Text.MODIFY.value), on_release=self.modify, size_hint=(0.5, 0.8),
                                background_color=UNPRESSED_COLOR))
-        buttons.add_widget(Button(text=language.get_text(Text.DELETE.value), on_release=self.delete, size_hint=(0.5, 1),
+        buttons.add_widget(Button(text=language.get_text(Text.DELETE.value), on_release=self.delete, size_hint=(0.5, 0.8),
                                background_color=DELETE_COLOR))
+        
+    def get_chosen_currency(self):
+        return Currency(self.coin.chosen_currency)
+        
+    def on_checkbox_active(self, instance, value):
+        if instance == self.checkbox_usd:
+            if value:
+                self.checkbox_eur.active = False
+                self.checkbox_gbp.active = False
+                self.checkbox_pln.active = False
+        if instance == self.checkbox_eur:
+            if value:
+                self.checkbox_usd.active = False
+                self.checkbox_gbp.active = False
+                self.checkbox_pln.active = False
+        if instance == self.checkbox_gbp:
+            if value:
+                self.checkbox_usd.active = False
+                self.checkbox_eur.active = False
+                self.checkbox_pln.active = False
+        if instance == self.checkbox_pln:
+            if value:
+                self.checkbox_usd.active = False
+                self.checkbox_gbp.active = False
+                self.checkbox_eur.active = False
+        if (self.checkbox_usd.active or self.checkbox_gbp.active or self.checkbox_eur.active or self.checkbox_pln.active):
+            self.label_usd.color = NAME_OK
+            self.label_eur.color = NAME_OK
+            self.label_gbp.color = NAME_OK
+            self.label_pln.color = NAME_OK
+        else:
+            self.label_usd.color = ERROR_COLOR
+            self.label_eur.color = ERROR_COLOR
+            self.label_gbp.color = ERROR_COLOR
+            self.label_pln.color = ERROR_COLOR
 
     def chosen_sheet(self, dt):
         if dt.background_color == UNPRESSED_COLOR:
@@ -71,17 +137,28 @@ class ModifyCoin(BoxLayout):
             self.worksheet_input = ""
             dt.background_color = UNPRESSED_COLOR
 
-        
     def modify(self, dt):
         dt.background_color=PRESSED_COLOR
     
         data = self.workbook['data']
         price = self.check_input_data()
         if price[0]:
+            chosen_currency: Currency
+            if self.checkbox_usd.active:
+                chosen_currency = Currency.USD
+            elif self.checkbox_eur.active:
+                chosen_currency = Currency.EUR
+            elif self.checkbox_gbp.active:
+                chosen_currency = Currency.GBP
+            else:
+                chosen_currency = Currency.PLN
+            self.coin.chosen_currency = chosen_currency
+
             data = self.workbook['data']
             data.cell(row=1, column=self.coin.id).value = self.coin_name_input.text.lower() if self.coin_name_input.text != '' else self.coin.name.lower()
             data.cell(row=2, column=self.coin.id).value = self.worksheet_input
             data.cell(row=3, column=self.coin.id).value = self.cell_input.text.upper()
+            data.cell(row=4, column=self.coin.id).value = chosen_currency.name
             self.workbook.save(language.read_file()['path_to_xlsx'])
             for coin in self.scrollapp.coins_tab:
                 if coin.id == self.coin.id:
@@ -90,6 +167,8 @@ class ModifyCoin(BoxLayout):
                     coin.cell = self.cell_input.text.upper()
                     coin.price_usd = price[1][Currency.USD]
                     coin.price_pln = price[1][Currency.PLN]
+                    coin.price_gbp = price[1][Currency.GBP]
+                    coin.price_eur = price[1][Currency.EUR]
                     break
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
@@ -112,13 +191,14 @@ class ModifyCoin(BoxLayout):
 
     def check_input_data(self) -> List[Union[bool, Dict[Currency, str]]]:
         if not self.coin_name_input.text in (self.coin.name, ''):
-            test_price: Dict[Currency, str] = Update().get_token_price(self.coin_name_input.text)
+            test_price: Dict[Currency, str] = Update().get_asset_price(self.coin_name_input.text)
         else:
-            test_price = {Currency.USD: self.coin.price_usd, Currency.PLN: self.coin.price_pln}
+            test_price = {Currency.USD: self.coin.price_usd, Currency.PLN: self.coin.price_pln, Currency.GBP: self.coin.price_gbp, Currency.EUR: self.coin.price_eur}
 
         name_ok: bool = False
         sheet_ok: bool = False
         cell_ok: bool = False
+        currency_ok: bool = False
         ##############################################
         if test_price != None:
             self.coin_name_input.foreground_color = NAME_OK
@@ -144,4 +224,7 @@ class ModifyCoin(BoxLayout):
         else:
             self.cell_input.foreground_color = ERROR_COLOR
         ##############################################
-        return [name_ok & sheet_ok & cell_ok, test_price]
+        if (self.checkbox_usd.active or self.checkbox_eur.active or self.checkbox_gbp.active or self.checkbox_pln.active):
+            currency_ok = True
+        ##############################################
+        return [name_ok & sheet_ok & cell_ok & currency_ok, test_price]

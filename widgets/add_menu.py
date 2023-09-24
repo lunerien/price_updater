@@ -56,35 +56,35 @@ class AddMenu(BoxLayout):
         self.worksheet_input:str = ""
         self.cell_input = TextInput(text=language.get_text(Text.CELL.value), size_hint=(1, 0.2), multiline=False)
         
-        self.checkboxes_currency = BoxLayout(orientation="horizontal", size_hint=(1, 0.15)) #<=
-        self.checkbox_currency_labels = BoxLayout(orientation="horizontal", size_hint=(1, 0.07)) #<=
-        self.checkbox_usd = CheckBox(active=True) #<=
-        self.checkbox_usd.bind(active=self.on_checkbox_active) #<=
-        self.checkbox_eur = CheckBox(active=False) #<=
-        self.checkbox_eur.bind(active=self.on_checkbox_active) #<=
-        self.checkbox_gbp = CheckBox(active=False) #<=
-        self.checkbox_gbp.bind(active=self.on_checkbox_active) #<=
-        self.checkbox_pln = CheckBox(active=False) #<=
-        self.checkbox_pln.bind(active=self.on_checkbox_active) #<=
-        self.label_usd = Label(text="USD", color=NAME_OK) #<=
-        self.label_eur = Label(text="EUR", color=NAME_OK) #<=
-        self.label_gbp = Label(text="GBP", color=NAME_OK) #<=
-        self.label_pln = Label(text="PLN", color=NAME_OK) #<=
-        self.checkbox_currency_labels.add_widget(self.label_usd) #<=
-        self.checkbox_currency_labels.add_widget(self.label_eur) #<=
-        self.checkbox_currency_labels.add_widget(self.label_gbp) #<=
-        self.checkbox_currency_labels.add_widget(self.label_pln) #<=
-        self.checkboxes_currency.add_widget(self.checkbox_usd) #<=
-        self.checkboxes_currency.add_widget(self.checkbox_eur) #<=
-        self.checkboxes_currency.add_widget(self.checkbox_gbp) #<=
-        self.checkboxes_currency.add_widget(self.checkbox_pln) #<=
+        self.checkboxes_currency = BoxLayout(orientation="horizontal", size_hint=(1, 0.15))
+        self.checkbox_currency_labels = BoxLayout(orientation="horizontal", size_hint=(1, 0.07))
+        self.checkbox_usd = CheckBox(active=True)
+        self.checkbox_usd.bind(active=self.on_checkbox_active)
+        self.checkbox_eur = CheckBox(active=False)
+        self.checkbox_eur.bind(active=self.on_checkbox_active)
+        self.checkbox_gbp = CheckBox(active=False)
+        self.checkbox_gbp.bind(active=self.on_checkbox_active)
+        self.checkbox_pln = CheckBox(active=False)
+        self.checkbox_pln.bind(active=self.on_checkbox_active)
+        self.label_usd = Label(text="USD", color=NAME_OK)
+        self.label_eur = Label(text="EUR", color=NAME_OK)
+        self.label_gbp = Label(text="GBP", color=NAME_OK)
+        self.label_pln = Label(text="PLN", color=NAME_OK)
+        self.checkbox_currency_labels.add_widget(self.label_usd)
+        self.checkbox_currency_labels.add_widget(self.label_eur)
+        self.checkbox_currency_labels.add_widget(self.label_gbp)
+        self.checkbox_currency_labels.add_widget(self.label_pln)
+        self.checkboxes_currency.add_widget(self.checkbox_usd)
+        self.checkboxes_currency.add_widget(self.checkbox_eur)
+        self.checkboxes_currency.add_widget(self.checkbox_gbp)
+        self.checkboxes_currency.add_widget(self.checkbox_pln)
         
         self.add_widget(self.coin_name_input)
         self.add_widget(self.scroll_sheets)
         self.add_widget(self.cell_input)
 
-        self.add_widget(self.checkboxes_currency) #<=
-        self.add_widget(self.checkbox_currency_labels) #<=
+        self.add_widget(self.checkboxes_currency)
+        self.add_widget(self.checkbox_currency_labels)
 
         buttons = BoxLayout(orientation='horizontal', size_hint=(1, 0.4))
         self.add_widget(buttons)
@@ -157,18 +157,18 @@ class AddMenu(BoxLayout):
                 chosen_currency = Currency.GBP
             else:
                 chosen_currency = Currency.PLN
-        
-            print(self.worksheet_input)
+
             data.cell(row=1, column=i).value = self.coin_name_input.text.lower()
             data.cell(row=2, column=i).value = self.worksheet_input
             data.cell(row=3, column=i).value = self.cell_input.text.upper()
+            data.cell(row=4, column=i).value = chosen_currency.name
             self.workbook.save(language.read_file()['path_to_xlsx'])
             self.scrollapp.coins_tab.append(Asset(id=i, 
                                                  name=self.coin_name_input.text.lower(),
                                                  worksheet=self.worksheet_input,
                                                  cell=self.cell_input.text.upper(),
                                                  price=price[1],
-                                                 chosen_currency=chosen_currency))
+                                                 currency=chosen_currency))
             self.scrollapp.initialize_coins()
             self.scrollapp.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
             self.popup.dismiss()
@@ -176,7 +176,7 @@ class AddMenu(BoxLayout):
     def check_input_data(self) -> List[Union[bool, Union[str, None]]]:
         test_price: str | None = None
         if self.coin_name_input.text != language.get_text(Text.COIN_NAME.value):
-            test_price = Update().get_token_price(self.coin_name_input.text)
+            test_price = Update().get_asset_price(self.coin_name_input.text)
         else:
             test_price = None
 
