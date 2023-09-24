@@ -3,7 +3,7 @@ from kivy.uix.popup import Popup
 
 from widgets.menu import UNPRESSED_COLOR
 from widgets.modify_coin import ModifyCoin
-from lib.coin import Coin
+from lib.asset import Asset
 from lib.language import language, Text
 from lib.currency import currency, Currency
 
@@ -12,7 +12,7 @@ class CoinButton(Button):
     SPACING:int = 2
     COIN_HEIGHT:int = 40
 
-    def __init__(self, scrollapp, coin:Coin):
+    def __init__(self, scrollapp, coin:Asset):
         super().__init__()
         self.currency_logo = ""
         self.coin_price = ""

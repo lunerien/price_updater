@@ -8,11 +8,12 @@ from kivy.utils import get_color_from_hex
 from kivy.uix.scrollview import ScrollView
 
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
-from lib.coin import Coin
+from lib.asset import Asset
 from lib.update import Update
 from lib.language import language, Text
 from lib.currency import Currency
 from lib.auto_suggestion_text import AutoSuggestionText
+from coins_list import coins_list
 
 DELETE_COLOR = get_color_from_hex("#FF0101e6")
 ERROR_COLOR = get_color_from_hex("##c91010F6")
@@ -21,7 +22,7 @@ WHITE = get_color_from_hex("#F9F6EEF6")
 NAME_OK = get_color_from_hex("#0e9c17")
 
 class ModifyCoin(BoxLayout):
-    def __init__(self, scrollapp, popup:Popup, coin:Coin):
+    def __init__(self, scrollapp, popup:Popup, coin:Asset):
         super(ModifyCoin, self).__init__()
         self.scrollapp = scrollapp
         self.popup = popup
@@ -30,7 +31,7 @@ class ModifyCoin(BoxLayout):
         self.opacity = 0.8
         self.spacing = 5
         self.workbook = Update().try_load_workbook()
-        self.coin_name_input = AutoSuggestionText(text='', size_hint=(1, 0.3))
+        self.coin_name_input = AutoSuggestionText(text='', suggestions=coins_list, size_hint=(1, 0.3))
         self.worksheet_input:str = ""
         self.cell_input = TextInput(text=self.coin.cell, size_hint=(1, 0.3))
         self.scroll_sheets = ScrollView()

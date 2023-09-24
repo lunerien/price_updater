@@ -32,25 +32,28 @@ class Update:
         url = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
         page = get(url)
         bs = BeautifulSoup(page.content, "html.parser")
-        for web in bs.find_all(
-            "div",
-            class_="sc-16891c57-0 hqcKQB flexStart alignBaseline",
-        ):
-            price_str = str(web.find("span", class_="sc-16891c57-0 dxubiK base-text"))
-            price_str = price_str.replace('<span class="sc-16891c57-0 dxubiK base-text">$', "")
-            price_str = price_str.replace('</span>', "")
-            price_str = price_str.replace(",", "")
-            price_float = float(price_str)
-            print(price_float)
+        try:
+            for web in bs.find_all(
+                "div",
+                class_="sc-16891c57-0 hqcKQB flexStart alignBaseline",
+            ):
+                price_str = str(web.find("span", class_="sc-16891c57-0 dxubiK base-text"))
+                price_str = price_str.replace('<span class="sc-16891c57-0 dxubiK base-text">$', "")
+                price_str = price_str.replace('</span>', "")
+                price_str = price_str.replace(",", "")
+                price_float = float(price_str)
+                print(price_float)
 
-            price_usd = str(round(price_float, 6)) if price_str[:2] == "0." else str(round(price_float, 2))
-            price_usd = price_usd.replace(".", ",")
+                price_usd = str(round(price_float, 6)) if price_str[:2] == "0." else str(round(price_float, 2))
+                price_usd = price_usd.replace(".", ",")
 
-            price_pln_float = price_float * currency.return_price(Currency.PLN)
-            price_pln = str(round(price_pln_float, 6)) if price_str[:2] == "0." else str(round(price_pln_float, 2))
-            price_pln = price_pln.replace(".", ",")
+                price_pln_float = price_float * currency.return_price(Currency.PLN)
+                price_pln = str(round(price_pln_float, 6)) if price_str[:2] == "0." else str(round(price_pln_float, 2))
+                price_pln = price_pln.replace(".", ",")
 
-            return {Currency.USD: price_usd, Currency.PLN: price_pln}
+                return {Currency.USD: price_usd, Currency.PLN: price_pln}
+        except ValueError as e:
+            print(e)
 
     def try_load_workbook(self):
         try:

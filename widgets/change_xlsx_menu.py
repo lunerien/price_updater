@@ -11,7 +11,7 @@ from openpyxl.utils.exceptions import InvalidFileException
 
 from widgets.scroll_app import ScrollApp
 from lib.language import language, Text
-from lib.coin import Coin
+from lib.asset import Asset
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 
 ERROR_COLOR = get_color_from_hex("##c91010F6")
@@ -48,8 +48,8 @@ class ChangeXlsxMenu(BoxLayout):
                     json.dump(data, file, indent=4)
                     file.truncate()
                 self.popup.dismiss()
-                self.scrollapp.coins_tab:List[Coin] = self.scrollapp.get_coins_from_xlsx()
-                self.scrollapp.initialize_coins()
+                self.scrollapp.Assets_tab:List[Asset] = self.scrollapp.get_Assets_from_xlsx()
+                self.scrollapp.initialize_Assets()
             except InvalidFileException:
                 self.path_xlsx_input.foreground_color = ERROR_COLOR
                 print("we need xlsx file!")

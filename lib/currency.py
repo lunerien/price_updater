@@ -7,6 +7,7 @@ from requests import get
 class Currency(Enum):
     USD = "USD"
     EUR = "EUR"
+    GBP = "GBP"
     PLN = "PLN"
 
 
