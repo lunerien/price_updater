@@ -36,38 +36,50 @@ class Update:
                 return coin.price_gbp
 
     def get_asset_price(self, ticker:str):
-        url = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
-        page = get(url)
-        bs = BeautifulSoup(page.content, "html.parser")
-        try:
-            for web in bs.find_all(
-                "div",
-                class_="sc-16891c57-0 hqcKQB flexStart alignBaseline",
-            ):
-                price_str = str(web.find("span", class_="sc-16891c57-0 dxubiK base-text"))
-                price_str = price_str.replace('<span class="sc-16891c57-0 dxubiK base-text">$', "")
-                price_str = price_str.replace('</span>', "")
-                price_str = price_str.replace(",", "")
-                price_float = float(price_str)
-                ######################################################
-                price_usd = str(round(price_float, 6)) if price_str[:2] == "0." else str(round(price_float, 2))
-                price_usd = price_usd.replace(".", ",")
-                ######################################################
-                price_pln_float = price_float * currency.return_price(Currency.USD)
-                price_pln = str(round(price_pln_float, 6)) if price_str[:2] == "0." else str(round(price_pln_float, 2))
-                price_pln = price_pln.replace(".", ",")
-                ######################################################
-                price_eur_float = price_float * (currency.return_price(Currency.USD) / currency.return_price(Currency.EUR))
-                price_eur = str(round(price_eur_float, 6)) if price_str[:2] == "0." else str(round(price_eur_float, 2))
-                price_eur = price_eur.replace(".", ",")
-                ######################################################
-                price_gbp_float = price_float * (currency.return_price(Currency.USD) / currency.return_price(Currency.GBP))
-                price_gbp = str(round(price_gbp_float, 6)) if price_str[:2] == "0." else str(round(price_gbp_float, 2))
-                price_gbp = price_gbp.replace(".", ",")
-                ######################################################
-                return {Currency.USD: price_usd, Currency.PLN: price_pln, Currency.EUR: price_eur, Currency.GBP: price_gbp}
-        except ValueError as e:
-            print(e)
+        other_coins: str = ('eur', 'gbp', 'usd')
+
+        if ticker in other_coins:
+            match(ticker):
+                case 'usd':
+                    return {Currency.USD: '1,0', Currency.PLN: str(currency.usd_pln).replace('.', ','), Currency.EUR: str(currency.usd_pln/currency.eur_pln).replace('.', ','), Currency.GBP: str(currency.usd_pln/currency.gbp_pln).replace('.', ',')}
+                case 'gbp':
+                    return {Currency.USD: '0,0', Currency.PLN: str(currency.gbp_pln).replace('.', ','), Currency.EUR: '0,0', Currency.GBP: '1,0'}
+                case 'eur':
+                    return {Currency.USD: '0,0', Currency.PLN: str(currency.eur_pln).replace('.', ','), Currency.EUR: '1,0', Currency.GBP: '0,0'}
+                    
+        else:
+            url = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
+            page = get(url)
+            bs = BeautifulSoup(page.content, "html.parser")
+            try:
+                for web in bs.find_all(
+                    "div",
+                    class_="sc-16891c57-0 hqcKQB flexStart alignBaseline",
+                ):
+                    price_str = str(web.find("span", class_="sc-16891c57-0 dxubiK base-text"))
+                    price_str = price_str.replace('<span class="sc-16891c57-0 dxubiK base-text">$', "")
+                    price_str = price_str.replace('</span>', "")
+                    price_str = price_str.replace(",", "")
+                    price_float = float(price_str)
+                    ######################################################
+                    price_usd = str(round(price_float, 6)) if price_str[:2] == "0." else str(round(price_float, 2))
+                    price_usd = price_usd.replace(".", ",")
+                    ######################################################
+                    price_pln_float = price_float * currency.return_price(Currency.USD)
+                    price_pln = str(round(price_pln_float, 6)) if price_str[:2] == "0." else str(round(price_pln_float, 2))
+                    price_pln = price_pln.replace(".", ",")
+                    ######################################################
+                    price_eur_float = price_float * (currency.return_price(Currency.USD) / currency.return_price(Currency.EUR))
+                    price_eur = str(round(price_eur_float, 6)) if price_str[:2] == "0." else str(round(price_eur_float, 2))
+                    price_eur = price_eur.replace(".", ",")
+                    ######################################################
+                    price_gbp_float = price_float * (currency.return_price(Currency.USD) / currency.return_price(Currency.GBP))
+                    price_gbp = str(round(price_gbp_float, 6)) if price_str[:2] == "0." else str(round(price_gbp_float, 2))
+                    price_gbp = price_gbp.replace(".", ",")
+                    ######################################################
+                    return {Currency.USD: price_usd, Currency.PLN: price_pln, Currency.EUR: price_eur, Currency.GBP: price_gbp}
+            except ValueError as e:
+                print(e)
 
     def try_load_workbook(self):
         try:
