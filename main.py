@@ -13,7 +13,7 @@ from widgets.menu import Menu
 
 
 
-TITLE = "Price Updater"
+TITLE = "Price Updater 1.0b Stable"
 
 
 if sys.platform == "win32":
