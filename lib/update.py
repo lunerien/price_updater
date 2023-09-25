@@ -2,6 +2,7 @@ from openpyxl import load_workbook
 from bs4 import BeautifulSoup
 from requests import get
 from openpyxl.utils.exceptions import InvalidFileException
+from typing import Tuple
 
 from lib.language import language
 from lib.currency import currency, Currency
@@ -36,17 +37,71 @@ class Update:
                 return coin.price_gbp
 
     def get_asset_price(self, ticker:str):
-        other_coins: str = ('eur', 'gbp', 'usd')
+        fiat_assets: Tuple[str, ...] = ('eur', 'gbp', 'usd')
+        metal_assets: Tuple[str, ...] = ('gold', 'silver')
+        etf_assets: Tuple[str, ...] = ('swda-etf', 'emim-etf')
+        dec:int = 3
 
-        if ticker in other_coins:
+        if ticker in fiat_assets:
             match(ticker):
                 case 'usd':
-                    return {Currency.USD: '1,0', Currency.PLN: str(currency.usd_pln).replace('.', ','), Currency.EUR: str(currency.usd_pln/currency.eur_pln).replace('.', ','), Currency.GBP: str(currency.usd_pln/currency.gbp_pln).replace('.', ',')}
+                    return {Currency.USD: '1,0', 
+                            Currency.PLN: str(currency.usd_pln).replace('.', ','), 
+                            Currency.EUR: str(round(currency.usd_pln/currency.eur_pln, dec)).replace('.', ','), 
+                            Currency.GBP: str(round(currency.usd_pln/currency.gbp_pln, dec)).replace('.', ',')}
                 case 'gbp':
-                    return {Currency.USD: '0,0', Currency.PLN: str(currency.gbp_pln).replace('.', ','), Currency.EUR: '0,0', Currency.GBP: '1,0'}
+                    return {Currency.USD: str(round(currency.gbp_pln/currency.usd_pln, dec)).replace('.', ','), 
+                            Currency.PLN: str(currency.gbp_pln).replace('.', ','), 
+                            Currency.EUR: str(round(currency.gbp_pln/currency.eur_pln, dec)).replace('.', ','), 
+                            Currency.GBP: '1,0'}
                 case 'eur':
-                    return {Currency.USD: '0,0', Currency.PLN: str(currency.eur_pln).replace('.', ','), Currency.EUR: '1,0', Currency.GBP: '0,0'}
-                    
+                    return {Currency.USD: str(round(currency.eur_pln/currency.usd_pln, dec)).replace('.', ','), 
+                            Currency.PLN: str(currency.eur_pln).replace('.', ','), 
+                            Currency.EUR: '1,0', 
+                            Currency.GBP: str(round(currency.eur_pln/currency.gbp_pln, dec)).replace('.', ',')}
+        elif ticker in metal_assets:
+            def get_price() -> float:
+                try:
+                    url = f'https://www.kitco.com/charts/live{ticker}.html'
+                    page = get(url)
+                    bs = BeautifulSoup(page.content, 'html.parser')
+
+                    for nastronie in bs.find_all('div', class_='data-blk bid'):
+                        price = nastronie.find('span').get_text()
+                        price = price.replace(",", "")
+                        return float(price)
+                except:
+                    return 0.0
+                return 0.0
+            price_exact = get_price()
+            return {Currency.USD: str(price_exact).replace(".", ","), 
+                    Currency.PLN: str(round(price_exact*currency.usd_pln, dec)).replace(".", ","), 
+                    Currency.EUR: str(round(price_exact*(currency.usd_pln/currency.eur_pln), dec)).replace(".", ","), 
+                    Currency.GBP: str(round(price_exact*(currency.usd_pln/currency.gbp_pln), dec)).replace(".", ",")}
+        elif ticker in etf_assets:
+            link: str
+            if ticker == 'swda-etf':
+                link = 'https://www.hl.co.uk/shares/shares-search-results/i/ishares-core-msci-world-ucits-etf-usd-acc'
+            else:
+                link = 'https://www.hl.co.uk/shares/shares-search-results/i/ishares-core-msci-emerging-markets-imi-ucit'
+            def get_price() ->float:
+                try:
+                    page = get(link)
+                    bs = BeautifulSoup(page.content, 'html.parser')
+                    for onpage in bs.find('span', class_='bid price-divide'):
+                        page_str = str(onpage)
+                        page_str = page_str.replace('p', '')
+                        page_str = page_str.replace(',', '')
+                        price = page_str[0:4]
+                        return float(price)
+                except:
+                    return 0.0
+                return 0.0
+            price_exact = get_price()
+            return {Currency.USD: str(round(price_exact*(currency.gbp_pln/currency.usd_pln), dec)).replace(".", ","),
+                    Currency.PLN: str(round(price_exact*currency.gbp_pln, dec)).replace(".", ","), 
+                    Currency.EUR: str(round(price_exact*(currency.gbp_pln/currency.eur_pln), dec)).replace(".", ","), 
+                    Currency.GBP: str(price_exact).replace(".", ",")}
         else:
             url = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
             page = get(url)
