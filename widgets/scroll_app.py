@@ -7,7 +7,7 @@ from kivy.clock import Clock
 
 from widgets.coin_button import CoinButton
 from widgets.menu import PRESSED_COLOR
-from lib.coin import Coin
+from lib.asset import Asset
 from lib.language import language, Text
 from lib.currency import currency, Currency
 from lib.update import Update
@@ -19,7 +19,7 @@ class ScrollApp(ScrollView):
 
     def __init__(self):
         super().__init__()
-        self.coins_tab:List[Coin] = list()
+        self.coins_tab:List[Asset] = list()
         self.coins = GridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
         self.empty_list: Label = Label(text=language.get_text(Text.EMPTY_LIST_TEXT.value))
         self.loading_list: Label = Label(text=language.get_text(Text.LOADING_LIST_TEXT.value))
@@ -32,7 +32,9 @@ class ScrollApp(ScrollView):
     def show_coins(self, dt):
         Clock.unschedule(self.show_coins)
         currency.usd_pln = currency.get_currency(Currency.USD)
-        self.coins_tab:List[Coin] = self.get_coins_from_xlsx()
+        currency.eur_pln = currency.get_currency(Currency.EUR)
+        currency.gbp_pln = currency.get_currency(Currency.GBP)
+        self.coins_tab:List[Asset] = self.get_coins_from_xlsx()
         self.initialize_coins()
         self.clear_widgets()
         self.add_widget(self.coins)
@@ -63,7 +65,7 @@ class ScrollApp(ScrollView):
             workbook.save(language.read_file()['path_to_xlsx'])
         data = workbook['data']
 
-        coins:List[Coin] = []
+        coins:List[Asset] = []
 
         i = 1
         while data.cell(row=1, column=i).value != None:
@@ -71,8 +73,9 @@ class ScrollApp(ScrollView):
                 ticker = data.cell(row=1, column=i).value
                 worksheet = data.cell(row=2, column=i).value
                 cell = data.cell(row=3, column=i).value
-                price = Update().get_token_price(ticker)
-                coins.append(Coin(id=i, name=ticker, worksheet=worksheet, cell=cell, price=price))
+                currency = data.cell(row=4, column=i).value
+                price = Update().get_asset_price(ticker)
+                coins.append(Asset(id=i, name=ticker, worksheet=worksheet, cell=cell, price=price, currency=Currency(currency)))
             i += 1
         return coins
 

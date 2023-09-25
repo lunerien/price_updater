@@ -7,6 +7,7 @@ from requests import get
 class Currency(Enum):
     USD = "USD"
     EUR = "EUR"
+    GBP = "GBP"
     PLN = "PLN"
 
 
@@ -14,7 +15,9 @@ class CCurrency:
     def __init__(self):
         self.data_file = self.read_file()
         self.usd_pln:float = 0.0
-    
+        self.eur_pln:float = 0.0
+        self.gbp_pln:float = 0.0
+
     def get_currency(self, currency:Currency):
         try:
             url = f'https://www.biznesradar.pl/notowania/{currency.value}PLN#1d_lin_lin'
@@ -34,9 +37,13 @@ class CCurrency:
     def return_price(self, currency:Currency) -> float:
         match currency:
             case Currency.PLN:
-                return self.usd_pln
-            case Currency.USD:
                 return 1.0
+            case Currency.USD:
+                return self.usd_pln
+            case Currency.GBP:
+                return self.gbp_pln
+            case Currency.EUR:
+                return self.eur_pln
         return 1.0
 
     def get_current_currency(self) -> Currency:

@@ -9,18 +9,18 @@ class Languages(Enum):
 
 class Text(Enum):
     UPDATE = "update"
-    EDIT_COIN = "edit_coin"
+    EDIT_COIN = "edit_asset"
     MODIFY = "modify"
     DELETE = "delete"
-    COIN_NAME = "coin_name"
+    COIN_NAME = "asset_name"
     WORKSHEET_NAME = "worksheet_name"
     CELL = "cell"
     ADD = "add"
-    ADD_NEW_COIN = "add_new_coin"
+    ADD_NEW_COIN = "add_new_asset"
     CHANGE_XLSX_WORKBOOK = "change_xlsx_workbook"
     PATH_TO_XLSX = "path_to_xlsx"
     SEARCH = "search"
-    EMPTY_LIST_TEXT = "your_coins_will_be_here"
+    EMPTY_LIST_TEXT = "your_assets_will_be_here"
     LOADING_LIST_TEXT = "please_wait"
     PLEASE_SELECT_WORKBOOK = "please_select_workbook"
 

@@ -1,17 +1,22 @@
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
+from kivy.uix.checkbox import CheckBox
 from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.utils import get_color_from_hex
 from kivy.uix.label import Label
 import re
+from typing import Union, List
 
 from widgets.scroll_app import ScrollApp
-from lib.update import Update
-from lib.coin import Coin
-from lib.language import language, Text
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
+from lib.update import Update
+from lib.asset import Asset
+from lib.currency import Currency
+from lib.language import language, Text
+from lib.auto_suggestion_text import AutoSuggestionText
+from coins_list import coins_list
 
 ERROR_COLOR = get_color_from_hex("##c91010F6")
 SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
@@ -47,18 +52,77 @@ class AddMenu(BoxLayout):
         for sheet in self.sheets:
             sheet_button = Button(text=sheet, background_color=UNPRESSED_COLOR, size_hint_y = None, height = 35, on_release=self.chosen_sheet)
             self.sheets_widget.add_widget(sheet_button)
-        
-        self.coin_name_input = TextInput(text=language.get_text(Text.COIN_NAME.value), size_hint=(1, 0.3), multiline=False)
+        self.coin_name_input = AutoSuggestionText(text='', suggestions=coins_list ,size_hint=(1, 0.2), multiline=False)
         self.worksheet_input:str = ""
-        self.cell_input = TextInput(text=language.get_text(Text.CELL.value), size_hint=(1, 0.3), multiline=False)
+        self.cell_input = TextInput(text=language.get_text(Text.CELL.value), size_hint=(1, 0.2), multiline=False)
+        
+        self.checkboxes_currency = BoxLayout(orientation="horizontal", size_hint=(1, 0.15))
+        self.checkbox_currency_labels = BoxLayout(orientation="horizontal", size_hint=(1, 0.07))
+        self.checkbox_usd = CheckBox(active=True)
+        self.checkbox_usd.bind(active=self.on_checkbox_active)
+        self.checkbox_eur = CheckBox(active=False)
+        self.checkbox_eur.bind(active=self.on_checkbox_active)
+        self.checkbox_gbp = CheckBox(active=False)
+        self.checkbox_gbp.bind(active=self.on_checkbox_active)
+        self.checkbox_pln = CheckBox(active=False)
+        self.checkbox_pln.bind(active=self.on_checkbox_active)
+        self.label_usd = Label(text="USD", color=NAME_OK)
+        self.label_eur = Label(text="EUR", color=NAME_OK)
+        self.label_gbp = Label(text="GBP", color=NAME_OK)
+        self.label_pln = Label(text="PLN", color=NAME_OK)
+        self.checkbox_currency_labels.add_widget(self.label_usd)
+        self.checkbox_currency_labels.add_widget(self.label_eur)
+        self.checkbox_currency_labels.add_widget(self.label_gbp)
+        self.checkbox_currency_labels.add_widget(self.label_pln)
+        self.checkboxes_currency.add_widget(self.checkbox_usd)
+        self.checkboxes_currency.add_widget(self.checkbox_eur)
+        self.checkboxes_currency.add_widget(self.checkbox_gbp)
+        self.checkboxes_currency.add_widget(self.checkbox_pln)
+        
         self.add_widget(self.coin_name_input)
         self.add_widget(self.scroll_sheets)
         self.add_widget(self.cell_input)
+
+        self.add_widget(self.checkboxes_currency)
+        self.add_widget(self.checkbox_currency_labels)
+
         buttons = BoxLayout(orientation='horizontal', size_hint=(1, 0.4))
         self.add_widget(buttons)
-        buttons.add_widget(Button(text=language.get_text(Text.ADD.value), on_release=self.add_this_coin, size_hint=(1, 1),
+        buttons.add_widget(Button(text=language.get_text(Text.ADD.value), on_release=self.add_this_coin, size_hint=(1, 0.8),
                                background_color=UNPRESSED_COLOR))
-    
+        
+    def on_checkbox_active(self, instance, value):
+        if instance == self.checkbox_usd:
+            if value:
+                self.checkbox_eur.active = False
+                self.checkbox_gbp.active = False
+                self.checkbox_pln.active = False
+        if instance == self.checkbox_eur:
+            if value:
+                self.checkbox_usd.active = False
+                self.checkbox_gbp.active = False
+                self.checkbox_pln.active = False
+        if instance == self.checkbox_gbp:
+            if value:
+                self.checkbox_usd.active = False
+                self.checkbox_eur.active = False
+                self.checkbox_pln.active = False
+        if instance == self.checkbox_pln:
+            if value:
+                self.checkbox_usd.active = False
+                self.checkbox_gbp.active = False
+                self.checkbox_eur.active = False
+        if (self.checkbox_usd.active or self.checkbox_gbp.active or self.checkbox_eur.active or self.checkbox_pln.active):
+            self.label_usd.color = NAME_OK
+            self.label_eur.color = NAME_OK
+            self.label_gbp.color = NAME_OK
+            self.label_pln.color = NAME_OK
+        else:
+            self.label_usd.color = ERROR_COLOR
+            self.label_eur.color = ERROR_COLOR
+            self.label_gbp.color = ERROR_COLOR
+            self.label_pln.color = ERROR_COLOR
+
     def chosen_sheet(self, dt):
         if dt.background_color == UNPRESSED_COLOR:
             for sheet in self.sheets_widget.children:
@@ -83,30 +147,43 @@ class AddMenu(BoxLayout):
             i = 1
             while data.cell(row=1, column=i).value != "-" and data.cell(row=1, column=i).value != None:
                 i += 1
-        
-            print(self.worksheet_input)
-            data.cell(row=1, column=i).value = self.coin_name_input.text.upper()
+
+            chosen_currency: Currency
+            if self.checkbox_usd.active:
+                chosen_currency = Currency.USD
+            elif self.checkbox_eur.active:
+                chosen_currency = Currency.EUR
+            elif self.checkbox_gbp.active:
+                chosen_currency = Currency.GBP
+            else:
+                chosen_currency = Currency.PLN
+
+            data.cell(row=1, column=i).value = self.coin_name_input.text.lower()
             data.cell(row=2, column=i).value = self.worksheet_input
             data.cell(row=3, column=i).value = self.cell_input.text.upper()
+            data.cell(row=4, column=i).value = chosen_currency.name
             self.workbook.save(language.read_file()['path_to_xlsx'])
-            self.scrollapp.coins_tab.append(Coin(id=i, 
-                                                 name=self.coin_name_input.text.upper(),
+            self.scrollapp.coins_tab.append(Asset(id=i, 
+                                                 name=self.coin_name_input.text.lower(),
                                                  worksheet=self.worksheet_input,
                                                  cell=self.cell_input.text.upper(),
-                                                 price=price[1]))
+                                                 price=price[1],
+                                                 currency=chosen_currency))
             self.scrollapp.initialize_coins()
             self.scrollapp.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
             self.popup.dismiss()
         
-    def check_input_data(self) -> bool:
+    def check_input_data(self) -> List[Union[bool, Union[str, None]]]:
+        test_price: str | None = None
         if self.coin_name_input.text != language.get_text(Text.COIN_NAME.value):
-            test_price: str | None = Update().get_token_price(self.coin_name_input.text)
+            test_price = Update().get_asset_price(self.coin_name_input.text)
         else:
-            test_price: str | None = None
+            test_price = None
 
         name_ok: bool = False
         sheet_ok: bool = False
         cell_ok: bool = False
+        currency_ok: bool = False
         ##############################################
         if test_price != None:
             self.coin_name_input.foreground_color = NAME_OK
@@ -132,4 +209,7 @@ class AddMenu(BoxLayout):
         else:
             self.cell_input.foreground_color = ERROR_COLOR
         ##############################################
-        return [name_ok & sheet_ok & cell_ok, test_price]
+        if (self.checkbox_usd.active or self.checkbox_eur.active or self.checkbox_gbp.active or self.checkbox_pln.active):
+            currency_ok = True
+        ##############################################
+        return [name_ok & sheet_ok & cell_ok & currency_ok, test_price]

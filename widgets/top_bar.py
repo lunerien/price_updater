@@ -46,7 +46,7 @@ class TopBar(BoxLayout):
         self.add_new_coin_button.bind(on_release=self.add_new_coin)
         self.add_widget(self.change_loc_button)
         self.add_widget(self.add_new_coin_button)
-        self.add_widget(self.currency_button)
+        # self.add_widget(self.currency_button)
         self.add_widget(self.language_button)
         
     def change_loc(self, dt):
@@ -56,7 +56,7 @@ class TopBar(BoxLayout):
         change_xlsx_menu.open(animation=True)
 
     def add_new_coin(self, dt):
-        add_coin_menu = Popup(size_hint=(None, None), size=(400, 300), auto_dismiss=True, title=language.get_text(Text.ADD_NEW_COIN.value), background_color = TOP_BAR_COLOR)
+        add_coin_menu = Popup(size_hint=(None, None), size=(400, 400), auto_dismiss=True, title=language.get_text(Text.ADD_NEW_COIN.value), background_color = TOP_BAR_COLOR)
         add_menu = AddMenu(self.scrollapp, add_coin_menu)
         add_coin_menu.content = add_menu
         add_coin_menu.open(animation=True)
