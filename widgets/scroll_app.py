@@ -1,9 +1,11 @@
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from typing import List
 from openpyxl import load_workbook
 from kivy.clock import Clock
+from kivy.utils import get_color_from_hex
 
 from widgets.coin_button import CoinButton
 from widgets.menu import PRESSED_COLOR
@@ -11,6 +13,9 @@ from lib.asset import Asset
 from lib.language import language, Text
 from lib.currency import currency, Currency
 from lib.update import Update
+
+
+ERROR_COLOR = get_color_from_hex("##c91010F6")
 
 
 class ScrollApp(ScrollView):
@@ -43,6 +48,7 @@ class ScrollApp(ScrollView):
         self.initialize_coins()
         self.clear_widgets()
         self.add_widget(self.coins)
+        self.fetch_error_msg()
 
     def initialize_coins(self):
         self.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(
@@ -95,7 +101,7 @@ class ScrollApp(ScrollView):
                             )
                         )
                     else:
-                        fetch_error = True
+                        self.fetch_error = True
                         coins.append(
                             Asset(
                                 id=i,
@@ -130,3 +136,16 @@ class ScrollApp(ScrollView):
                     )
             i += 1
         return coins
+
+    def fetch_error_msg(self):
+        if self.fetch_error:
+            warning_msg = Popup(
+                size_hint=(None, None),
+                size=(350, 200),
+                auto_dismiss=True,
+                title=language.get_text(Text.FETCH_ERROR.value),
+                background_color=ERROR_COLOR,
+            )
+            warning_content = Label(text=language.get_text(Text.FETCH_ERROR.value))
+            warning_msg.content = warning_content
+            warning_msg.open(animation=True)

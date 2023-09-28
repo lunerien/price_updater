@@ -17,7 +17,8 @@
         "search": "Search",
         "your_assets_will_be_here": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYour assets will be here",
         "please_wait": "Please wait..",
-        "please_select_workbook": "Please select workbook first"
+        "please_select_workbook": "Please select workbook first",
+        "fetch_error": "Fetching some data failed!"
     },
     "PL": {
         "update": "Aktualizuj",
@@ -34,6 +35,7 @@
         "search": "Szukaj",
         "your_assets_will_be_here": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTwoje aktywa beda tutaj",
         "please_wait": "Prosze czekaj..",
-        "please_select_workbook": "Wybierz najpierw arkusz xlsx"
+        "please_select_workbook": "Wybierz najpierw arkusz xlsx",
+        "fetch_error": "Pobranie niektorych danych nie powiodlo sie"
     }
 }

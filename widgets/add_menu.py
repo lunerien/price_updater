@@ -220,7 +220,10 @@ class AddMenu(BoxLayout):
 
     def check_input_data(self) -> List[Union[bool, Union[str, None]]]:
         test_price: str | None = None
-        if self.coin_name_input.text != language.get_text(Text.COIN_NAME.value):
+        if (
+            self.coin_name_input.text != language.get_text(Text.COIN_NAME.value)
+            and self.coin_name_input.text != ""
+        ):
             test_price = Update().get_asset_price(self.coin_name_input.text)
         else:
             test_price = None
