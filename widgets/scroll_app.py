@@ -19,14 +19,19 @@ class ScrollApp(ScrollView):
 
     def __init__(self):
         super().__init__()
-        self.coins_tab:List[Asset] = list()
+        self.coins_tab: List[Asset] = list()
         self.coins = GridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
-        self.empty_list: Label = Label(text=language.get_text(Text.EMPTY_LIST_TEXT.value))
-        self.loading_list: Label = Label(text=language.get_text(Text.LOADING_LIST_TEXT.value))
+        self.empty_list: Label = Label(
+            text=language.get_text(Text.EMPTY_LIST_TEXT.value)
+        )
+        self.loading_list: Label = Label(
+            text=language.get_text(Text.LOADING_LIST_TEXT.value)
+        )
         self.add_widget(self.loading_list)
         self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
         self.bar_color = PRESSED_COLOR
-        self.bar_width=5
+        self.bar_width = 5
+        self.fetch_error: bool = False
         Clock.schedule_interval(self.show_coins, 2)
 
     def show_coins(self, dt):
@@ -34,13 +39,15 @@ class ScrollApp(ScrollView):
         currency.usd_pln = currency.get_currency(Currency.USD)
         currency.eur_pln = currency.get_currency(Currency.EUR)
         currency.gbp_pln = currency.get_currency(Currency.GBP)
-        self.coins_tab:List[Asset] = self.get_coins_from_xlsx()
+        self.coins_tab: List[Asset] = self.get_coins_from_xlsx()
         self.initialize_coins()
         self.clear_widgets()
         self.add_widget(self.coins)
 
     def initialize_coins(self):
-        self.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(self.coins_tab)
+        self.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(
+            self.coins_tab
+        )
         self.coins.clear_widgets()
         if len(self.coins_tab):
             for coin in self.coins_tab:
@@ -52,20 +59,20 @@ class ScrollApp(ScrollView):
 
     def get_coins_from_xlsx(self):
         try:
-            workbook = load_workbook(language.read_file()['path_to_xlsx'])
+            workbook = load_workbook(language.read_file()["path_to_xlsx"])
         except:
             return []
 
-        if 'data' in workbook.sheetnames:
+        if "data" in workbook.sheetnames:
             None
         else:
-            workbook.create_sheet('data')
-            hidden = workbook['data']
-            hidden.sheet_state = 'hidden'
-            workbook.save(language.read_file()['path_to_xlsx'])
-        data = workbook['data']
+            workbook.create_sheet("data")
+            hidden = workbook["data"]
+            hidden.sheet_state = "hidden"
+            workbook.save(language.read_file()["path_to_xlsx"])
+        data = workbook["data"]
 
-        coins:List[Asset] = []
+        coins: List[Asset] = []
 
         i = 1
         while data.cell(row=1, column=i).value != None:
@@ -75,7 +82,51 @@ class ScrollApp(ScrollView):
                 cell = data.cell(row=3, column=i).value
                 currency = data.cell(row=4, column=i).value
                 price = Update().get_asset_price(ticker)
-                coins.append(Asset(id=i, name=ticker, worksheet=worksheet, cell=cell, price=price, currency=Currency(currency)))
+                try:
+                    if price != None and price[Currency.PLN] != "0,0":
+                        coins.append(
+                            Asset(
+                                id=i,
+                                name=ticker,
+                                worksheet=worksheet,
+                                cell=cell,
+                                price=price,
+                                currency=Currency(currency),
+                            )
+                        )
+                    else:
+                        fetch_error = True
+                        coins.append(
+                            Asset(
+                                id=i,
+                                name=ticker,
+                                worksheet=worksheet,
+                                cell=cell,
+                                price={
+                                    Currency.USD: "0,0",
+                                    Currency.PLN: "0,0",
+                                    Currency.EUR: "0,0",
+                                    Currency.GBP: "0,0",
+                                },
+                                currency=Currency(currency),
+                            )
+                        )
+                except:
+                    self.fetch_error = True
+                    coins.append(
+                        Asset(
+                            id=i,
+                            name=ticker,
+                            worksheet=worksheet,
+                            cell=cell,
+                            price={
+                                Currency.USD: "0,0",
+                                Currency.PLN: "0,0",
+                                Currency.EUR: "0,0",
+                                Currency.GBP: "0,0",
+                            },
+                            currency=Currency(currency),
+                        )
+                    )
             i += 1
         return coins
-
