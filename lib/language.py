@@ -12,7 +12,7 @@ class Text(Enum):
     EDIT_COIN = "edit_asset"
     MODIFY = "modify"
     DELETE = "delete"
-    COIN_NAME = "asset_name"
+    COIN_NAME = "asset"
     WORKSHEET_NAME = "worksheet_name"
     CELL = "cell"
     ADD = "add"

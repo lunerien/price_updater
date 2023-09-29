@@ -21,7 +21,8 @@ DELETE_COLOR = get_color_from_hex("#FF0101e6")
 ERROR_COLOR = get_color_from_hex("##c91010F6")
 SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
 WHITE = get_color_from_hex("#F9F6EEF6")
-NAME_OK = get_color_from_hex("#0e9c17")
+NAME_OK = get_color_from_hex("#14964a")
+TEXT_BACKGROUND = get_color_from_hex("#0a2036")
 
 
 class ModifyCoin(BoxLayout):
@@ -35,10 +36,14 @@ class ModifyCoin(BoxLayout):
         self.spacing = 5
         self.workbook = Update().try_load_workbook()
         self.coin_name_input = AutoSuggestionText(
-            text="", suggestions=coins_list, size_hint=(1, 0.2)
+            text="", suggestions=coins_list, size_hint=(1, 0.2), focus=True
         )
+        self.coin_name_input.background_color = TEXT_BACKGROUND
+        self.coin_name_input.foreground_color = WHITE
         self.worksheet_input: str = ""
         self.cell_input = TextInput(text=self.coin.cell, size_hint=(1, 0.2))
+        self.cell_input.background_color = TEXT_BACKGROUND
+        self.cell_input.foreground_color = WHITE
 
         chosen_currency = self.get_chosen_currency()
         self.checkboxes_currency = BoxLayout(

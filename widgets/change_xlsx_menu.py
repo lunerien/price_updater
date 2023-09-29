@@ -15,6 +15,9 @@ from lib.asset import Asset
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 
 ERROR_COLOR = get_color_from_hex("#00FFFFFF")
+WHITE = get_color_from_hex("#F9F6EEF6")
+NAME_OK = get_color_from_hex("#14964a")
+TEXT_BACKGROUND = get_color_from_hex("#0a2036")
 
 
 class ChangeXlsxMenu(BoxLayout):
@@ -29,6 +32,8 @@ class ChangeXlsxMenu(BoxLayout):
         self.path_xlsx_input = TextInput(
             text=self.load_current_path(), size_hint=(0.85, 0.7), multiline=False
         )
+        self.path_xlsx_input.background_color = TEXT_BACKGROUND
+        self.path_xlsx_input.foreground_color = WHITE
         self.input_and_ask_open_file.add_widget(self.path_xlsx_input)
         self.open_file_button = Button(
             text=language.get_text(Text.SEARCH.value),

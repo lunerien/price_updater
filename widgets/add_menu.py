@@ -21,7 +21,8 @@ from coins_list import coins_list
 ERROR_COLOR = get_color_from_hex("##c91010F6")
 SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
 WHITE = get_color_from_hex("#F9F6EEF6")
-NAME_OK = get_color_from_hex("#0e9c17")
+NAME_OK = get_color_from_hex("#14964a")
+TEXT_BACKGROUND = get_color_from_hex("#0a2036")
 
 
 class AddMenu(BoxLayout):
@@ -55,7 +56,7 @@ class AddMenu(BoxLayout):
 
         self.scroll_sheets = ScrollView()
         self.sheets_widget = BoxLayout(
-            orientation="vertical", size_hint_y=None, spacing=2
+            orientation="vertical", size_hint_y=None, spacing=0
         )
         self.sheets_widget.bind(minimum_height=self.sheets_widget.setter("height"))
         self.scroll_sheets.add_widget(self.sheets_widget)
@@ -69,13 +70,22 @@ class AddMenu(BoxLayout):
             )
             self.sheets_widget.add_widget(sheet_button)
         self.coin_name_input = AutoSuggestionText(
-            text="", suggestions=coins_list, size_hint=(1, 0.2), multiline=False
+            text=language.get_text(Text.COIN_NAME.value),
+            suggestions=coins_list,
+            size_hint=(1, 0.2),
+            multiline=False,
         )
+        self.coin_name_input.background_color = TEXT_BACKGROUND
+        self.coin_name_input.foreground_color = WHITE
+        self.coin_name_input.focus = True
+        self.coin_name_input.select_all()
+
         self.worksheet_input: str = ""
         self.cell_input = TextInput(
             text=language.get_text(Text.CELL.value), size_hint=(1, 0.2), multiline=False
         )
-
+        self.cell_input.background_color = TEXT_BACKGROUND
+        self.cell_input.foreground_color = WHITE
         self.checkboxes_currency = BoxLayout(
             orientation="horizontal", size_hint=(1, 0.15)
         )
