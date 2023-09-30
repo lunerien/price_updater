@@ -12,12 +12,8 @@ from openpyxl.utils.exceptions import InvalidFileException
 from widgets.scroll_app import ScrollApp
 from lib.language import language, Text
 from lib.asset import Asset
+from lib.text_input import TextInputC
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
-
-ERROR_COLOR = get_color_from_hex("#00FFFFFF")
-WHITE = get_color_from_hex("#F9F6EEF6")
-NAME_OK = get_color_from_hex("#14964a")
-TEXT_BACKGROUND = get_color_from_hex("#0a2036")
 
 
 class ChangeXlsxMenu(BoxLayout):
@@ -29,11 +25,9 @@ class ChangeXlsxMenu(BoxLayout):
         self.opacity = 0.8
         self.input_and_ask_open_file = BoxLayout(orientation="horizontal")
         self.add_widget(self.input_and_ask_open_file)
-        self.path_xlsx_input = TextInput(
-            text=self.load_current_path(), size_hint=(0.85, 0.7), multiline=False
-        )
-        self.path_xlsx_input.background_color = TEXT_BACKGROUND
-        self.path_xlsx_input.foreground_color = WHITE
+        self.path_xlsx_input = TextInputC(text=self.load_current_path())
+        self.path_xlsx_input.focus = True
+        self.path_xlsx_input.size_hint = (0.85, 0.7)
         self.input_and_ask_open_file.add_widget(self.path_xlsx_input)
         self.open_file_button = Button(
             text=language.get_text(Text.SEARCH.value),
@@ -71,13 +65,13 @@ class ChangeXlsxMenu(BoxLayout):
                 ] = self.scrollapp.get_coins_from_xlsx()
                 self.scrollapp.initialize_coins()
             except InvalidFileException:
-                self.path_xlsx_input.foreground_color = ERROR_COLOR
+                self.path_xlsx_input.text_error()
                 print("we need xlsx file!")
             except KeyError:
-                self.path_xlsx_input.foreground_color = ERROR_COLOR
+                self.path_xlsx_input.text_error()
                 print("please check xlsx format file!")
             except FileNotFoundError:
-                self.path_xlsx_input.foreground_color = ERROR_COLOR
+                self.path_xlsx_input.text_error()
                 print("file missing :D")
         else:
             self.popup.dismiss()

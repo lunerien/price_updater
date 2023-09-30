@@ -1,7 +1,6 @@
 import re
 from typing import List, Union, Dict
 from kivy.uix.popup import Popup
-from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
@@ -12,6 +11,8 @@ from kivy.uix.scrollview import ScrollView
 from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.asset import Asset
 from lib.update import Update
+from lib.text_input import TextInputC
+from lib.button import ButtonC
 from lib.language import language, Text
 from lib.currency import Currency
 from lib.auto_suggestion_text import AutoSuggestionText
@@ -35,16 +36,11 @@ class ModifyCoin(BoxLayout):
         self.opacity = 0.8
         self.spacing = 5
         self.workbook = Update().try_load_workbook()
-        self.coin_name_input = AutoSuggestionText(
-            text="", suggestions=coins_list, size_hint=(1, 0.2), focus=True
-        )
+        self.coin_name_input = AutoSuggestionText(text="", suggestions=coins_list)
         self.coin_name_input.background_color = TEXT_BACKGROUND
         self.coin_name_input.foreground_color = WHITE
         self.worksheet_input: str = ""
-        self.cell_input = TextInput(text=self.coin.cell, size_hint=(1, 0.2))
-        self.cell_input.background_color = TEXT_BACKGROUND
-        self.cell_input.foreground_color = WHITE
-
+        self.cell_input = TextInputC(text=self.coin.cell)
         chosen_currency = self.get_chosen_currency()
         self.checkboxes_currency = BoxLayout(
             orientation="horizontal", size_hint=(1, 0.15)
@@ -110,22 +106,18 @@ class ModifyCoin(BoxLayout):
 
         buttons = BoxLayout(orientation="horizontal", size_hint=(1, 0.4))
         self.add_widget(buttons)
-        buttons.add_widget(
-            Button(
-                text=language.get_text(Text.MODIFY.value),
-                on_release=self.modify,
-                size_hint=(0.5, 0.8),
-                background_color=UNPRESSED_COLOR,
-            )
+        self.button_modify = ButtonC(
+            text=language.get_text(Text.MODIFY.value),
+            on_release=self.modify,
+            size_hint=(0.5, 0.8),
         )
-        buttons.add_widget(
-            Button(
-                text=language.get_text(Text.DELETE.value),
-                on_release=self.delete,
-                size_hint=(0.5, 0.8),
-                background_color=DELETE_COLOR,
-            )
+        buttons.add_widget(self.button_modify)
+        self.button_delete = ButtonC(
+            text=language.get_text(Text.DELETE.value),
+            on_release=self.delete,
+            size_hint=(0.5, 0.8),
         )
+        buttons.add_widget(self.button_delete)
 
     def get_chosen_currency(self):
         return Currency(self.coin.chosen_currency)
@@ -182,8 +174,8 @@ class ModifyCoin(BoxLayout):
             self.worksheet_input = ""
             dt.background_color = UNPRESSED_COLOR
 
-    def modify(self, dt):
-        dt.background_color = PRESSED_COLOR
+    def modify(self, dt: ButtonC):
+        dt.press_color()
 
         data = self.workbook["data"]
         price = self.check_input_data()
@@ -225,9 +217,11 @@ class ModifyCoin(BoxLayout):
                     break
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
+        else:
+            dt.unpress_color()
 
-    def delete(self, dt):
-        dt.background_color = PRESSED_COLOR
+    def delete(self, dt: ButtonC):
+        dt.press_color()
 
         data = self.workbook["data"]
         data.cell(row=1, column=self.coin.id).value = "-"

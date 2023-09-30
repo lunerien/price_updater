@@ -2,7 +2,6 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.checkbox import CheckBox
-from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.utils import get_color_from_hex
 from kivy.uix.label import Label
@@ -14,6 +13,8 @@ from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.update import Update
 from lib.asset import Asset
 from lib.currency import Currency
+from lib.text_input import TextInputC
+from lib.button import ButtonC
 from lib.language import language, Text
 from lib.auto_suggestion_text import AutoSuggestionText
 from coins_list import coins_list
@@ -41,14 +42,13 @@ class AddMenu(BoxLayout):
             self.no_workbook_label = Label(
                 text=language.get_text(Text.PLEASE_SELECT_WORKBOOK.value)
             )
-            self.ok_button = Button(
+            self.button_ok = ButtonC(
                 text="OK",
                 on_release=self.popup.dismiss,
                 size_hint=(1, 0.2),
-                background_color=UNPRESSED_COLOR,
             )
             self.add_widget(self.no_workbook_label)
-            self.add_widget(self.ok_button)
+            self.add_widget(self.button_ok)
 
     def build(self):
         self.sheets = self.workbook.sheetnames
@@ -70,22 +70,10 @@ class AddMenu(BoxLayout):
             )
             self.sheets_widget.add_widget(sheet_button)
         self.coin_name_input = AutoSuggestionText(
-            text=language.get_text(Text.COIN_NAME.value),
-            suggestions=coins_list,
-            size_hint=(1, 0.2),
-            multiline=False,
+            text=language.get_text(Text.COIN_NAME.value), suggestions=coins_list
         )
-        self.coin_name_input.background_color = TEXT_BACKGROUND
-        self.coin_name_input.foreground_color = WHITE
-        self.coin_name_input.focus = True
-        self.coin_name_input.select_all()
-
         self.worksheet_input: str = ""
-        self.cell_input = TextInput(
-            text=language.get_text(Text.CELL.value), size_hint=(1, 0.2), multiline=False
-        )
-        self.cell_input.background_color = TEXT_BACKGROUND
-        self.cell_input.foreground_color = WHITE
+        self.cell_input = TextInputC(text=language.get_text(Text.CELL.value))
         self.checkboxes_currency = BoxLayout(
             orientation="horizontal", size_hint=(1, 0.15)
         )
@@ -122,14 +110,12 @@ class AddMenu(BoxLayout):
 
         buttons = BoxLayout(orientation="horizontal", size_hint=(1, 0.4))
         self.add_widget(buttons)
-        buttons.add_widget(
-            Button(
-                text=language.get_text(Text.ADD.value),
-                on_release=self.add_this_coin,
-                size_hint=(1, 0.8),
-                background_color=UNPRESSED_COLOR,
-            )
+        button_add = ButtonC(
+            text=language.get_text(Text.ADD.value),
+            on_release=self.add_this_coin,
+            size_hint=(1, 0.8),
         )
+        buttons.add_widget(button_add)
 
     def on_checkbox_active(self, instance, value):
         if instance == self.checkbox_usd:
@@ -183,8 +169,8 @@ class AddMenu(BoxLayout):
             self.worksheet_input = ""
             dt.background_color = UNPRESSED_COLOR
 
-    def add_this_coin(self, dt):
-        dt.background_color = PRESSED_COLOR
+    def add_this_coin(self, dt: ButtonC):
+        dt.press_color()
 
         price = self.check_input_data()
         if price[0]:
@@ -227,6 +213,8 @@ class AddMenu(BoxLayout):
                 + ScrollApp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
             )
             self.popup.dismiss()
+        else:
+            dt.unpress_color()
 
     def check_input_data(self) -> List[Union[bool, Union[str, None]]]:
         test_price: str | None = None
@@ -252,10 +240,10 @@ class AddMenu(BoxLayout):
                 Currency.EUR: "0,0",
             },
         ):
-            self.coin_name_input.foreground_color = NAME_OK
+            self.coin_name_input.text_ok()
             name_ok = True
         else:
-            self.coin_name_input.foreground_color = ERROR_COLOR
+            self.coin_name_input.text_error()
         ##############################################
         if "data" not in self.workbook.sheetnames:
             self.workbook.create_sheet("data")
@@ -270,10 +258,10 @@ class AddMenu(BoxLayout):
         ##############################################
         cell_pattern = r"^[A-Za-z]\d+$"
         if re.match(cell_pattern, self.cell_input.text):
-            self.cell_input.foreground_color = PRESSED_COLOR
+            self.cell_input.text_ok()
             cell_ok = True
         else:
-            self.cell_input.foreground_color = ERROR_COLOR
+            self.cell_input.text_error()
         ##############################################
         if (
             self.checkbox_usd.active
