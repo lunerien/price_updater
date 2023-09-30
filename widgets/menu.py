@@ -1,15 +1,8 @@
 from kivy.uix.relativelayout import RelativeLayout
-from kivy.utils import get_color_from_hex
 
 from lib.language import language, Text
 from lib.update import Update
 from lib.button import ButtonC
-
-TOP_BAR_COLOR = get_color_from_hex("#5AC4FB35")
-UPDATING = get_color_from_hex("#5AC4FBF2")
-ERROR_COLOR = get_color_from_hex("##c91010F6")
-UNPRESSED_COLOR = get_color_from_hex("#5AC4FB15")
-PRESSED_COLOR = get_color_from_hex("#5AC4FBF2")
 
 
 class Menu(RelativeLayout):

@@ -3,13 +3,11 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
-from kivy.utils import get_color_from_hex
 from kivy.uix.label import Label
 import re
 from typing import Union, List
 
 from widgets.scroll_app import ScrollApp
-from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.update import Update
 from lib.asset import Asset
 from lib.currency import Currency
@@ -18,12 +16,8 @@ from lib.button import ButtonC
 from lib.language import language, Text
 from lib.auto_suggestion_text import AutoSuggestionText
 from coins_list import coins_list
+from lib.config import *
 
-ERROR_COLOR = get_color_from_hex("##c91010F6")
-SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
-WHITE = get_color_from_hex("#F9F6EEF6")
-NAME_OK = get_color_from_hex("#14964a")
-TEXT_BACKGROUND = get_color_from_hex("#0a2036")
 
 
 class AddMenu(BoxLayout):

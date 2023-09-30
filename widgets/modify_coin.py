@@ -5,10 +5,8 @@ from kivy.uix.button import Button
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
-from kivy.utils import get_color_from_hex
 from kivy.uix.scrollview import ScrollView
 
-from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
 from lib.asset import Asset
 from lib.update import Update
 from lib.text_input import TextInputC
@@ -17,13 +15,7 @@ from lib.language import language, Text
 from lib.currency import Currency
 from lib.auto_suggestion_text import AutoSuggestionText
 from coins_list import coins_list
-
-DELETE_COLOR = get_color_from_hex("#FF0101e6")
-ERROR_COLOR = get_color_from_hex("##c91010F6")
-SHEET_CHOSEN = get_color_from_hex("#00ff4cF4")
-WHITE = get_color_from_hex("#F9F6EEF6")
-NAME_OK = get_color_from_hex("#14964a")
-TEXT_BACKGROUND = get_color_from_hex("#0a2036")
+from lib.config import *
 
 
 class ModifyCoin(BoxLayout):
@@ -37,8 +29,6 @@ class ModifyCoin(BoxLayout):
         self.spacing = 5
         self.workbook = Update().try_load_workbook()
         self.coin_name_input = AutoSuggestionText(text="", suggestions=coins_list)
-        self.coin_name_input.background_color = TEXT_BACKGROUND
-        self.coin_name_input.foreground_color = WHITE
         self.worksheet_input: str = ""
         self.cell_input = TextInputC(text=self.coin.cell)
         chosen_currency = self.get_chosen_currency()
@@ -159,7 +149,7 @@ class ModifyCoin(BoxLayout):
             self.label_gbp.color = ERROR_COLOR
             self.label_pln.color = ERROR_COLOR
 
-    def chosen_sheet(self, dt):
+    def chosen_sheet(self, dt:Button):
         if dt.background_color == UNPRESSED_COLOR:
             for sheet in self.sheets_widget.children:
                 sheet.color = WHITE
@@ -266,10 +256,10 @@ class ModifyCoin(BoxLayout):
                 Currency.EUR: "0,0",
             },
         ):
-            self.coin_name_input.foreground_color = NAME_OK
+            self.coin_name_input.text_ok()
             name_ok = True
         else:
-            self.coin_name_input.foreground_color = ERROR_COLOR
+            self.coin_name_input.text_error()
         ##############################################
         if "data" not in self.workbook.sheetnames:
             self.workbook.create_sheet("data")
@@ -284,10 +274,10 @@ class ModifyCoin(BoxLayout):
         ##############################################
         cell_pattern = r"^[A-Za-z]\d+$"
         if re.match(cell_pattern, self.cell_input.text):
-            self.cell_input.foreground_color = PRESSED_COLOR
+            self.cell_input.text_ok()
             cell_ok = True
         else:
-            self.cell_input.foreground_color = ERROR_COLOR
+            self.cell_input.text_error()
         ##############################################
         if (
             self.checkbox_usd.active

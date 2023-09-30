@@ -1,9 +1,7 @@
 from kivy.uix.button import Button
-from kivy.utils import get_color_from_hex
 
+from lib.config import *
 
-UNPRESSED_COLOR = get_color_from_hex("#5AC4FB15")
-PRESSED_COLOR = get_color_from_hex("#5AC4FBF2")
 
 
 class ButtonC(Button):

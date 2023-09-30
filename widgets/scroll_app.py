@@ -5,17 +5,13 @@ from kivy.uix.label import Label
 from typing import List
 from openpyxl import load_workbook
 from kivy.clock import Clock
-from kivy.utils import get_color_from_hex
 
 from widgets.coin_button import CoinButton
-from widgets.menu import PRESSED_COLOR
 from lib.asset import Asset
 from lib.language import language, Text
 from lib.currency import currency, Currency
 from lib.update import Update
-
-
-ERROR_COLOR = get_color_from_hex("##c91010F6")
+from lib.config import *
 
 
 class ScrollApp(ScrollView):

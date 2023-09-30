@@ -3,8 +3,6 @@ from typing import List
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
-from kivy.uix.textinput import TextInput
-from kivy.utils import get_color_from_hex
 from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException
@@ -13,7 +11,7 @@ from widgets.scroll_app import ScrollApp
 from lib.language import language, Text
 from lib.asset import Asset
 from lib.text_input import TextInputC
-from widgets.menu import UNPRESSED_COLOR, PRESSED_COLOR
+from lib.config import *
 
 
 class ChangeXlsxMenu(BoxLayout):

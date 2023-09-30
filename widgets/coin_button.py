@@ -1,11 +1,11 @@
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 
-from widgets.menu import UNPRESSED_COLOR, ERROR_COLOR
 from widgets.modify_coin import ModifyCoin
 from lib.asset import Asset
 from lib.language import language, Text
-from lib.currency import currency, Currency
+from lib.currency import Currency
+from lib.config import *
 
 
 class CoinButton(Button):

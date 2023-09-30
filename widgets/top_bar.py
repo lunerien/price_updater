@@ -5,11 +5,11 @@ from kivy.uix.dropdown import DropDown
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
-from widgets.menu import TOP_BAR_COLOR
 from widgets.add_menu import AddMenu
 from widgets.change_xlsx_menu import ChangeXlsxMenu
 from lib.language import language, Languages, Text
 from lib.currency import currency, Currency
+from lib.config import *
 
 
 class TopBar(BoxLayout):
@@ -86,7 +86,6 @@ class TopBar(BoxLayout):
         self.add_new_coin_button.bind(on_release=self.add_new_coin)
         self.add_widget(self.change_loc_button)
         self.add_widget(self.add_new_coin_button)
-        # self.add_widget(self.currency_button)
         self.add_widget(self.language_button)
 
     def change_loc(self, dt):
