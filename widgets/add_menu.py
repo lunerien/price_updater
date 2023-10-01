@@ -34,8 +34,7 @@ class AddMenu(BoxLayout):
             self.build()
         else:
             self.no_workbook_label = Label(
-                text=language.get_text(Text.PLEASE_SELECT_WORKBOOK.value)
-            )
+                text=language.get_text(Text.PLEASE_SELECT_WORKBOOK.value), font_name = font_config)
             self.button_ok = ButtonC(
                 text="OK",
                 on_release=self.popup.dismiss,
@@ -61,6 +60,8 @@ class AddMenu(BoxLayout):
                 size_hint_y=None,
                 height=35,
                 on_release=self.chosen_sheet,
+                font_name = font_config,
+                font_size = 17
             )
             self.sheets_widget.add_widget(sheet_button)
         self.coin_name_input = AutoSuggestionText(
@@ -82,11 +83,15 @@ class AddMenu(BoxLayout):
         self.checkbox_gbp.bind(active=self.on_checkbox_active)
         self.checkbox_pln = CheckBox(active=False)
         self.checkbox_pln.bind(active=self.on_checkbox_active)
-        self.label_usd = Label(text="USD", color=NAME_OK)
-        self.label_eur = Label(text="EUR", color=NAME_OK)
-        self.label_gbp = Label(text="GBP", color=NAME_OK)
-        self.label_pln = Label(text="PLN", color=NAME_OK)
-        self.checkbox_currency_labels.add_widget(self.label_usd)
+        self.label_usd = Label(text="USD", color=NAME_OK, font_name = font_config,
+        font_size = 17)
+        self.label_eur = Label(text="EUR", color=NAME_OK, font_name = font_config,
+        font_size = 17)
+        self.label_gbp = Label(text="GBP", color=NAME_OK, font_name = font_config,
+        font_size = 17)
+        self.label_pln = Label(text="PLN", color=NAME_OK, font_name = font_config,
+        font_size = 17)
+        self.checkbox_currency_labels.add_widget(self.label_usd) 
         self.checkbox_currency_labels.add_widget(self.label_eur)
         self.checkbox_currency_labels.add_widget(self.label_gbp)
         self.checkbox_currency_labels.add_widget(self.label_pln)

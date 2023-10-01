@@ -20,6 +20,8 @@ class AutoSuggestionText(TextInput):
         self.foreground_color = WHITE
         self.focus = True
         self.cursor_color = WHITE
+        self.font_name = "standard"
+        self.font_size = 16
         self.select_all()
 
     def text_ok(self):
@@ -50,6 +52,8 @@ class AutoSuggestionText(TextInput):
                             height=32,
                             on_release=push,
                             background_color=TEXT_BACKGROUND,
+                            font_name = font_config,
+                            font_size = 14
                         )
                         self.dropdown.add_widget(button)
                 if self.dropdown.children:

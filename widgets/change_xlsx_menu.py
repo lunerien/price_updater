@@ -1,6 +1,5 @@
 import json
 from typing import List
-from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from tkinter.filedialog import askopenfilename
@@ -11,6 +10,7 @@ from widgets.scroll_app import ScrollApp
 from lib.language import language, Text
 from lib.asset import Asset
 from lib.text_input import TextInputC
+from lib.button import ButtonC
 from lib.config import *
 
 
@@ -27,27 +27,25 @@ class ChangeXlsxMenu(BoxLayout):
         self.path_xlsx_input.focus = True
         self.path_xlsx_input.size_hint = (0.85, 0.7)
         self.input_and_ask_open_file.add_widget(self.path_xlsx_input)
-        self.open_file_button = Button(
+        self.open_file_button = ButtonC(
             text=language.get_text(Text.SEARCH.value),
             on_release=self.choose_path,
             size_hint=(0.15, 0.7),
-            background_color=UNPRESSED_COLOR,
         )
         self.input_and_ask_open_file.add_widget(self.open_file_button)
         buttons = BoxLayout(orientation="horizontal")
         self.add_widget(buttons)
         buttons.add_widget(
-            Button(
+            ButtonC(
                 text=language.get_text(Text.MODIFY.value),
                 on_release=self.add_path,
                 size_hint=(0.4, 0.9),
-                background_color=UNPRESSED_COLOR,
             )
         )
         # self.choose_path(1)
 
-    def add_path(self, dt):
-        dt.background_color = PRESSED_COLOR
+    def add_path(self, dt:ButtonC):
+        dt.press_color()
         if self.path_xlsx_input.text != self.load_current_path():
             try:
                 wb = load_workbook(self.path_xlsx_input.text)
@@ -73,6 +71,7 @@ class ChangeXlsxMenu(BoxLayout):
                 print("file missing :D")
         else:
             self.popup.dismiss()
+        dt.unpress_color()
 
     def load_current_path(self) -> str:
         file = open("data.json")
@@ -83,7 +82,9 @@ class ChangeXlsxMenu(BoxLayout):
         else:
             return data["path_to_xlsx"]
 
-    def choose_path(self, dt):
+    def choose_path(self, dt:ButtonC):
+        dt.press_color()
         path = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))
         if path != "":
             self.path_xlsx_input.text = path
+        dt.unpress_color()

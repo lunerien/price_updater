@@ -11,6 +11,8 @@ class TextInputC(TextInput):
         self.background_color = TEXT_BACKGROUND
         self.foreground_color = WHITE
         self.cursor_color = WHITE
+        self.font_name = "standard"
+        self.font_size = 16
 
     def text_ok(self):
         self.foreground_color = NAME_OK

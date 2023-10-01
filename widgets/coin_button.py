@@ -32,7 +32,7 @@ class CoinButton(Button):
 
         self.coin = coin
         self.scrollapp = scrollapp
-        self.font_size = 16
+        self.font_size = 17
         self.text_size = (None, None)
         if self.coin_price == "0,0":
             self.color = ERROR_COLOR

@@ -23,10 +23,10 @@ class ScrollApp(ScrollView):
         self.coins_tab: List[Asset] = list()
         self.coins = GridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
         self.empty_list: Label = Label(
-            text=language.get_text(Text.EMPTY_LIST_TEXT.value)
+            text=language.get_text(Text.EMPTY_LIST_TEXT.value), font_name = font_config, font_size=18
         )
         self.loading_list: Label = Label(
-            text=language.get_text(Text.LOADING_LIST_TEXT.value)
+            text=language.get_text(Text.LOADING_LIST_TEXT.value), font_name = font_config, font_size=18
         )
         self.add_widget(self.loading_list)
         self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
@@ -136,12 +136,14 @@ class ScrollApp(ScrollView):
     def fetch_error_msg(self):
         if self.fetch_error:
             warning_msg = Popup(
+                separator_color = ERROR_COLOR,
                 size_hint=(None, None),
                 size=(350, 200),
                 auto_dismiss=True,
-                title=language.get_text(Text.FETCH_ERROR.value),
+                title_font = font_config,
+                title=language.get_text(Text.FETCH_ERROR_TITLE.value),
                 background_color=ERROR_COLOR,
             )
-            warning_content = Label(text=language.get_text(Text.FETCH_ERROR.value))
+            warning_content = Label(text=language.get_text(Text.FETCH_ERROR_MSG.value), font_name = font_config)
             warning_msg.content = warning_content
             warning_msg.open(animation=True)

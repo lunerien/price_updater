@@ -5,6 +5,7 @@ import json
 class Languages(Enum):
     EN = "EN"
     PL = "PL"
+    DE = "DE"
 
 
 class Text(Enum):
@@ -23,7 +24,8 @@ class Text(Enum):
     EMPTY_LIST_TEXT = "your_assets_will_be_here"
     LOADING_LIST_TEXT = "please_wait"
     PLEASE_SELECT_WORKBOOK = "please_select_workbook"
-    FETCH_ERROR = "fetch_error"
+    FETCH_ERROR_TITLE = "fetch_error_title"
+    FETCH_ERROR_MSG = "fetch_error_msg"
 
 
 class Language:
