@@ -82,6 +82,9 @@ class ModifyCoin(BoxLayout):
                 size_hint_y=None,
                 height=35,
                 on_release=self.chosen_sheet,
+                font_name = font_config,
+                font_size = 17,
+                color=WHITE
             )
             if self.coin.worksheet == sheet:
                 self.worksheet_input = sheet
@@ -105,8 +108,9 @@ class ModifyCoin(BoxLayout):
         self.button_delete = ButtonC(
             text=language.get_text(Text.DELETE.value),
             on_release=self.delete,
-            size_hint=(0.5, 0.8),
+            size_hint=(0.5, 0.8)
         )
+        self.button_delete.color=ERROR_COLOR
         buttons.add_widget(self.button_delete)
 
     def get_chosen_currency(self):

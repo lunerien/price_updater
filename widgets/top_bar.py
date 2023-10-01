@@ -22,12 +22,12 @@ class TopBar(BoxLayout):
             text=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
             size_hint=(0.45, 1),
         )
-        self.change_loc_button.background_color = TOP_BAR_COLOR
+        self.change_loc_button.background_color=TOP_BAR
         self.add_new_coin_button = ButtonC(
             text=language.get_text(Text.ADD_NEW_COIN.value),
             size_hint=(0.45, 1),
         )
-        self.add_new_coin_button.background_color = TOP_BAR_COLOR
+        self.add_new_coin_button.background_color=TOP_BAR
         self.language_list_buttons = DropDown()
         self.btn_en = ButtonC(
             text=Languages.EN.value,
@@ -57,7 +57,7 @@ class TopBar(BoxLayout):
             size_hint=(0.1, 1),
             pos=(350, 300),
         )
-        self.language_button.background_color = TOP_BAR_COLOR
+        self.language_button.background_color = TOP_BAR
         self.language_button.bind(on_release=self.language_list_buttons.open)
         self.language_list_buttons.bind(
             on_select=lambda instance, x: setattr(
@@ -73,7 +73,9 @@ class TopBar(BoxLayout):
 
     def change_loc(self, dt):
         change_xlsx_menu = Popup(
-            separator_color = WINDOW,
+            title_color=WHITE,
+            overlay_color=BEHIND_WINDOW,
+            separator_color = WHITE,
             size_hint=(None, None),
             size=(500, 150),
             auto_dismiss=True,
@@ -87,7 +89,9 @@ class TopBar(BoxLayout):
 
     def add_new_coin(self, dt):
         add_coin_menu = Popup(
-            separator_color = WINDOW,
+            title_color=WHITE,
+            overlay_color=BEHIND_WINDOW,
+            separator_color = WHITE,
             size_hint=(None, None),
             size=(400, 400),
             auto_dismiss=True,

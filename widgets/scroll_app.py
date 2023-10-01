@@ -23,10 +23,10 @@ class ScrollApp(ScrollView):
         self.coins_tab: List[Asset] = list()
         self.coins = GridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
         self.empty_list: Label = Label(
-            text=language.get_text(Text.EMPTY_LIST_TEXT.value), font_name = font_config, font_size=18
+            text=language.get_text(Text.EMPTY_LIST_TEXT.value), font_name = font_config, font_size=18, color=WHITE
         )
         self.loading_list: Label = Label(
-            text=language.get_text(Text.LOADING_LIST_TEXT.value), font_name = font_config, font_size=18
+            text=language.get_text(Text.LOADING_LIST_TEXT.value), font_name = font_config, font_size=18, color=WHITE
         )
         self.add_widget(self.loading_list)
         self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
@@ -54,6 +54,8 @@ class ScrollApp(ScrollView):
         if len(self.coins_tab):
             for coin in self.coins_tab:
                 coin_button = CoinButton(scrollapp=self, coin=coin)
+                if coin.price_eur == "0,0":
+                    coin_button.color=ERROR_COLOR
                 self.coins.add_widget(coin_button)
         else:
             self.coins.add_widget(self.empty_list)
@@ -136,14 +138,15 @@ class ScrollApp(ScrollView):
     def fetch_error_msg(self):
         if self.fetch_error:
             warning_msg = Popup(
-                separator_color = ERROR_COLOR,
+                separator_color = WHITE,
                 size_hint=(None, None),
                 size=(350, 200),
                 auto_dismiss=True,
                 title_font = font_config,
                 title=language.get_text(Text.FETCH_ERROR_TITLE.value),
                 background_color=ERROR_COLOR,
+                title_color=WHITE
             )
-            warning_content = Label(text=language.get_text(Text.FETCH_ERROR_MSG.value), font_name = font_config)
+            warning_content = Label(text=language.get_text(Text.FETCH_ERROR_MSG.value), font_name = font_config, color=WHITE)
             warning_msg.content = warning_content
             warning_msg.open(animation=True)

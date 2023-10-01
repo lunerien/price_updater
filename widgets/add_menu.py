@@ -39,6 +39,7 @@ class AddMenu(BoxLayout):
                 text="OK",
                 on_release=self.popup.dismiss,
                 size_hint=(1, 0.2),
+                color=WHITE
             )
             self.add_widget(self.no_workbook_label)
             self.add_widget(self.button_ok)
@@ -61,7 +62,8 @@ class AddMenu(BoxLayout):
                 height=35,
                 on_release=self.chosen_sheet,
                 font_name = font_config,
-                font_size = 17
+                font_size = 17,
+                color=WHITE
             )
             self.sheets_widget.add_widget(sheet_button)
         self.coin_name_input = AutoSuggestionText(
