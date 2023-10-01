@@ -14,7 +14,7 @@ class Menu(RelativeLayout):
         self.button = ButtonC(text=language.get_text(Text.UPDATE.value))
         self.button.size_hint = (0.6, 0.2)
         self.button.bind(on_release=self.update)
-        self.button.pos_hint = {"center_x": 0.5, "center_y": 0.2}
+        self.button.pos_hint = {"center_x": 0.54, "center_y": 0.2}
         self.info = Label(text=VERSION, font_name="standard", font_size=13)
         self.info.pos_hint = {"center_x": 0.68, "center_y": 0.023}
         self.add_widget(self.button)

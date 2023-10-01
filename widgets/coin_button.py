@@ -40,16 +40,21 @@ class CoinButton(Button):
         self.worksheet: str = self.coin.worksheet
         self.halign = "left"
         self.cell: str = self.coin.cell
+        self.font_name = font_config
         self.height: int = self.COIN_HEIGHT
-        self.background_color = UNPRESSED_COLOR
+        self.background_color = ASSET_BUTTON
+        self.color = TOP_BAR_COLOR
 
     def on_press(self):
         modify_coin_menu = Popup(
+            overlay_color=BEHIND_WINDOW,
+            separator_color = WINDOW,
             size_hint=(None, None),
             size=(400, 400),
             auto_dismiss=True,
             title=f"{language.get_text(Text.EDIT_COIN.value)} {self.coin.name}",
-            background_color=UNPRESSED_COLOR,
+            background_color=WINDOW,
+            title_font=font_config
         )
         add_menu = ModifyCoin(
             scrollapp=self.scrollapp, popup=modify_coin_menu, coin=self.coin

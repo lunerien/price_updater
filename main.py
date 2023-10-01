@@ -27,7 +27,7 @@ class MainApp(App):
         self.menu = RelativeLayout(size_hint=(1, 0.91))
         self.scroll_and_menu = BoxLayout(orientation='horizontal')
         self.left_side = BoxLayout(size_hint=(0.8, 1))
-        self.background = Image(source='images/background.jpg', fit_mode="fill")
+        self.background = Image(source='images/background_sode.jpg', fit_mode="fill")
         self.scrollview = ScrollApp()
         self.right_side = Menu(self.scrollview, size_hint=(0.3, 1))
         self.top_bar = TopBar(size_hint=(1, 0.08), scrollapp=self.scrollview, right_side=self.right_side)

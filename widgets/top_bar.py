@@ -73,12 +73,12 @@ class TopBar(BoxLayout):
 
     def change_loc(self, dt):
         change_xlsx_menu = Popup(
-            separator_color = UNPRESSED_COLOR,
+            separator_color = WINDOW,
             size_hint=(None, None),
             size=(500, 150),
             auto_dismiss=True,
             title=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
-            background_color=TOP_BAR_COLOR,
+            background_color=WINDOW,
             title_font=font_config
         )
         add_menu = ChangeXlsxMenu(self.scrollapp, change_xlsx_menu)
@@ -87,12 +87,12 @@ class TopBar(BoxLayout):
 
     def add_new_coin(self, dt):
         add_coin_menu = Popup(
-            separator_color = UNPRESSED_COLOR,
+            separator_color = WINDOW,
             size_hint=(None, None),
             size=(400, 400),
             auto_dismiss=True,
             title=language.get_text(Text.ADD_NEW_COIN.value),
-            background_color=TOP_BAR_COLOR,
+            background_color=WINDOW,
             title_font=font_config
         )
         add_menu = AddMenu(self.scrollapp, add_coin_menu)
