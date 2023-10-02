@@ -1,9 +1,9 @@
 {
-    "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/test.xlsx",
+    "path_to_xlsx": "./test.xlsx",
     "chosen_language": "EN",
     "chosen_currency": "USD",
     "EN": {
-        "update": "Update",
+        "update": "Update!",
         "edit_asset": "Editing asset: ",
         "modify": "Modify",
         "delete": "Delete",
@@ -22,7 +22,7 @@
         "fetch_error_msg": "   Fetching some data failed!\nPlease contact with developer"
     },
     "PL": {
-        "update": "Aktualizuj",
+        "update": "Aktualizuj!",
         "edit_asset": "Edytujesz aktywo: ",
         "modify": "Zatwierdz",
         "delete": "Usun",
@@ -41,7 +41,7 @@
         "fetch_error_msg": "Pobranie niektorych danych nie powiodlo sie!\n            Skontaktuj sie z programista"
     },
     "DE": {
-        "update": "Aktualisieren",
+        "update": "Aktualisieren!",
         "edit_asset": "Asset bearbeiten: ",
         "modify": "Andern",
         "delete": "Loschen",

@@ -25,12 +25,12 @@ class ChangeXlsxMenu(BoxLayout):
         self.add_widget(self.input_and_ask_open_file)
         self.path_xlsx_input = TextInputC(text=self.load_current_path())
         self.path_xlsx_input.focus = True
-        self.path_xlsx_input.size_hint = (0.85, 0.7)
+        self.path_xlsx_input.size_hint = (0.85, 0.75)
         self.input_and_ask_open_file.add_widget(self.path_xlsx_input)
         self.open_file_button = ButtonC(
             text=language.get_text(Text.SEARCH.value),
             on_release=self.choose_path,
-            size_hint=(0.15, 0.7),
+            size_hint=(0.15, 0.75),
         )
         self.input_and_ask_open_file.add_widget(self.open_file_button)
         buttons = BoxLayout(orientation="horizontal")
@@ -42,9 +42,8 @@ class ChangeXlsxMenu(BoxLayout):
                 size_hint=(0.4, 0.9),
             )
         )
-        # self.choose_path(1)
 
-    def add_path(self, dt:ButtonC):
+    def add_path(self, dt: ButtonC):
         dt.press_color()
         if self.path_xlsx_input.text != self.load_current_path():
             try:
@@ -82,7 +81,7 @@ class ChangeXlsxMenu(BoxLayout):
         else:
             return data["path_to_xlsx"]
 
-    def choose_path(self, dt:ButtonC):
+    def choose_path(self, dt: ButtonC):
         dt.press_color()
         path = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))
         if path != "":
