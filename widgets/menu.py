@@ -14,10 +14,11 @@ class Menu(RelativeLayout):
         super(Menu, self).__init__(**kwargs)
         self.scrollapp = scrollapp
         self.button_add = ButtonC(text="+")
-        self.button_add.font_size = 22
-        self.button_add.size_hint = (0.22, 0.13)
+        self.button_add.background_color = FLOATING_BUTTON
+        self.button_add.font_size = 35
+        self.button_add.size_hint = (0.13, 0.08)
         self.button_add.bind(on_press=self.add_new_coin)
-        self.button_add.pos_hint = {"center_x": 1.65, "center_y": 0.12}
+        self.button_add.pos_hint = {"center_x": 1.67, "center_y": 0.09}
         self.info = Label(text=VERSION, font_name="standard", font_size=13, color=WHITE)
         self.info.pos_hint = {"center_x": 0.25, "center_y": 0.023}
         self.add_widget(self.button_add)
