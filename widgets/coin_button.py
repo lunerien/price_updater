@@ -31,9 +31,9 @@ class CoinButton(MDRaisedButton):
         self.size_hint=(1, self.COIN_HEIGHT)
         self.coin = coin
         self.scrollapp = scrollapp
-        self.font_size = 17
+        self.font_size = 18
         self.text_size = (None, None)
-        self.text: str = f"{self.coin.name:<140}{self.currency_logo} {self.coin_price}"
+        self.text: str = f"{self.coin.name:<130}{self.currency_logo} {self.coin_price}"
         self.worksheet: str = self.coin.worksheet
         self.halign = "left"
         self.cell: str = self.coin.cell
@@ -44,7 +44,7 @@ class CoinButton(MDRaisedButton):
 
     def on_press(self):
         modify_coin_menu = Popup(
-            title_color=WHITE,
+            title_color=ORANGE_2,
             overlay_color=BEHIND_WINDOW,
             separator_color=WHITE,
             size_hint=(None, None),

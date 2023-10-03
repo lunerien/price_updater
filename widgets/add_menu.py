@@ -59,7 +59,7 @@ class AddMenu(BoxLayout):
         for sheet in self.sheets:
             sheet_button = MDRaisedButton(
                 text=sheet,
-                md_bg_color=ASSET_BUTTON,
+                md_bg_color=SHEETS,
                 size_hint=(1, None),
                 height=35,
                 on_release=self.chosen_sheet,
@@ -164,19 +164,19 @@ class AddMenu(BoxLayout):
             self.label_pln.color = ERROR_COLOR
 
     def chosen_sheet(self, dt):
-        if dt.md_bg_color == ASSET_BUTTON:
+        if dt.md_bg_color == SHEETS:
             for sheet in self.sheets_widget.children:
                 sheet.text_color = WHITE
             dt.md_bg_color = SHEET_CHOSEN
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
-                    sheet.md_bg_color = ASSET_BUTTON
+                    sheet.md_bg_color = SHEETS
         else:
             for sheet in self.sheets_widget.children:
                 sheet.text_color = WHITE
             self.worksheet_input = ""
-            dt.md_bg_color = ASSET_BUTTON
+            dt.md_bg_color = SHEETS
 
     def add_this_coin(self, dt: ButtonC):
         price = self.check_input_data()

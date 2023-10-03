@@ -37,7 +37,7 @@ class ScrollApp(MDScrollView):
         )
         self.add_widget(self.loading_list)
         self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
-        self.bar_color = PRESSED_COLOR
+        self.bar_color = ORANGE_2
         self.bar_width = 5
         self.fetch_error: bool = False
         Clock.schedule_interval(self.show_coins, 3)
@@ -58,10 +58,18 @@ class ScrollApp(MDScrollView):
             self.coins_tab
         )
         self.coins.clear_widgets()
+        i = 1
         if len(self.coins_tab):
             self.coins.add_widget(BoxLayout(size_hint=(1, 0.005)))
             for coin in self.coins_tab:
                 coin_button = CoinButton(scrollapp=self, coin=coin)
+                if i %2!=0:
+                    coin_button.text_color = ASSET_BUTTON
+                    coin_button.md_bg_color = WHITE
+                else:
+                    coin_button.text_color = WHITE
+                    coin_button.md_bg_color = ASSET_BUTTON
+                i += 1    
                 if coin.price_eur == "0,0":
                     coin_button.text_color = ERROR_COLOR
                 self.coins.add_widget(coin_button)

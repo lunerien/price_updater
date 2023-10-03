@@ -1,6 +1,7 @@
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+from kivymd.uix.button import MDFloatingActionButton
 
 from lib.language import language, Text
 from widgets.add_menu import AddMenu
@@ -13,12 +14,15 @@ class Menu(MDRelativeLayout):
     def __init__(self, scrollapp, **kwargs):
         super(Menu, self).__init__(**kwargs)
         self.scrollapp = scrollapp
-        self.button_add = ButtonC(text="+")
-        self.button_add.font_size = 40
-        self.button_add.size_hint = (0.05, 0.02)
-        self.button_add.bind(on_release=self.add_new_coin)
+        self.button_add = MDFloatingActionButton(
+            icon="pencil",
+            on_release=self.add_new_coin,
+            md_bg_color= ORANGE_2,
+            icon_color=WHITE,
+            icon_size= "25sp"
+        )
         self.button_add.pos_hint = {"center_x": 1.67, "center_y": 0.09}
-        self.info = Label(text=VERSION, font_name="standard", font_size=13, color=WHITE)
+        self.info = Label(text=VERSION, font_name="standard", font_size=13, color=ORANGE_2)
         self.info.pos_hint = {"center_x": 0.25, "center_y": 0.023}
         self.add_widget(self.button_add)
         self.add_widget(self.info)
