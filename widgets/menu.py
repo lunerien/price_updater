@@ -1,4 +1,4 @@
-from kivy.uix.relativelayout import RelativeLayout
+from kivymd.uix.relativelayout import MDRelativeLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 
@@ -9,14 +9,13 @@ from lib.config import VERSION
 from lib.config import *
 
 
-class Menu(RelativeLayout):
+class Menu(MDRelativeLayout):
     def __init__(self, scrollapp, **kwargs):
         super(Menu, self).__init__(**kwargs)
         self.scrollapp = scrollapp
         self.button_add = ButtonC(text="+")
-        self.button_add.background_color = FLOATING_BUTTON
-        self.button_add.font_size = 35
-        self.button_add.size_hint = (0.13, 0.08)
+        self.button_add.font_size = 40
+        self.button_add.size_hint = (0.05, 0.02)
         self.button_add.bind(on_release=self.add_new_coin)
         self.button_add.pos_hint = {"center_x": 1.67, "center_y": 0.09}
         self.info = Label(text=VERSION, font_name="standard", font_size=13, color=WHITE)

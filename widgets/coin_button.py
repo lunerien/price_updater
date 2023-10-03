@@ -1,4 +1,4 @@
-from kivy.uix.button import Button
+from kivymd.uix.button import MDRaisedButton
 from kivy.uix.popup import Popup
 
 from widgets.modify_coin import ModifyCoin
@@ -8,12 +8,11 @@ from lib.currency import Currency
 from lib.config import *
 
 
-class CoinButton(Button):
-    SPACING: int = 2
-    COIN_HEIGHT: int = 40
-
+class CoinButton(MDRaisedButton):
     def __init__(self, scrollapp, coin: Asset):
         super().__init__()
+        self.SPACING: int = 2
+        self.COIN_HEIGHT: int = 40
         self.currency_logo = ""
         self.coin_price = ""
         match coin.chosen_currency:
@@ -29,7 +28,7 @@ class CoinButton(Button):
             case Currency.EUR:
                 self.currency_logo = "€"
                 self.coin_price = coin.price_eur
-
+        self.size_hint=(1, self.COIN_HEIGHT)
         self.coin = coin
         self.scrollapp = scrollapp
         self.font_size = 17
@@ -40,11 +39,10 @@ class CoinButton(Button):
         self.cell: str = self.coin.cell
         self.font_name = font_config
         self.height: int = self.COIN_HEIGHT
-        self.background_color = ASSET_BUTTON
-        self.color = WHITE
+        self.md_bg_color = ASSET_BUTTON
+        self.text_color = WHITE
 
     def on_press(self):
-        self.background_color = UNPRESSED_COLOR
         modify_coin_menu = Popup(
             title_color=WHITE,
             overlay_color=BEHIND_WINDOW,
@@ -61,4 +59,4 @@ class CoinButton(Button):
         )
         modify_coin_menu.content = add_menu
         modify_coin_menu.open(animation=True)
-        self.background_color = ASSET_BUTTON
+

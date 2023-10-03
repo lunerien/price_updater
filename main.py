@@ -1,5 +1,5 @@
 from kivy.core.window import Window
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
@@ -20,7 +20,7 @@ if sys.platform == "win32":
     ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 
-class MainApp(App):
+class MainApp(MDApp):
     def __init__(self, *args):
         super(MainApp, self).__init__(*args)
         self.window = BoxLayout(orientation="vertical")
@@ -32,7 +32,7 @@ class MainApp(App):
         self.scrollview = ScrollApp()
         self.right_side = Menu(self.scrollview, size_hint=(0.3, 1))
         self.top_bar = TopBar(
-            size_hint=(1, 0.075), scrollapp=self.scrollview, right_side=self.right_side
+            size_hint=(1, None), scrollapp=self.scrollview, right_side=self.right_side
         )
 
     def on_start(self, *args):

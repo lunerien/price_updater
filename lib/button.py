@@ -1,18 +1,13 @@
-from kivy.uix.button import Button
+from kivymd.uix.button import MDRaisedButton
 
 from lib.config import *
 
 
-class ButtonC(Button):
+class ButtonC(MDRaisedButton):
     def __init__(self, **kwargs):
         super(ButtonC, self).__init__(**kwargs)
-        self.background_color = UNPRESSED_COLOR
+        self.md_bg_color = ASSET_BUTTON
         self.font_name = font_config
         self.font_size = 17
         self.color = WHITE
 
-    def press_color(self):
-        self.background_color = UNPRESSED_COLOR
-
-    def unpress_color(self):
-        self.background_color = UNPRESSED_COLOR

@@ -1,5 +1,6 @@
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.button import MDRaisedButton
 from kivy.uix.popup import Popup
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
@@ -51,20 +52,20 @@ class AddMenu(BoxLayout):
 
         self.scroll_sheets = ScrollView()
         self.sheets_widget = BoxLayout(
-            orientation="vertical", size_hint_y=None, spacing=0
+            orientation="vertical", size_hint_y=None, spacing=2
         )
         self.sheets_widget.bind(minimum_height=self.sheets_widget.setter("height"))
         self.scroll_sheets.add_widget(self.sheets_widget)
         for sheet in self.sheets:
-            sheet_button = Button(
+            sheet_button = MDRaisedButton(
                 text=sheet,
-                background_color=UNPRESSED_COLOR,
-                size_hint_y=None,
+                md_bg_color=ASSET_BUTTON,
+                size_hint=(1, None),
                 height=35,
                 on_release=self.chosen_sheet,
                 font_name=font_config,
                 font_size=17,
-                color=WHITE,
+                text_color=WHITE,
             )
             self.sheets_widget.add_widget(sheet_button)
         self.coin_name_input = AutoSuggestionText(
@@ -163,23 +164,21 @@ class AddMenu(BoxLayout):
             self.label_pln.color = ERROR_COLOR
 
     def chosen_sheet(self, dt):
-        if dt.background_color == UNPRESSED_COLOR:
+        if dt.md_bg_color == ASSET_BUTTON:
             for sheet in self.sheets_widget.children:
-                sheet.color = WHITE
-            dt.background_color = SHEET_CHOSEN
+                sheet.text_color = WHITE
+            dt.md_bg_color = SHEET_CHOSEN
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
-                    sheet.background_color = UNPRESSED_COLOR
+                    sheet.md_bg_color = ASSET_BUTTON
         else:
             for sheet in self.sheets_widget.children:
-                sheet.color = WHITE
+                sheet.text_color = WHITE
             self.worksheet_input = ""
-            dt.background_color = UNPRESSED_COLOR
+            dt.md_bg_color = ASSET_BUTTON
 
     def add_this_coin(self, dt: ButtonC):
-        dt.press_color()
-
         price = self.check_input_data()
         if price[0]:
             data = self.workbook["data"]
@@ -221,8 +220,6 @@ class AddMenu(BoxLayout):
                 + ScrollApp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
             )
             self.popup.dismiss()
-        else:
-            dt.unpress_color()
 
     def check_input_data(self) -> List[Union[bool, Union[str, None]]]:
         test_price: str | None = None

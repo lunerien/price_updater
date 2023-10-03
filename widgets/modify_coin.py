@@ -1,7 +1,7 @@
 import re
 from typing import List, Union, Dict
 from kivy.uix.popup import Popup
-from kivy.uix.button import Button
+from kivymd.uix.button import MDRaisedButton
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
@@ -76,19 +76,19 @@ class ModifyCoin(BoxLayout):
         self.sheets = self.workbook.sheetnames
         self.sheets.remove("data")
         for sheet in self.sheets:
-            sheet_button = Button(
+            sheet_button = MDRaisedButton(
                 text=sheet,
-                background_color=UNPRESSED_COLOR,
-                size_hint_y=None,
+                md_bg_color=ASSET_BUTTON,
+                size_hint=(1, None),
                 height=35,
                 on_release=self.chosen_sheet,
                 font_name=font_config,
                 font_size=17,
-                color=WHITE,
+                text_color=WHITE,
             )
             if self.coin.worksheet == sheet:
                 self.worksheet_input = sheet
-                sheet_button.background_color = SHEET_CHOSEN
+                sheet_button.md_bg_color = SHEET_CHOSEN
             self.sheets_widget.add_widget(sheet_button)
         self.add_widget(self.coin_name_input)
         self.add_widget(self.scroll_sheets)
@@ -110,7 +110,8 @@ class ModifyCoin(BoxLayout):
             on_release=self.delete,
             size_hint=(0.5, 0.8),
         )
-        self.button_delete.color = ERROR_COLOR
+        self.button_delete.text_color = ERROR_COLOR
+        buttons.add_widget(BoxLayout(size_hint=(0.01,1)))
         buttons.add_widget(self.button_delete)
 
     def get_chosen_currency(self):
@@ -153,24 +154,22 @@ class ModifyCoin(BoxLayout):
             self.label_gbp.color = ERROR_COLOR
             self.label_pln.color = ERROR_COLOR
 
-    def chosen_sheet(self, dt: Button):
-        if dt.background_color == UNPRESSED_COLOR:
+    def chosen_sheet(self, dt: MDRaisedButton):
+        if dt.md_bg_color == ASSET_BUTTON:
             for sheet in self.sheets_widget.children:
-                sheet.color = WHITE
-            dt.background_color = SHEET_CHOSEN
+                sheet.text_color = WHITE
+            dt.md_bg_color = SHEET_CHOSEN
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
-                    sheet.background_color = UNPRESSED_COLOR
+                    sheet.md_bg_color = ASSET_BUTTON
         else:
             for sheet in self.sheets_widget.children:
-                sheet.color = WHITE
+                sheet.text_color = WHITE
             self.worksheet_input = ""
-            dt.background_color = UNPRESSED_COLOR
+            dt.md_bg_color = ASSET_BUTTON
 
     def modify(self, dt: ButtonC):
-        dt.press_color()
-
         data = self.workbook["data"]
         price = self.check_input_data()
         if price[0]:
@@ -211,12 +210,8 @@ class ModifyCoin(BoxLayout):
                     break
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
-        else:
-            dt.unpress_color()
 
     def delete(self, dt: ButtonC):
-        dt.press_color()
-
         data = self.workbook["data"]
         data.cell(row=1, column=self.coin.id).value = "-"
         data.cell(row=2, column=self.coin.id).value = ""

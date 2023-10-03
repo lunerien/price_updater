@@ -17,32 +17,31 @@ from lib.config import *
 class TopBar(BoxLayout):
     def __init__(self, scrollapp: ScrollApp, right_side: Menu, **kwargs):
         super(TopBar, self).__init__(**kwargs)
+        self.height = 35
         self.scrollapp = scrollapp
         self.right_side = right_side
         self.change_loc_button = ButtonC(
             text=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
             size_hint=(0.45, 1),
         )
-        self.change_loc_button.background_color = TOP_BAR
         self.update_button = ButtonC(
             text=language.get_text(Text.UPDATE.value),
             size_hint=(0.45, 1),
         )
-        self.update_button.background_color = TOP_BAR
         self.language_list_buttons = DropDown()
         self.btn_en = ButtonC(
             text=Languages.EN.value,
-            size_hint_y=None,
+            size_hint=(1,None),
             height=40,
         )
         self.btn_pl = ButtonC(
             text=Languages.PL.value,
-            size_hint_y=None,
+            size_hint=(1,None),
             height=40,
         )
         self.btn_de = ButtonC(
             text=Languages.DE.value,
-            size_hint_y=None,
+            size_hint=(1,None),
             height=40,
         )
         self.btn_en.bind(on_release=self.change_language)
@@ -56,7 +55,6 @@ class TopBar(BoxLayout):
             size_hint=(0.1, 1),
             pos=(350, 300),
         )
-        self.language_button.background_color = TOP_BAR
         self.language_button.bind(on_release=self.language_list_buttons.open)
         self.language_list_buttons.bind(
             on_select=lambda instance, x: setattr(
@@ -67,7 +65,9 @@ class TopBar(BoxLayout):
         self.change_loc_button.bind(on_release=self.change_loc)
         self.update_button.bind(on_release=self.update)
         self.add_widget(self.change_loc_button)
+        self.add_widget(BoxLayout(size_hint=(0.002,1)))
         self.add_widget(self.update_button)
+        self.add_widget(BoxLayout(size_hint=(0.002,1)))
         self.add_widget(self.language_button)
 
     def update(self, dt: ButtonC):

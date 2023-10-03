@@ -44,7 +44,6 @@ class ChangeXlsxMenu(BoxLayout):
         )
 
     def add_path(self, dt: ButtonC):
-        dt.press_color()
         if self.path_xlsx_input.text != self.load_current_path():
             try:
                 wb = load_workbook(self.path_xlsx_input.text)
@@ -70,7 +69,6 @@ class ChangeXlsxMenu(BoxLayout):
                 print("file missing :D")
         else:
             self.popup.dismiss()
-        dt.unpress_color()
 
     def load_current_path(self) -> str:
         file = open("data.json")
@@ -82,8 +80,7 @@ class ChangeXlsxMenu(BoxLayout):
             return data["path_to_xlsx"]
 
     def choose_path(self, dt: ButtonC):
-        dt.press_color()
         path = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))
         if path != "":
             self.path_xlsx_input.text = path
-        dt.unpress_color()
+

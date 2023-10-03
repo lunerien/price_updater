@@ -1,5 +1,6 @@
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.gridlayout import GridLayout
+from kivymd.uix.scrollview import MDScrollView
+from kivymd.uix.gridlayout import MDGridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from typing import List
@@ -14,21 +15,21 @@ from lib.update import Update
 from lib.config import *
 
 
-class ScrollApp(ScrollView):
+class ScrollApp(MDScrollView):
     SPACING = 2
     COIN_HEIGHT = 40
 
     def __init__(self):
         super().__init__()
         self.coins_tab: List[Asset] = list()
-        self.coins = GridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
-        self.empty_list: Label = Label(
+        self.coins = MDGridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
+        self.empty_list = Label(
             text=language.get_text(Text.EMPTY_LIST_TEXT.value),
             font_name=font_config,
             font_size=21,
             color=WHITE,
         )
-        self.loading_list: Label = Label(
+        self.loading_list = Label(
             text=language.get_text(Text.LOADING_LIST_TEXT.value),
             font_name=font_config,
             font_size=21,
@@ -39,7 +40,7 @@ class ScrollApp(ScrollView):
         self.bar_color = PRESSED_COLOR
         self.bar_width = 5
         self.fetch_error: bool = False
-        Clock.schedule_interval(self.show_coins, 3.3)
+        Clock.schedule_interval(self.show_coins, 3)
 
     def show_coins(self, dt):
         Clock.unschedule(self.show_coins)
@@ -58,10 +59,11 @@ class ScrollApp(ScrollView):
         )
         self.coins.clear_widgets()
         if len(self.coins_tab):
+            self.coins.add_widget(BoxLayout(size_hint=(1, 0.005)))
             for coin in self.coins_tab:
                 coin_button = CoinButton(scrollapp=self, coin=coin)
                 if coin.price_eur == "0,0":
-                    coin_button.color = ERROR_COLOR
+                    coin_button.text_color = ERROR_COLOR
                 self.coins.add_widget(coin_button)
         else:
             self.coins.add_widget(self.empty_list)
