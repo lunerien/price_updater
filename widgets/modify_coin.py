@@ -39,25 +39,25 @@ class ModifyCoin(BoxLayout):
             orientation="horizontal", size_hint=(1, 0.07)
         )
         self.checkbox_usd = CheckBox(
-            active=True if chosen_currency == Currency.USD else False
+            active=True if chosen_currency == Currency.USD else False, color=CHECKBOX
         )
         self.checkbox_usd.bind(active=self.on_checkbox_active)
         self.checkbox_eur = CheckBox(
-            active=True if chosen_currency == Currency.EUR else False
+            active=True if chosen_currency == Currency.EUR else False, color=CHECKBOX
         )
         self.checkbox_eur.bind(active=self.on_checkbox_active)
         self.checkbox_gbp = CheckBox(
-            active=True if chosen_currency == Currency.GBP else False
+            active=True if chosen_currency == Currency.GBP else False, color=CHECKBOX
         )
         self.checkbox_gbp.bind(active=self.on_checkbox_active)
         self.checkbox_pln = CheckBox(
-            active=True if chosen_currency == Currency.PLN else False
+            active=True if chosen_currency == Currency.PLN else False, color=CHECKBOX
         )
         self.checkbox_pln.bind(active=self.on_checkbox_active)
-        self.label_usd = Label(text="USD", color=NAME_OK, font_name = font_config)
-        self.label_eur = Label(text="EUR", color=NAME_OK, font_name = font_config)
-        self.label_gbp = Label(text="GBP", color=NAME_OK, font_name = font_config)
-        self.label_pln = Label(text="PLN", color=NAME_OK, font_name = font_config)
+        self.label_usd = Label(text="USD", color=NAME_OK, font_name=font_config)
+        self.label_eur = Label(text="EUR", color=NAME_OK, font_name=font_config)
+        self.label_gbp = Label(text="GBP", color=NAME_OK, font_name=font_config)
+        self.label_pln = Label(text="PLN", color=NAME_OK, font_name=font_config)
         self.checkbox_currency_labels.add_widget(self.label_usd)
         self.checkbox_currency_labels.add_widget(self.label_eur)
         self.checkbox_currency_labels.add_widget(self.label_gbp)
@@ -82,9 +82,9 @@ class ModifyCoin(BoxLayout):
                 size_hint_y=None,
                 height=35,
                 on_release=self.chosen_sheet,
-                font_name = font_config,
-                font_size = 17,
-                color=WHITE
+                font_name=font_config,
+                font_size=17,
+                color=WHITE,
             )
             if self.coin.worksheet == sheet:
                 self.worksheet_input = sheet
@@ -108,9 +108,9 @@ class ModifyCoin(BoxLayout):
         self.button_delete = ButtonC(
             text=language.get_text(Text.DELETE.value),
             on_release=self.delete,
-            size_hint=(0.5, 0.8)
+            size_hint=(0.5, 0.8),
         )
-        self.button_delete.color=ERROR_COLOR
+        self.button_delete.color = ERROR_COLOR
         buttons.add_widget(self.button_delete)
 
     def get_chosen_currency(self):
@@ -153,7 +153,7 @@ class ModifyCoin(BoxLayout):
             self.label_gbp.color = ERROR_COLOR
             self.label_pln.color = ERROR_COLOR
 
-    def chosen_sheet(self, dt:Button):
+    def chosen_sheet(self, dt: Button):
         if dt.background_color == UNPRESSED_COLOR:
             for sheet in self.sheets_widget.children:
                 sheet.color = WHITE

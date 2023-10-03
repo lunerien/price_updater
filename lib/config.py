@@ -1,7 +1,7 @@
 from kivy.utils import get_color_from_hex
 from kivy.core.text import LabelBase
 
-VERSION = "Price Updater© 1.3b"
+VERSION = "Price Updater© 1.4b"
 
 LabelBase.register(name="standard", fn_regular=".\Gabarito-SemiBold.ttf")
 font_config = "standard"
@@ -18,3 +18,4 @@ WINDOW = get_color_from_hex("#FFFDF5F6")
 BEHIND_WINDOW = get_color_from_hex("#000000CC")
 ASSET_BUTTON = get_color_from_hex("#FFFFFF55")
 FLOATING_BUTTON = get_color_from_hex("#0000000")
+CHECKBOX = [80, 80, 80, 1]

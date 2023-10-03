@@ -2,6 +2,7 @@ from enum import Enum
 import json
 from bs4 import BeautifulSoup
 from requests import get
+from requests import exceptions
 
 
 class Currency(Enum):
@@ -13,12 +14,13 @@ class Currency(Enum):
 
 class CCurrency:
     def __init__(self):
+        self.connection_lost: bool = False
         self.data_file = self.read_file()
         self.usd_pln: float = 0.0
         self.eur_pln: float = 0.0
         self.gbp_pln: float = 0.0
 
-    def get_currency(self, currency: Currency):
+    def get_currency(self, currency: Currency) -> float:
         try:
             url = f"https://www.biznesradar.pl/notowania/{currency.value}PLN#1d_lin_lin"
             page = get(url)
@@ -31,9 +33,16 @@ class CCurrency:
                 price = price.replace("</span>", "")
                 price = price[0:6]
                 return float(price)
-        except:
-            # print(f"Cannot fetch {currency.value} price!")
+        except (
+            ValueError,
+            ZeroDivisionError,
+            TypeError,
+            exceptions.ConnectionError,
+        ) as e:
+            if isinstance(e, exceptions.ConnectionError):
+                self.connection_lost = True
             return 0.0
+        return 0.0
 
     def return_price(self, currency: Currency) -> float:
         match currency:

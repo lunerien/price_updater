@@ -26,6 +26,7 @@ class Text(Enum):
     PLEASE_SELECT_WORKBOOK = "please_select_workbook"
     FETCH_ERROR_TITLE = "fetch_error_title"
     FETCH_ERROR_MSG = "fetch_error_msg"
+    CONNECTION_LOST = "connection_lost"
 
 
 class Language:

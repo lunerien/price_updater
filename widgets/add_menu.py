@@ -80,13 +80,13 @@ class AddMenu(BoxLayout):
         self.checkbox_currency_labels = BoxLayout(
             orientation="horizontal", size_hint=(1, 0.07)
         )
-        self.checkbox_usd = CheckBox(active=True)
+        self.checkbox_usd = CheckBox(active=True, color=CHECKBOX)
         self.checkbox_usd.bind(active=self.on_checkbox_active)
-        self.checkbox_eur = CheckBox(active=False)
+        self.checkbox_eur = CheckBox(active=False, color=CHECKBOX)
         self.checkbox_eur.bind(active=self.on_checkbox_active)
-        self.checkbox_gbp = CheckBox(active=False)
+        self.checkbox_gbp = CheckBox(active=False, color=CHECKBOX)
         self.checkbox_gbp.bind(active=self.on_checkbox_active)
-        self.checkbox_pln = CheckBox(active=False)
+        self.checkbox_pln = CheckBox(active=False, color=CHECKBOX)
         self.checkbox_pln.bind(active=self.on_checkbox_active)
         self.label_usd = Label(
             text="USD", color=NAME_OK, font_name=font_config, font_size=17

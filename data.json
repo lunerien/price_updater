@@ -1,6 +1,6 @@
 {
     "path_to_xlsx": "./test.xlsx",
-    "chosen_language": "PL",
+    "chosen_language": "EN",
     "chosen_currency": "USD",
     "EN": {
         "update": "Update!",
@@ -19,7 +19,8 @@
         "please_wait": "Please wait..",
         "please_select_workbook": "Please select workbook first",
         "fetch_error_title": "Fetching some data failed!",
-        "fetch_error_msg": "   Fetching some data failed!\nPlease contact with developer"
+        "fetch_error_msg": "   Fetching some data failed!\nPlease contact with developer",
+        "connection_lost": "Check your Internet connection!"
     },
     "PL": {
         "update": "Aktualizuj!",
@@ -38,7 +39,8 @@
         "please_wait": "Prosze czekaj..",
         "please_select_workbook": "Wybierz najpierw arkusz xlsx",
         "fetch_error_title": "Pobranie niektorych danych nie powiodlo sie",
-        "fetch_error_msg": "Pobranie niektorych danych nie powiodlo sie!\n            Skontaktuj sie z programista"
+        "fetch_error_msg": "Pobranie niektorych danych nie powiodlo sie!\n            Skontaktuj sie z programista",
+        "connection_lost": "Sprawdz polaczenie z Internetem!"
     },
     "DE": {
         "update": "Aktualisieren!",
@@ -57,6 +59,7 @@
         "please_wait": "Bitte warten...",
         "please_select_workbook": "Bitte wahlen Sie zuerst die Arbeitsmappe aus",
         "fetch_error_title": "Fehler beim Abrufen von Daten!",
-        "fetch_error_msg": " Beim Abrufen von Daten ist ein Fehler aufgetreten!\n                     Bitte kontaktieren Sie den Entwickler"
+        "fetch_error_msg": " Beim Abrufen von Daten ist ein Fehler aufgetreten!\n                     Bitte kontaktieren Sie den Entwickler",
+        "connection_lost": "Prufe deine Internetverbindung!"
     }
 }
