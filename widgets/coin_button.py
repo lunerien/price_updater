@@ -39,7 +39,7 @@ class CoinButton(MDRaisedButton):
         self.cell: str = self.coin.cell
         self.font_name = font_config
         self.height: int = self.COIN_HEIGHT
-        self.md_bg_color = ASSET_BUTTON
+        self.md_bg_color = WHITE
         self.text_color = WHITE
 
     def on_press(self):

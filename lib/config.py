@@ -19,4 +19,5 @@ BEHIND_WINDOW = get_color_from_hex("#000000CC")
 SHEETS = get_color_from_hex("#FFFFFF55")
 FLOATING_BUTTON = get_color_from_hex("#0000000")
 CHECKBOX = [80, 80, 80, 1]
-ASSET_BUTTON = get_color_from_hex("#CC6600BB")
+SHEET_BUTTON = get_color_from_hex("#CC6600AA")
+ASSET_BUTTON = get_color_from_hex("#FFFDF5BB")
