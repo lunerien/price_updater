@@ -27,13 +27,13 @@ class ScrollApp(MDScrollView):
             text=language.get_text(Text.EMPTY_LIST_TEXT.value),
             font_name=font_config,
             font_size=21,
-            color=WHITE,
+            color=ORANGE_2,
         )
         self.loading_list = Label(
             text=language.get_text(Text.LOADING_LIST_TEXT.value),
             font_name=font_config,
             font_size=21,
-            color=WHITE,
+            color=ORANGE_2,
         )
         self.add_widget(self.loading_list)
         self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
@@ -63,13 +63,9 @@ class ScrollApp(MDScrollView):
             self.coins.add_widget(BoxLayout(size_hint=(1, 0.005)))
             for coin in self.coins_tab:
                 coin_button = CoinButton(scrollapp=self, coin=coin)
-                if i %2!=0:
-                    coin_button.text_color = ASSET_BUTTON
-                    coin_button.md_bg_color = WHITE
-                else:
-                    coin_button.text_color = WHITE
-                    coin_button.md_bg_color = ASSET_BUTTON
-                i += 1    
+                coin_button.text_color = WHITE
+                coin_button.md_bg_color = ASSET_BUTTON
+                i += 1
                 if coin.price_eur == "0,0":
                     coin_button.text_color = ERROR_COLOR
                 self.coins.add_widget(coin_button)
@@ -154,21 +150,22 @@ class ScrollApp(MDScrollView):
     def fetch_error_msg(self):
         if self.fetch_error:
             warning_msg = Popup(
-                separator_color=WHITE,
+                title_color=ORANGE_2,
+                overlay_color=BEHIND_WINDOW,
+                separator_color=ORANGE_2,
                 size_hint=(None, None),
                 size=(350, 200),
                 auto_dismiss=True,
                 title_font=font_config,
                 title=language.get_text(Text.FETCH_ERROR_TITLE.value),
-                background_color=ERROR_COLOR,
-                title_color=WHITE,
+                background_color=WINDOW,
             )
             warning_content = Label(
                 text=language.get_text(Text.CONNECTION_LOST.value)
                 if currency.connection_lost
                 else language.get_text(Text.FETCH_ERROR_MSG.value),
                 font_name=font_config,
-                color=WHITE,
+                color=ERROR_COLOR,
             )
             warning_msg.content = warning_content
             warning_msg.open(animation=True)

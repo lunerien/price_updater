@@ -28,7 +28,7 @@ class CoinButton(MDRaisedButton):
             case Currency.EUR:
                 self.currency_logo = "€"
                 self.coin_price = coin.price_eur
-        self.size_hint=(1, self.COIN_HEIGHT)
+        self.size_hint = (1, self.COIN_HEIGHT)
         self.coin = coin
         self.scrollapp = scrollapp
         self.font_size = 18
@@ -46,7 +46,7 @@ class CoinButton(MDRaisedButton):
         modify_coin_menu = Popup(
             title_color=ORANGE_2,
             overlay_color=BEHIND_WINDOW,
-            separator_color=WHITE,
+            separator_color=ORANGE_2,
             size_hint=(None, None),
             size=(400, 400),
             auto_dismiss=True,
@@ -59,4 +59,3 @@ class CoinButton(MDRaisedButton):
         )
         modify_coin_menu.content = add_menu
         modify_coin_menu.open(animation=True)
-

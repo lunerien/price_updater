@@ -41,7 +41,7 @@ class AddMenu(BoxLayout):
                 text="OK",
                 on_release=self.popup.dismiss,
                 size_hint=(1, 0.2),
-                color=WHITE,
+                text_color=ORANGE_2,
             )
             self.add_widget(self.no_workbook_label)
             self.add_widget(self.button_ok)
@@ -50,30 +50,37 @@ class AddMenu(BoxLayout):
         self.sheets = self.workbook.sheetnames
         self.sheets.remove("data")
 
+        self.worksheet_input: str = ""
         self.scroll_sheets = ScrollView()
         self.sheets_widget = BoxLayout(
             orientation="vertical", size_hint_y=None, spacing=2
         )
         self.sheets_widget.bind(minimum_height=self.sheets_widget.setter("height"))
         self.scroll_sheets.add_widget(self.sheets_widget)
+        i = 0
         for sheet in self.sheets:
             sheet_button = MDRaisedButton(
                 text=sheet,
-                md_bg_color=SHEETS,
+                md_bg_color=WHITE,
                 size_hint=(1, None),
                 height=35,
                 on_release=self.chosen_sheet,
                 font_name=font_config,
                 font_size=17,
-                text_color=WHITE,
+                text_color=ORANGE_2,
             )
+            if i == 0:
+                print(sheet)
+                self.worksheet_input = sheet
+                sheet_button.md_bg_color = ORANGE_2
+                sheet_button.text_color = WHITE
             self.sheets_widget.add_widget(sheet_button)
+            i += 1
         self.coin_name_input = AutoSuggestionText(
             text=language.get_text(Text.COIN_NAME.value), suggestions=coins_list
         )
         self.coin_name_input.select_all()
         self.coin_name_input.focus = True
-        self.worksheet_input: str = ""
         self.cell_input = TextInputC(text=language.get_text(Text.CELL.value))
         self.checkboxes_currency = BoxLayout(
             orientation="horizontal", size_hint=(1, 0.15)
@@ -90,16 +97,16 @@ class AddMenu(BoxLayout):
         self.checkbox_pln = CheckBox(active=False, color=CHECKBOX)
         self.checkbox_pln.bind(active=self.on_checkbox_active)
         self.label_usd = Label(
-            text="USD", color=NAME_OK, font_name=font_config, font_size=17
+            text="USD", color=ORANGE_2, font_name=font_config, font_size=17
         )
         self.label_eur = Label(
-            text="EUR", color=NAME_OK, font_name=font_config, font_size=17
+            text="EUR", color=ORANGE_2, font_name=font_config, font_size=17
         )
         self.label_gbp = Label(
-            text="GBP", color=NAME_OK, font_name=font_config, font_size=17
+            text="GBP", color=ORANGE_2, font_name=font_config, font_size=17
         )
         self.label_pln = Label(
-            text="PLN", color=NAME_OK, font_name=font_config, font_size=17
+            text="PLN", color=ORANGE_2, font_name=font_config, font_size=17
         )
         self.checkbox_currency_labels.add_widget(self.label_usd)
         self.checkbox_currency_labels.add_widget(self.label_eur)
@@ -153,10 +160,10 @@ class AddMenu(BoxLayout):
             or self.checkbox_eur.active
             or self.checkbox_pln.active
         ):
-            self.label_usd.color = NAME_OK
-            self.label_eur.color = NAME_OK
-            self.label_gbp.color = NAME_OK
-            self.label_pln.color = NAME_OK
+            self.label_usd.color = ORANGE_2
+            self.label_eur.color = ORANGE_2
+            self.label_gbp.color = ORANGE_2
+            self.label_pln.color = ORANGE_2
         else:
             self.label_usd.color = ERROR_COLOR
             self.label_eur.color = ERROR_COLOR
@@ -164,19 +171,19 @@ class AddMenu(BoxLayout):
             self.label_pln.color = ERROR_COLOR
 
     def chosen_sheet(self, dt):
-        if dt.md_bg_color == SHEETS:
-            for sheet in self.sheets_widget.children:
-                sheet.text_color = WHITE
-            dt.md_bg_color = SHEET_CHOSEN
+        if dt.md_bg_color == ORANGE_2:
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
-                    sheet.md_bg_color = SHEETS
+                    sheet.md_bg_color = WHITE
+                    sheet.text_color = ORANGE_2
         else:
             for sheet in self.sheets_widget.children:
-                sheet.text_color = WHITE
-            self.worksheet_input = ""
-            dt.md_bg_color = SHEETS
+                sheet.md_bg_color = WHITE
+                sheet.text_color = ORANGE_2
+            self.worksheet_input = dt.text
+            dt.md_bg_color = ORANGE_2
+            dt.text_color = WHITE
 
     def add_this_coin(self, dt: ButtonC):
         price = self.check_input_data()

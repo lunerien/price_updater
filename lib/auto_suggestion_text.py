@@ -51,9 +51,10 @@ class AutoSuggestionText(TextInput):
                             size_hint_y=None,
                             height=32,
                             on_release=push,
-                            background_color=BEHIND_WINDOW,
+                            background_color=WHITE,
                             font_name=font_config,
                             font_size=14,
+                            color=ORANGE_2,
                         )
                         self.dropdown.add_widget(button)
                 if self.dropdown.children:

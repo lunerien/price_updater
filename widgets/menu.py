@@ -17,21 +17,23 @@ class Menu(MDRelativeLayout):
         self.button_add = MDFloatingActionButton(
             icon="pencil",
             on_release=self.add_new_coin,
-            md_bg_color= ORANGE_2,
-            icon_color=WHITE,
-            icon_size= "25sp"
+            md_bg_color=WHITE,
+            icon_color=ORANGE_2,
+            icon_size="25sp",
         )
         self.button_add.pos_hint = {"center_x": 1.67, "center_y": 0.09}
-        self.info = Label(text=VERSION, font_name="standard", font_size=13, color=ORANGE_2)
+        self.info = Label(
+            text=VERSION, font_name="standard", font_size=13, color=ORANGE_2
+        )
         self.info.pos_hint = {"center_x": 0.25, "center_y": 0.023}
         self.add_widget(self.button_add)
         self.add_widget(self.info)
 
     def add_new_coin(self, dt: ButtonC):
         add_coin_menu = Popup(
-            title_color=WHITE,
+            title_color=ORANGE_2,
             overlay_color=BEHIND_WINDOW,
-            separator_color=WHITE,
+            separator_color=ORANGE_2,
             size_hint=(None, None),
             size=(400, 400),
             auto_dismiss=True,

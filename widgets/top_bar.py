@@ -31,17 +31,17 @@ class TopBar(BoxLayout):
         self.language_list_buttons = DropDown()
         self.btn_en = ButtonC(
             text=Languages.EN.value,
-            size_hint=(1,None),
+            size_hint=(1, None),
             height=40,
         )
         self.btn_pl = ButtonC(
             text=Languages.PL.value,
-            size_hint=(1,None),
+            size_hint=(1, None),
             height=40,
         )
         self.btn_de = ButtonC(
             text=Languages.DE.value,
-            size_hint=(1,None),
+            size_hint=(1, None),
             height=40,
         )
         self.btn_en.bind(on_release=self.change_language)
@@ -65,9 +65,9 @@ class TopBar(BoxLayout):
         self.change_loc_button.bind(on_release=self.change_loc)
         self.update_button.bind(on_release=self.update)
         self.add_widget(self.change_loc_button)
-        self.add_widget(BoxLayout(size_hint=(0.002,1)))
+        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.update_button)
-        self.add_widget(BoxLayout(size_hint=(0.002,1)))
+        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.language_button)
 
     def update(self, dt: ButtonC):
@@ -75,9 +75,9 @@ class TopBar(BoxLayout):
 
     def change_loc(self, dt):
         change_xlsx_menu = Popup(
-            title_color=WHITE,
+            title_color=ORANGE_2,
             overlay_color=BEHIND_WINDOW,
-            separator_color=WHITE,
+            separator_color=ORANGE_2,
             size_hint=(None, None),
             size=(500, 150),
             auto_dismiss=True,
