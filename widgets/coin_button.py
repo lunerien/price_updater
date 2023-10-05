@@ -1,5 +1,8 @@
 from kivymd.uix.button import MDRaisedButton
 from kivy.uix.popup import Popup
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.label import MDLabel
+from kivymd.font_definitions import theme_font_styles
 
 from widgets.modify_coin import ModifyCoin
 from lib.asset import Asset
@@ -33,25 +36,40 @@ class CoinButton(MDRaisedButton):
         self.scrollapp = scrollapp
         self.font_size = 18
         self.text_size = (None, None)
-        self.text: str = f"{self.coin.name:<130}{self.currency_logo} {self.coin_price}"
         self.worksheet: str = self.coin.worksheet
         self.halign = "left"
         self.cell: str = self.coin.cell
         self.font_name = font_config
         self.height: int = self.COIN_HEIGHT
-        self.md_bg_color = WHITE
-        self.text_color = WHITE
+        self.md_bg_color = COLOR_BUTTON
+
+        self.coin_frame = MDBoxLayout(orientation="horizontal")
+        self.name_label = MDLabel(
+            text=self.coin.name,
+            halign="left",
+            theme_text_color="Secondary",
+            font_style=theme_font_styles[5],
+        )
+        self.price_label = MDLabel(
+            text=f"{self.currency_logo} {self.coin_price}",
+            halign="right",
+            theme_text_color="Secondary",
+            font_style=theme_font_styles[5],
+        )
+        self.coin_frame.add_widget(self.name_label)
+        self.coin_frame.add_widget(self.price_label)
+        self.add_widget(self.coin_frame)
 
     def on_press(self):
         modify_coin_menu = Popup(
-            title_color=ORANGE_2,
-            overlay_color=BEHIND_WINDOW,
-            separator_color=ORANGE_2,
+            title_color=COLOR_ORANGE_THEME,
+            overlay_color=COLOR_BEHIND_WINDOW,
+            separator_color=COLOR_ORANGE_THEME,
             size_hint=(None, None),
             size=(400, 400),
             auto_dismiss=True,
             title=f"{language.get_text(Text.EDIT_COIN.value)} {self.coin.name}",
-            background_color=WINDOW,
+            background_color=COLOR_WINDOW,
             title_font=font_config,
         )
         add_menu = ModifyCoin(

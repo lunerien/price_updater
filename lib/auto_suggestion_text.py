@@ -16,19 +16,19 @@ class AutoSuggestionText(TextInput):
         self.dropdown = None
         self.multiline = False
         self.size_hint = (1, 0.2)
-        self.background_color = TEXT_BACKGROUND
-        self.foreground_color = ORANGE_2
+        self.background_color = COLOR_BACKGROUND_INPUT
+        self.foreground_color = COLOR_ORANGE_THEME
         self.focus = True
-        self.cursor_color = ORANGE_2
+        self.cursor_color = COLOR_ORANGE_THEME
         self.font_name = "standard"
         self.font_size = 16
         self.select_all()
 
     def text_ok(self):
-        self.foreground_color = ORANGE_2
+        self.foreground_color = COLOR_ORANGE_THEME
 
     def text_error(self):
-        self.foreground_color = ERROR_COLOR
+        self.foreground_color = COLOR_ERROR
 
     @staticmethod
     def on_text(self, value):
@@ -51,10 +51,10 @@ class AutoSuggestionText(TextInput):
                             size_hint_y=None,
                             height=32,
                             on_release=push,
-                            background_color=WHITE,
+                            background_color=COLOR_BUTTON,
                             font_name=font_config,
                             font_size=14,
-                            color=ORANGE_2,
+                            color=COLOR_ORANGE_THEME,
                         )
                         self.dropdown.add_widget(button)
                 if self.dropdown.children:

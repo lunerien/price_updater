@@ -24,26 +24,31 @@ class TopBar(BoxLayout):
             text=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
             size_hint=(0.45, 1),
         )
+        self.change_loc_button.md_bg_color = COLOR_TOP_BAR
         self.update_button = ButtonC(
             text=language.get_text(Text.UPDATE.value),
             size_hint=(0.45, 1),
         )
+        self.update_button.md_bg_color = COLOR_TOP_BAR
         self.language_list_buttons = DropDown()
         self.btn_en = ButtonC(
             text=Languages.EN.value,
             size_hint=(1, None),
             height=40,
         )
+        self.update_button.md_bg_color = COLOR_TOP_BAR
         self.btn_pl = ButtonC(
             text=Languages.PL.value,
             size_hint=(1, None),
             height=40,
         )
+        self.btn_pl.md_bg_color = COLOR_TOP_BAR
         self.btn_de = ButtonC(
             text=Languages.DE.value,
             size_hint=(1, None),
             height=40,
         )
+        self.btn_de.md_bg_color = COLOR_TOP_BAR
         self.btn_en.bind(on_release=self.change_language)
         self.btn_pl.bind(on_release=self.change_language)
         self.btn_de.bind(on_release=self.change_language)
@@ -55,6 +60,7 @@ class TopBar(BoxLayout):
             size_hint=(0.1, 1),
             pos=(350, 300),
         )
+        self.language_button.md_bg_color = COLOR_TOP_BAR
         self.language_button.bind(on_release=self.language_list_buttons.open)
         self.language_list_buttons.bind(
             on_select=lambda instance, x: setattr(
@@ -75,14 +81,14 @@ class TopBar(BoxLayout):
 
     def change_loc(self, dt):
         change_xlsx_menu = Popup(
-            title_color=ORANGE_2,
-            overlay_color=BEHIND_WINDOW,
-            separator_color=ORANGE_2,
+            title_color=COLOR_ORANGE_THEME,
+            overlay_color=COLOR_BEHIND_WINDOW,
+            separator_color=COLOR_ORANGE_THEME,
             size_hint=(None, None),
             size=(500, 150),
             auto_dismiss=True,
             title=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
-            background_color=WINDOW,
+            background_color=COLOR_WINDOW,
             title_font=font_config,
         )
         add_menu = ChangeXlsxMenu(self.scrollapp, change_xlsx_menu)

@@ -8,5 +8,5 @@ class ButtonC(MDRaisedButton):
         super(ButtonC, self).__init__(**kwargs)
         self.font_name = font_config
         self.font_size = 17
-        self.md_bg_color = WHITE
-        self.text_color = ORANGE_2
+        self.md_bg_color = COLOR_BUTTON
+        self.text_color = COLOR_ORANGE_THEME

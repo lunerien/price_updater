@@ -8,14 +8,14 @@ class TextInputC(TextInput):
         super(TextInputC, self).__init__(**kwargs)
         self.size_hint = (1, 0.2)
         self.multiline = False
-        self.background_color = TEXT_BACKGROUND
-        self.foreground_color = ORANGE_2
-        self.cursor_color = ORANGE_2
+        self.background_color = COLOR_BACKGROUND_INPUT
+        self.foreground_color = COLOR_ORANGE_THEME
+        self.cursor_color = COLOR_ORANGE_THEME
         self.font_name = "standard"
         self.font_size = 16
 
     def text_ok(self):
-        self.foreground_color = ORANGE_2
+        self.foreground_color = COLOR_ORANGE_THEME
 
     def text_error(self):
-        self.foreground_color = ERROR_COLOR
+        self.foreground_color = COLOR_ERROR

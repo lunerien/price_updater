@@ -41,7 +41,7 @@ class AddMenu(BoxLayout):
                 text="OK",
                 on_release=self.popup.dismiss,
                 size_hint=(1, 0.2),
-                text_color=ORANGE_2,
+                text_color=COLOR_ORANGE_THEME,
             )
             self.add_widget(self.no_workbook_label)
             self.add_widget(self.button_ok)
@@ -61,19 +61,19 @@ class AddMenu(BoxLayout):
         for sheet in self.sheets:
             sheet_button = MDRaisedButton(
                 text=sheet,
-                md_bg_color=WHITE,
+                md_bg_color=COLOR_BUTTON,
                 size_hint=(1, None),
                 height=35,
                 on_release=self.chosen_sheet,
                 font_name=font_config,
                 font_size=17,
-                text_color=ORANGE_2,
+                text_color=COLOR_ORANGE_THEME,
             )
             if i == 0:
                 print(sheet)
                 self.worksheet_input = sheet
-                sheet_button.md_bg_color = ORANGE_2
-                sheet_button.text_color = WHITE
+                sheet_button.md_bg_color = COLOR_ORANGE_THEME
+                sheet_button.text_color = COLOR_BUTTON
             self.sheets_widget.add_widget(sheet_button)
             i += 1
         self.coin_name_input = AutoSuggestionText(
@@ -88,25 +88,25 @@ class AddMenu(BoxLayout):
         self.checkbox_currency_labels = BoxLayout(
             orientation="horizontal", size_hint=(1, 0.07)
         )
-        self.checkbox_usd = CheckBox(active=True, color=CHECKBOX)
+        self.checkbox_usd = CheckBox(active=True, color=COLOR_CHECKBOX)
         self.checkbox_usd.bind(active=self.on_checkbox_active)
-        self.checkbox_eur = CheckBox(active=False, color=CHECKBOX)
+        self.checkbox_eur = CheckBox(active=False, color=COLOR_CHECKBOX)
         self.checkbox_eur.bind(active=self.on_checkbox_active)
-        self.checkbox_gbp = CheckBox(active=False, color=CHECKBOX)
+        self.checkbox_gbp = CheckBox(active=False, color=COLOR_CHECKBOX)
         self.checkbox_gbp.bind(active=self.on_checkbox_active)
-        self.checkbox_pln = CheckBox(active=False, color=CHECKBOX)
+        self.checkbox_pln = CheckBox(active=False, color=COLOR_CHECKBOX)
         self.checkbox_pln.bind(active=self.on_checkbox_active)
         self.label_usd = Label(
-            text="USD", color=ORANGE_2, font_name=font_config, font_size=17
+            text="USD", color=COLOR_ORANGE_THEME, font_name=font_config, font_size=17
         )
         self.label_eur = Label(
-            text="EUR", color=ORANGE_2, font_name=font_config, font_size=17
+            text="EUR", color=COLOR_ORANGE_THEME, font_name=font_config, font_size=17
         )
         self.label_gbp = Label(
-            text="GBP", color=ORANGE_2, font_name=font_config, font_size=17
+            text="GBP", color=COLOR_ORANGE_THEME, font_name=font_config, font_size=17
         )
         self.label_pln = Label(
-            text="PLN", color=ORANGE_2, font_name=font_config, font_size=17
+            text="PLN", color=COLOR_ORANGE_THEME, font_name=font_config, font_size=17
         )
         self.checkbox_currency_labels.add_widget(self.label_usd)
         self.checkbox_currency_labels.add_widget(self.label_eur)
@@ -160,30 +160,30 @@ class AddMenu(BoxLayout):
             or self.checkbox_eur.active
             or self.checkbox_pln.active
         ):
-            self.label_usd.color = ORANGE_2
-            self.label_eur.color = ORANGE_2
-            self.label_gbp.color = ORANGE_2
-            self.label_pln.color = ORANGE_2
+            self.label_usd.color = COLOR_ORANGE_THEME
+            self.label_eur.color = COLOR_ORANGE_THEME
+            self.label_gbp.color = COLOR_ORANGE_THEME
+            self.label_pln.color = COLOR_ORANGE_THEME
         else:
-            self.label_usd.color = ERROR_COLOR
-            self.label_eur.color = ERROR_COLOR
-            self.label_gbp.color = ERROR_COLOR
-            self.label_pln.color = ERROR_COLOR
+            self.label_usd.color = COLOR_ERROR
+            self.label_eur.color = COLOR_ERROR
+            self.label_gbp.color = COLOR_ERROR
+            self.label_pln.color = COLOR_ERROR
 
     def chosen_sheet(self, dt):
-        if dt.md_bg_color == ORANGE_2:
+        if dt.md_bg_color == COLOR_ORANGE_THEME:
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
-                    sheet.md_bg_color = WHITE
-                    sheet.text_color = ORANGE_2
+                    sheet.md_bg_color = COLOR_BUTTON
+                    sheet.text_color = COLOR_ORANGE_THEME
         else:
             for sheet in self.sheets_widget.children:
-                sheet.md_bg_color = WHITE
-                sheet.text_color = ORANGE_2
+                sheet.md_bg_color = COLOR_BUTTON
+                sheet.text_color = COLOR_ORANGE_THEME
             self.worksheet_input = dt.text
-            dt.md_bg_color = ORANGE_2
-            dt.text_color = WHITE
+            dt.md_bg_color = COLOR_ORANGE_THEME
+            dt.text_color = COLOR_BUTTON
 
     def add_this_coin(self, dt: ButtonC):
         price = self.check_input_data()
@@ -266,7 +266,7 @@ class AddMenu(BoxLayout):
             sheet_ok = True
         else:
             for sheet in self.sheets_widget.children:
-                sheet.color = ERROR_COLOR
+                sheet.color = COLOR_ERROR
         ##############################################
         cell_pattern = r"^[A-Za-z]\d+$"
         if re.match(cell_pattern, self.cell_input.text):
