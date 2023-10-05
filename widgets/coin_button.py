@@ -49,7 +49,7 @@ class CoinButton(MDRaisedButton):
         self.coin_frame = MDBoxLayout(orientation="horizontal")
         self.logo_async = AsyncImage(source=self.asset_round_logo)
         if self.asset_round_logo is None:
-            self.logo = MDLabel(size_hint=(0.05, 1))
+            self.logo = MDLabel(size_hint=(0.06, 1))
         else:
             self.logo = ImageButton(source=self.asset_round_logo, size_hint=(0.06, 1))
         self.name_label = MDLabel(

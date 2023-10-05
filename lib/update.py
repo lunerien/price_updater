@@ -95,7 +95,7 @@ class Update:
                         Currency.GBP: str(
                             round(currency.usd_pln / currency.gbp_pln, self.dec)
                         ).replace(".", ","),
-                        "asset_logo": None
+                        "asset_logo": f"./images/asset_logo/{ticker}.png"
                     }
                 case "gbp":
                     return {
@@ -107,7 +107,7 @@ class Update:
                             round(currency.gbp_pln / currency.eur_pln, self.dec)
                         ).replace(".", ","),
                         Currency.GBP: "1,0",
-                        "asset_logo": None
+                        "asset_logo": f"./images/asset_logo/{ticker}.png"
                     }
                 case "eur":
                     return {
@@ -119,7 +119,7 @@ class Update:
                         Currency.GBP: str(
                             round(currency.eur_pln / currency.gbp_pln, self.dec)
                         ).replace(".", ","),
-                        "asset_logo": None
+                        "asset_logo": f"./images/asset_logo/{ticker}.png"
                     }
         except:
             {
@@ -127,7 +127,7 @@ class Update:
                 Currency.PLN: "0,0",
                 Currency.EUR: "0,0",
                 Currency.GBP: "0,0",
-                "asset_logo": None
+                "asset_logo": f"./images/asset_logo/{ticker}.png"
             }
 
     def get_metal_price(self, ticker):
@@ -164,7 +164,7 @@ class Update:
                 Currency.GBP: str(
                     round(price_exact * (currency.usd_pln / currency.gbp_pln), self.dec)
                 ).replace(".", ","),
-                "asset_logo": None
+                "asset_logo": f"./images/asset_logo/{ticker}.png"
             }
         except:
             return (
@@ -173,7 +173,7 @@ class Update:
                     Currency.PLN: "0,0",
                     Currency.EUR: "0,0",
                     Currency.GBP: "0,0",
-                    "asset_logo": None
+                    "asset_logo": f"./images/asset_logo/{ticker}.png"
                 },
             )
 
@@ -217,7 +217,7 @@ class Update:
                     round(price_exact * (currency.gbp_pln / currency.eur_pln), self.dec)
                 ).replace(".", ","),
                 Currency.GBP: str(price_exact).replace(".", ","),
-                "asset_logo": None
+                "asset_logo": f"./images/asset_logo/ishares.png"
             }
         except:
             return {
@@ -225,7 +225,7 @@ class Update:
                 Currency.PLN: "0,0",
                 Currency.EUR: "0,0",
                 Currency.GBP: "0,0",
-                "asset_logo": None
+                "asset_logo": f"./images/asset_logo/ishares.png"
             }
 
     def get_crypto_price(self, ticker):
