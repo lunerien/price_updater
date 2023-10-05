@@ -13,3 +13,4 @@ class Asset:
         self.price_pln: str = price[Currency.PLN]
         self.price_eur: str = price[Currency.EUR]
         self.price_gbp: str = price[Currency.GBP]
+        self.asset_logo: str = price["asset_logo"]

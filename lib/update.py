@@ -1,6 +1,6 @@
 from openpyxl import load_workbook
 from bs4 import BeautifulSoup
-from requests import get, exceptions
+from requests import get, exceptions, get
 from openpyxl.utils.exceptions import InvalidFileException
 from typing import Tuple
 
@@ -79,6 +79,7 @@ class Update:
             Currency.PLN: "0,0",
             Currency.EUR: "0,0",
             Currency.GBP: "0,0",
+            "asset_logo": None
         }
 
     def get_fiat_price(self, ticker):
@@ -94,6 +95,7 @@ class Update:
                         Currency.GBP: str(
                             round(currency.usd_pln / currency.gbp_pln, self.dec)
                         ).replace(".", ","),
+                        "asset_logo": None
                     }
                 case "gbp":
                     return {
@@ -105,6 +107,7 @@ class Update:
                             round(currency.gbp_pln / currency.eur_pln, self.dec)
                         ).replace(".", ","),
                         Currency.GBP: "1,0",
+                        "asset_logo": None
                     }
                 case "eur":
                     return {
@@ -116,6 +119,7 @@ class Update:
                         Currency.GBP: str(
                             round(currency.eur_pln / currency.gbp_pln, self.dec)
                         ).replace(".", ","),
+                        "asset_logo": None
                     }
         except:
             {
@@ -123,6 +127,7 @@ class Update:
                 Currency.PLN: "0,0",
                 Currency.EUR: "0,0",
                 Currency.GBP: "0,0",
+                "asset_logo": None
             }
 
     def get_metal_price(self, ticker):
@@ -159,6 +164,7 @@ class Update:
                 Currency.GBP: str(
                     round(price_exact * (currency.usd_pln / currency.gbp_pln), self.dec)
                 ).replace(".", ","),
+                "asset_logo": None
             }
         except:
             return (
@@ -167,6 +173,7 @@ class Update:
                     Currency.PLN: "0,0",
                     Currency.EUR: "0,0",
                     Currency.GBP: "0,0",
+                    "asset_logo": None
                 },
             )
 
@@ -210,6 +217,7 @@ class Update:
                     round(price_exact * (currency.gbp_pln / currency.eur_pln), self.dec)
                 ).replace(".", ","),
                 Currency.GBP: str(price_exact).replace(".", ","),
+                "asset_logo": None
             }
         except:
             return {
@@ -217,6 +225,7 @@ class Update:
                 Currency.PLN: "0,0",
                 Currency.EUR: "0,0",
                 Currency.GBP: "0,0",
+                "asset_logo": None
             }
 
     def get_crypto_price(self, ticker):
@@ -224,6 +233,11 @@ class Update:
             url = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
             page = get(url)
             bs = BeautifulSoup(page.content, "html.parser")
+
+            data = bs.find('div', class_="sc-16891c57-0 gYEgxU")
+            raw_data = data.find("img", src=True)
+            http_logo: str= raw_data['src']
+
             for web in bs.find_all(
                 "div",
                 class_="sc-16891c57-0 hqcKQB flexStart alignBaseline",
@@ -280,6 +294,7 @@ class Update:
                     Currency.PLN: price_pln,
                     Currency.EUR: price_eur,
                     Currency.GBP: price_gbp,
+                    "asset_logo": http_logo
                 }
         except (
             ValueError,
