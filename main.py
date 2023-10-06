@@ -1,19 +1,19 @@
-from kivy.core.window import Window
+import sys
+import ctypes
+from typing import Any
 from kivymd.app import MDApp
+from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.relativelayout import RelativeLayout
-from KivyOnTop import register_topmost
-import sys
-import ctypes
 
 from widgets.scroll_app import ScrollApp
 from widgets.top_bar import TopBar
 from widgets.menu import Menu
 
 
-TITLE = "Price Updater©"
+TITLE: str = "Price Updater©"
 
 
 if sys.platform == "win32":
@@ -21,7 +21,7 @@ if sys.platform == "win32":
 
 
 class MainApp(MDApp):
-    def __init__(self, *args):
+    def __init__(self, *args: Any) -> None:
         super(MainApp, self).__init__(*args)
         self.window = BoxLayout(orientation="vertical")
         self.menu = RelativeLayout(size_hint=(1, 0.9))
@@ -35,13 +35,12 @@ class MainApp(MDApp):
             size_hint=(1, None), scrollapp=self.scrollview, right_side=self.right_side
         )
 
-    def on_start(self, *args):
-        HEIGHT = 450
-        WIDTH = 800
+    def on_start(self, *args: Any) -> None:
+        HEIGHT: int = 450
+        WIDTH: int = 800
         Window.minimum_width, Window.minimum_height = WIDTH, HEIGHT
         Window.set_title(TITLE)
         Window.size = (WIDTH, HEIGHT)
-        # register_topmost(Window, TITLE)
         user32 = ctypes.windll.user32
         screen_width = user32.GetSystemMetrics(0)
         screen_height = user32.GetSystemMetrics(1)
@@ -50,7 +49,7 @@ class MainApp(MDApp):
         Window.left = screen_width - WIDTH * 2
         Window.borderless = False
 
-    def build(self):
+    def build(self) -> BoxLayout:
         self.window.add_widget(self.menu)
 
         self.menu.add_widget(self.background)

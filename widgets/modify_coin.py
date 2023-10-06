@@ -14,7 +14,7 @@ from lib.button import ButtonC
 from lib.language import language, Text
 from lib.currency import Currency
 from lib.auto_suggestion_text import AutoSuggestionText
-from coins_list import coins_list
+from coins_list import assets_list
 from lib.config import *
 
 
@@ -28,7 +28,7 @@ class ModifyCoin(BoxLayout):
         self.opacity = 0.8
         self.spacing = 5
         self.workbook = Update().try_load_workbook()
-        self.coin_name_input = AutoSuggestionText(text="", suggestions=coins_list)
+        self.coin_name_input = AutoSuggestionText(text="", suggestions=assets_list)
         self.worksheet_input: str = ""
         self.cell_input = TextInputC(text=self.coin.cell)
         chosen_currency = self.get_chosen_currency()

@@ -99,7 +99,7 @@ class ScrollApp(MDScrollView):
                 currency = data.cell(row=4, column=i).value
                 price = Update().get_asset_price(ticker)
                 try:
-                    if price != None and price[Currency.PLN] != "0,0":
+                    if price[Currency.PLN] != "0,0":
                         coins.append(
                             Asset(
                                 id=i,
@@ -123,6 +123,7 @@ class ScrollApp(MDScrollView):
                                     Currency.PLN: "0,0",
                                     Currency.EUR: "0,0",
                                     Currency.GBP: "0,0",
+                                    Currency._LOGO: price[Currency._LOGO],
                                 },
                                 currency=Currency(currency),
                             )
@@ -140,6 +141,7 @@ class ScrollApp(MDScrollView):
                                 Currency.PLN: "0,0",
                                 Currency.EUR: "0,0",
                                 Currency.GBP: "0,0",
+                                Currency._LOGO: price[Currency._LOGO],
                             },
                             currency=Currency(currency),
                         )
@@ -147,7 +149,7 @@ class ScrollApp(MDScrollView):
             i += 1
         return coins
 
-    def fetch_error_msg(self):
+    def fetch_error_msg(self) -> None:
         if self.fetch_error:
             warning_msg = Popup(
                 title_color=COLOR_ORANGE_THEME,

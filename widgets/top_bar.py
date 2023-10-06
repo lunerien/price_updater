@@ -1,15 +1,12 @@
-from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
-from widgets.add_menu import AddMenu
 from lib.button import ButtonC
 from widgets.change_xlsx_menu import ChangeXlsxMenu
 from lib.language import language, Languages, Text
-from lib.currency import currency, Currency
 from lib.update import Update
 from lib.config import *
 
@@ -36,7 +33,7 @@ class TopBar(BoxLayout):
             size_hint=(1, None),
             height=40,
         )
-        self.update_button.md_bg_color = COLOR_TOP_BAR
+        self.btn_en.md_bg_color = COLOR_TOP_BAR
         self.btn_pl = ButtonC(
             text=Languages.PL.value,
             size_hint=(1, None),

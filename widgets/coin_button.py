@@ -2,7 +2,7 @@ from kivymd.uix.button import MDRaisedButton
 from kivy.uix.popup import Popup
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
-from kivy.uix.image import Image, AsyncImage
+from kivy.uix.image import AsyncImage
 from kivy.uix.behaviors import ButtonBehavior
 from kivymd.font_definitions import theme_font_styles
 
@@ -47,11 +47,12 @@ class CoinButton(MDRaisedButton):
         self.md_bg_color = COLOR_BUTTON
 
         self.coin_frame = MDBoxLayout(orientation="horizontal")
-        self.logo_async = AsyncImage(source=self.asset_round_logo)
-        if self.asset_round_logo is None:
-            self.logo = MDLabel(size_hint=(0.06, 1))
-        else:
-            self.logo = ImageButton(source=self.asset_round_logo, size_hint=(0.06, 1))
+        self.logo_async = AsyncImage(source=self.asset_round_logo, fit_mode="fill")
+        self.logo: MDLabel | ImageButton = (
+            MDLabel(size_hint=(0.06, 1))
+            if self.asset_round_logo == ""
+            else ImageButton(source=self.asset_round_logo, size_hint=(0.06, 1))
+        )
         self.name_label = MDLabel(
             size_hint=(1, 1),
             text=f"  {self.coin.name}",
@@ -62,7 +63,7 @@ class CoinButton(MDRaisedButton):
         self.price_label = MDLabel(
             text=f"{self.currency_logo} {self.coin_price}",
             halign="right",
-            theme_text_color="Secondary",
+            theme_text_color="Secondary" if self.coin_price != "0,0" else "Error",
             font_style=theme_font_styles[5],
         )
         self.coin_frame.add_widget(self.logo)

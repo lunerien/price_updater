@@ -1,3 +1,4 @@
+from typing import Any
 from enum import Enum
 import json
 
@@ -30,8 +31,8 @@ class Text(Enum):
 
 
 class Language:
-    def __init__(self):
-        self.language_file = self.read_file()
+    def __init__(self) -> None:
+        self.language_file: Any = self.read_file()
 
     def get_current_language(self) -> str:
         return self.language_file["chosen_language"]
@@ -39,14 +40,14 @@ class Language:
     def get_text(self, word: str) -> str:
         return self.language_file[self.get_current_language()][word]
 
-    def read_file(self) -> str:
+    def read_file(self) -> Any:
         file = open("data.json")
         data = json.load(file)
         return data
 
-    def change_language(self, new_language: Languages):
+    def change_language(self, new_language: Languages) -> None:
         with open("data.json", "r+") as file:
-            data = json.load(file)
+            data: Any = json.load(file)
             data["chosen_language"] = new_language.value
             file.seek(0)
             json.dump(data, file, indent=4)

@@ -1,4 +1,3 @@
-from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.button import MDRaisedButton
 from kivy.uix.popup import Popup
@@ -6,7 +5,8 @@ from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
 import re
-from typing import Union, List
+from typing import Union, List, Any
+from openpyxl.workbook import Workbook
 
 from widgets.scroll_app import ScrollApp
 from lib.update import Update
@@ -16,19 +16,19 @@ from lib.text_input import TextInputC
 from lib.button import ButtonC
 from lib.language import language, Text
 from lib.auto_suggestion_text import AutoSuggestionText
-from coins_list import coins_list
 from lib.config import *
+from coins_list import assets_list
 
 
 class AddMenu(BoxLayout):
-    def __init__(self, scrollApp: ScrollApp, popup: Popup, **kwargs):
+    def __init__(self, scrollApp: ScrollApp, popup: Popup, **kwargs: Any) -> None:
         super(AddMenu, self).__init__(**kwargs)
-        self.scrollapp = scrollApp
-        self.popup = popup
-        self.orientation = "vertical"
-        self.opacity = 0.8
-        self.spacing = 5
-        self.workbook = Update().try_load_workbook()
+        self.scrollapp: ScrollApp = scrollApp
+        self.popup: Popup = popup
+        self.orientation: str = "vertical"
+        self.opacity: float = 0.8
+        self.spacing: int = 5
+        self.workbook: Workbook | None = Update().try_load_workbook()
 
         if self.workbook != None:
             self.build()
@@ -70,14 +70,13 @@ class AddMenu(BoxLayout):
                 text_color=COLOR_ORANGE_THEME,
             )
             if i == 0:
-                print(sheet)
                 self.worksheet_input = sheet
                 sheet_button.md_bg_color = COLOR_ORANGE_THEME
                 sheet_button.text_color = COLOR_BUTTON
             self.sheets_widget.add_widget(sheet_button)
             i += 1
         self.coin_name_input = AutoSuggestionText(
-            text=language.get_text(Text.COIN_NAME.value), suggestions=coins_list
+            text=language.get_text(Text.COIN_NAME.value), suggestions=assets_list
         )
         self.coin_name_input.select_all()
         self.coin_name_input.focus = True
