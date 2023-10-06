@@ -179,21 +179,19 @@ class Update:
         id: str
         if ticker == "swda-etf":
             link = "https://www.hl.co.uk/shares/shares-search-results/i/ishares-core-msci-world-ucits-etf-usd-acc"
-            id = "ls-bid-SWDA-L"
         else:
             link = "https://www.hl.co.uk/shares/shares-search-results/i/ishares-core-msci-emerging-markets-imi-ucit"
-            id = "ls-bid-EMIM-L"
 
         def get_price() -> float:
             try:
                 page = get(link)
                 bs = BeautifulSoup(page.content, "html.parser")
-                element = bs.find("span", id=id)
-                content = element.text
-                page_str = content.replace("p", "")
-                page_str = page_str.replace(",", "")
-                price = page_str[0:4]
-                return float(price)
+                for onpage in bs.find("span", class_="bid price-divide"):
+                    page_str = str(onpage)
+                    page_str = page_str.replace("p", "")
+                    page_str = page_str.replace(",", "")
+                    price = page_str[0:4]
+                    return float(price)
             except (
                 ValueError,
                 ZeroDivisionError,
