@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.button import MDRaisedButton
 from kivy.uix.popup import Popup
@@ -5,7 +6,7 @@ from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
 import re
-from typing import Union, List, Any
+from typing import Any, Dict
 from openpyxl.workbook import Workbook
 
 from widgets.scroll_app import ScrollApp
@@ -20,6 +21,12 @@ from lib.config import *
 from coins_list import assets_list
 
 
+@dataclass
+class Info:
+    check: bool
+    price: Dict[Currency, str]
+
+
 class AddMenu(BoxLayout):
     def __init__(self, scrollApp: ScrollApp, popup: Popup, **kwargs: Any) -> None:
         super(AddMenu, self).__init__(**kwargs)
@@ -28,7 +35,7 @@ class AddMenu(BoxLayout):
         self.orientation: str = "vertical"
         self.opacity: float = 0.8
         self.spacing: int = 5
-        self.workbook: Workbook | None = Update().try_load_workbook()
+        self.workbook: Workbook = Update().try_load_workbook()
 
         if self.workbook != None:
             self.build()
@@ -46,8 +53,8 @@ class AddMenu(BoxLayout):
             self.add_widget(self.no_workbook_label)
             self.add_widget(self.button_ok)
 
-    def build(self):
-        self.sheets = self.workbook.sheetnames
+    def build(self) -> None:
+        self.sheets: list[str] = self.workbook.sheetnames
         self.sheets.remove("data")
 
         self.worksheet_input: str = ""
@@ -132,7 +139,7 @@ class AddMenu(BoxLayout):
         )
         buttons.add_widget(button_add)
 
-    def on_checkbox_active(self, instance, value):
+    def on_checkbox_active(self, instance: CheckBox, value: bool) -> None:
         if instance == self.checkbox_usd:
             if value:
                 self.checkbox_eur.active = False
@@ -169,7 +176,7 @@ class AddMenu(BoxLayout):
             self.label_gbp.color = COLOR_ERROR
             self.label_pln.color = COLOR_ERROR
 
-    def chosen_sheet(self, dt):
+    def chosen_sheet(self, dt: MDRaisedButton) -> None:
         if dt.md_bg_color == COLOR_ORANGE_THEME:
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
@@ -184,9 +191,9 @@ class AddMenu(BoxLayout):
             dt.md_bg_color = COLOR_ORANGE_THEME
             dt.text_color = COLOR_BUTTON
 
-    def add_this_coin(self, dt: ButtonC):
-        price = self.check_input_data()
-        if price[0]:
+    def add_this_coin(self, dt: ButtonC) -> None:
+        info = self.check_input_data()
+        if info.check:
             data = self.workbook["data"]
             i = 1
             while (
@@ -216,7 +223,7 @@ class AddMenu(BoxLayout):
                     name=self.coin_name_input.text.lower(),
                     worksheet=self.worksheet_input,
                     cell=self.cell_input.text.upper(),
-                    price=price[1],
+                    price=info.price,
                     currency=chosen_currency,
                 )
             )
@@ -227,15 +234,21 @@ class AddMenu(BoxLayout):
             )
             self.popup.dismiss()
 
-    def check_input_data(self) -> List[Union[bool, Union[str, None]]]:
-        test_price: str | None = None
+    def check_input_data(self) -> Info:
+        test_price: dict[Currency, str]
         if (
             self.coin_name_input.text != language.get_text(Text.COIN_NAME.value)
             and self.coin_name_input.text != ""
         ):
             test_price = Update().get_asset_price(self.coin_name_input.text)
         else:
-            test_price = None
+            test_price = {
+                Currency.USD: "0,0",
+                Currency.PLN: "0,0",
+                Currency.GBP: "0,0",
+                Currency.EUR: "0,0",
+                Currency._LOGO: "",
+            }
 
         name_ok: bool = False
         sheet_ok: bool = False
@@ -249,6 +262,7 @@ class AddMenu(BoxLayout):
                 Currency.PLN: "0,0",
                 Currency.GBP: "0,0",
                 Currency.EUR: "0,0",
+                Currency._LOGO: "",
             },
         ):
             self.coin_name_input.text_ok()
@@ -281,5 +295,6 @@ class AddMenu(BoxLayout):
             or self.checkbox_pln.active
         ):
             currency_ok = True
+
         ##############################################
-        return [name_ok & sheet_ok & cell_ok & currency_ok, test_price]
+        return Info(check=name_ok & sheet_ok & cell_ok & currency_ok, price=test_price)

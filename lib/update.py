@@ -176,18 +176,21 @@ class Update:
 
     def get_etf_price(self, ticker: str) -> dict[Currency, str]:
         link: str
+        id: str
         if ticker == "swda-etf":
             link = "https://www.hl.co.uk/shares/shares-search-results/i/ishares-core-msci-world-ucits-etf-usd-acc"
+            id = "ls-bid-SWDA-L"
         else:
             link = "https://www.hl.co.uk/shares/shares-search-results/i/ishares-core-msci-emerging-markets-imi-ucit"
+            id = "ls-bid-EMIM-L"
 
         def get_price() -> float:
             try:
                 page = get(link)
                 bs = BeautifulSoup(page.content, "html.parser")
-                onpage = bs.find("span", class_="bid price-divide")
-                page_str = str(onpage)
-                page_str = page_str.replace("p", "")
+                element = bs.find("span", id=id)
+                content = element.text
+                page_str = content.replace("p", "")
                 page_str = page_str.replace(",", "")
                 price = page_str[0:4]
                 return float(price)
@@ -226,7 +229,7 @@ class Update:
 
     def get_crypto_price(self, ticker: str) -> dict[Currency, str]:
         try:
-            http_logo:str = ""
+            http_logo: str = ""
             url: str = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
             page: Response = get(url)
             bs = BeautifulSoup(page.content, "html.parser")
@@ -291,6 +294,7 @@ class Update:
                 Currency._LOGO: http_logo,
             }
         except (
+            AttributeError,
             ValueError,
             ZeroDivisionError,
             TypeError,
