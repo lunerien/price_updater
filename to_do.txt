@@ -1,0 +1,3 @@
+pobranie danych gdy wroci polaczenie z Internetem
+informacja o prawidlowym zapisie do xlsx
+poprawic wizualne odczucia apki

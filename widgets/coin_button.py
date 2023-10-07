@@ -1,3 +1,4 @@
+from typing import Any
 from kivymd.uix.button import MDRaisedButton
 from kivy.uix.popup import Popup
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -14,12 +15,12 @@ from lib.config import *
 
 
 class CoinButton(MDRaisedButton):
-    def __init__(self, scrollapp, coin: Asset):
+    def __init__(self, scrollapp: Any, coin: Asset) -> None:
         super().__init__()
         self.SPACING: int = 2
         self.COIN_HEIGHT: int = 40
-        self.currency_logo = ""
-        self.coin_price = ""
+        self.currency_logo: str = ""
+        self.coin_price: str = ""
         match coin.chosen_currency:
             case Currency.USD:
                 self.currency_logo = "$"
@@ -33,18 +34,18 @@ class CoinButton(MDRaisedButton):
             case Currency.EUR:
                 self.currency_logo = "€"
                 self.coin_price = coin.price_eur
-        self.size_hint = (1, self.COIN_HEIGHT)
-        self.coin = coin
+        self.size_hint: tuple[int] = (1, self.COIN_HEIGHT)
+        self.coin: Asset = coin
         self.asset_round_logo: str | None = self.coin.asset_logo
-        self.scrollapp = scrollapp
-        self.font_size = 18
-        self.text_size = (None, None)
+        self.scrollapp: Any = scrollapp
+        self.font_size: int = 18
+        self.text_size: tuple[None, None] = (None, None)
         self.worksheet: str = self.coin.worksheet
-        self.halign = "left"
+        self.halign: str = "left"
         self.cell: str = self.coin.cell
-        self.font_name = font_config
+        self.font_name: str = font_config
         self.height: int = self.COIN_HEIGHT
-        self.md_bg_color = COLOR_BUTTON
+        self.md_bg_color: list[float] = COLOR_BUTTON
 
         self.coin_frame = MDBoxLayout(orientation="horizontal")
         self.logo_async = AsyncImage(source=self.asset_round_logo, fit_mode="fill")
@@ -71,7 +72,7 @@ class CoinButton(MDRaisedButton):
         self.coin_frame.add_widget(self.price_label)
         self.add_widget(self.coin_frame)
 
-    def on_press(self):
+    def on_press(self) -> None:
         modify_coin_menu = Popup(
             title_color=COLOR_ORANGE_THEME,
             overlay_color=COLOR_BEHIND_WINDOW,

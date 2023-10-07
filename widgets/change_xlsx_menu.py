@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import List, Any
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from tkinter.filedialog import askopenfilename
@@ -15,17 +15,17 @@ from lib.config import *
 
 
 class ChangeXlsxMenu(BoxLayout):
-    def __init__(self, scrollApp: ScrollApp, popup: Popup, **kwargs):
+    def __init__(self, scrollApp: ScrollApp, popup: Popup, **kwargs: Any) -> None:
         super(ChangeXlsxMenu, self).__init__(**kwargs)
-        self.scrollapp = scrollApp
-        self.popup = popup
-        self.orientation = "vertical"
-        self.opacity = 0.8
+        self.scrollapp: ScrollApp = scrollApp
+        self.popup: Popup = popup
+        self.orientation: str = "vertical"
+        self.opacity: float = 0.8
         self.input_and_ask_open_file = BoxLayout(orientation="horizontal")
         self.add_widget(self.input_and_ask_open_file)
         self.path_xlsx_input = TextInputC(text=self.load_current_path())
-        self.path_xlsx_input.focus = True
-        self.path_xlsx_input.size_hint = (0.85, 0.75)
+        self.path_xlsx_input.focus: bool = True
+        self.path_xlsx_input.size_hint: tuple[float, ...] = (0.85, 0.75)
         self.input_and_ask_open_file.add_widget(self.path_xlsx_input)
         self.open_file_button = ButtonC(
             text=language.get_text(Text.SEARCH.value),
@@ -43,7 +43,7 @@ class ChangeXlsxMenu(BoxLayout):
             )
         )
 
-    def add_path(self, dt: ButtonC):
+    def add_path(self, dt: ButtonC) -> None:
         if self.path_xlsx_input.text != self.load_current_path():
             try:
                 wb = load_workbook(self.path_xlsx_input.text)
@@ -71,16 +71,16 @@ class ChangeXlsxMenu(BoxLayout):
             self.popup.dismiss()
 
     def load_current_path(self) -> str:
-        file = open("data.json")
-        data = json.load(file)
-        path = data["path_to_xlsx"]
+        file: Any = open("data.json")
+        data: Any = json.load(file)
+        path: str = data["path_to_xlsx"]
         if path == "":
             return language.get_text(Text.PATH_TO_XLSX.value)
         else:
             return data["path_to_xlsx"]
 
-    def choose_path(self, dt: ButtonC):
-        path = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))
+    def choose_path(self, dt: ButtonC) -> None:
+        path: str = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))
         if path != "":
             self.path_xlsx_input.text = path
 

@@ -1,6 +1,6 @@
 {
     "path_to_xlsx": "./test.xlsx",
-    "chosen_language": "PL",
+    "chosen_language": "EN",
     "EN": {
         "update": "Update!",
         "edit_asset": "Editing asset: ",

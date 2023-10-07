@@ -1,5 +1,5 @@
 import re
-from typing import List, Union, Dict
+from typing import List, Union, Dict, Any
 from kivy.uix.popup import Popup
 from kivymd.uix.button import MDRaisedButton
 from kivy.uix.checkbox import CheckBox
@@ -19,19 +19,19 @@ from lib.config import *
 
 
 class ModifyCoin(BoxLayout):
-    def __init__(self, scrollapp, popup: Popup, coin: Asset):
+    def __init__(self, scrollapp: Any, popup: Popup, coin: Asset) -> None:
         super(ModifyCoin, self).__init__()
-        self.scrollapp = scrollapp
-        self.popup = popup
-        self.coin = coin
+        self.scrollapp: Any = scrollapp
+        self.popup: Popup = popup
+        self.coin: Asset = coin
         self.orientation = "vertical"
-        self.opacity = 0.8
-        self.spacing = 5
+        self.opacity: float = 0.8
+        self.spacing: int = 5
         self.workbook = Update().try_load_workbook()
         self.coin_name_input = AutoSuggestionText(text="", suggestions=assets_list)
         self.worksheet_input: str = ""
         self.cell_input = TextInputC(text=self.coin.cell)
-        chosen_currency = self.get_chosen_currency()
+        chosen_currency: Currency = self.get_chosen_currency()
         self.checkboxes_currency = BoxLayout(
             orientation="horizontal", size_hint=(1, 0.15)
         )
@@ -85,7 +85,7 @@ class ModifyCoin(BoxLayout):
         )
         self.sheets_widget.bind(minimum_height=self.sheets_widget.setter("height"))
         self.scroll_sheets.add_widget(self.sheets_widget)
-        self.sheets = self.workbook.sheetnames
+        self.sheets: list[str] = self.workbook.sheetnames
         self.sheets.remove("data")
         for sheet in self.sheets:
             sheet_button = MDRaisedButton(
@@ -127,10 +127,10 @@ class ModifyCoin(BoxLayout):
         buttons.add_widget(BoxLayout(size_hint=(0.01, 1)))
         buttons.add_widget(self.button_delete)
 
-    def get_chosen_currency(self):
+    def get_chosen_currency(self) -> Currency:
         return Currency(self.coin.chosen_currency)
 
-    def on_checkbox_active(self, instance, value):
+    def on_checkbox_active(self, instance, value) -> None:
         if instance == self.checkbox_usd:
             if value:
                 self.checkbox_eur.active = False
@@ -167,7 +167,7 @@ class ModifyCoin(BoxLayout):
             self.label_gbp.color = COLOR_ERROR
             self.label_pln.color = COLOR_ERROR
 
-    def chosen_sheet(self, dt: MDRaisedButton):
+    def chosen_sheet(self, dt: MDRaisedButton) -> None:
         if dt.md_bg_color == COLOR_ORANGE_THEME:
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
@@ -182,7 +182,7 @@ class ModifyCoin(BoxLayout):
             dt.md_bg_color = COLOR_ORANGE_THEME
             dt.text_color = COLOR_BUTTON
 
-    def modify(self, dt: ButtonC):
+    def modify(self, dt: ButtonC) -> None:
         data = self.workbook["data"]
         price = self.check_input_data()
         if price[0]:
@@ -224,7 +224,7 @@ class ModifyCoin(BoxLayout):
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
 
-    def delete(self, dt: ButtonC):
+    def delete(self, dt: ButtonC) -> None:
         data = self.workbook["data"]
         data.cell(row=1, column=self.coin.id).value = "-"
         data.cell(row=2, column=self.coin.id).value = ""

@@ -12,7 +12,7 @@ from lib.config import *
 
 
 class TopBar(BoxLayout):
-    def __init__(self, scrollapp: ScrollApp, right_side: Menu, **kwargs):
+    def __init__(self, scrollapp: ScrollApp, right_side: Menu, **kwargs) -> None:
         super(TopBar, self).__init__(**kwargs)
         self.height = 35
         self.scrollapp = scrollapp
@@ -73,10 +73,10 @@ class TopBar(BoxLayout):
         self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.language_button)
 
-    def update(self, dt: ButtonC):
+    def update(self, dt: ButtonC) -> None:
         Update().update(self.scrollapp.coins_tab)
 
-    def change_loc(self, dt):
+    def change_loc(self, dt: ButtonC) -> None:
         change_xlsx_menu = Popup(
             title_color=COLOR_ORANGE_THEME,
             overlay_color=COLOR_BEHIND_WINDOW,
@@ -92,16 +92,10 @@ class TopBar(BoxLayout):
         change_xlsx_menu.content = add_menu
         change_xlsx_menu.open(animation=True)
 
-    def change_language(self, dt: ButtonC):
+    def change_language(self, dt: ButtonC) -> None:
         self.language_list_buttons.dismiss()
-        self.language_button.text = dt.text
+        self.language_button.text: str = dt.text
         language.change_language(Languages(dt.text))
-        self.scrollapp.empty_list.text = language.get_text(Text.EMPTY_LIST_TEXT.value)
-        self.change_loc_button.text = language.get_text(Text.CHANGE_XLSX_WORKBOOK.value)
-        self.update_button.text = language.get_text(Text.UPDATE.value)
-
-    # def change_currency(self, dt):
-    #     self.currency_list_buttons.dismiss()
-    #     self.currency_button.text = dt.text
-    #     currency.change_currency(Currency(dt.text))
-    #     self.scrollapp.initialize_coins()
+        self.scrollapp.empty_list.text: str = language.get_text(Text.EMPTY_LIST_TEXT.value)
+        self.change_loc_button.text: str = language.get_text(Text.CHANGE_XLSX_WORKBOOK.value)
+        self.update_button.text: str = language.get_text(Text.UPDATE.value)
