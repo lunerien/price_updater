@@ -10,6 +10,6 @@ if [ $# -ge 1 ] ; then
     fi
     FLAGS="--check"
 else
-    FLAGS=""
+    FLAGS="./"
 fi
-python3 -m black $FLAGS
+python -m black $FLAGS

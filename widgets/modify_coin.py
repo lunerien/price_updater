@@ -103,7 +103,7 @@ class ModifyCoin(BoxLayout):
         for sheet in self.sheets:
             sheet_button = MDRaisedButton(
                 text=sheet,
-                md_bg_color=COLOR_BUTTON,
+                md_bg_color=color_button,
                 size_hint=(1, None),
                 height=35,
                 on_release=self.chosen_sheet,
@@ -114,7 +114,7 @@ class ModifyCoin(BoxLayout):
             if self.coin.worksheet == sheet:
                 self.worksheet_input = sheet
                 sheet_button.md_bg_color = COLOR_ORANGE_THEME
-                sheet_button.text_color = COLOR_BUTTON
+                sheet_button.text_color = color_button
             self.sheets_widget.add_widget(sheet_button)
         self.add_widget(self.coin_name_input)
         self.add_widget(self.scroll_sheets)
@@ -136,7 +136,7 @@ class ModifyCoin(BoxLayout):
             on_release=self.delete,
             size_hint=(0.5, 0.8),
         )
-        self.button_delete.text_color = COLOR_ERROR
+        self.button_delete.text_color = color_error
         buttons.add_widget(BoxLayout(size_hint=(0.01, 1)))
         buttons.add_widget(self.button_delete)
 
@@ -175,25 +175,25 @@ class ModifyCoin(BoxLayout):
             self.label_gbp.color = COLOR_ORANGE_THEME
             self.label_pln.color = COLOR_ORANGE_THEME
         else:
-            self.label_usd.color = COLOR_ERROR
-            self.label_eur.color = COLOR_ERROR
-            self.label_gbp.color = COLOR_ERROR
-            self.label_pln.color = COLOR_ERROR
+            self.label_usd.color = color_error
+            self.label_eur.color = color_error
+            self.label_gbp.color = color_error
+            self.label_pln.color = color_error
 
     def chosen_sheet(self, dt: MDRaisedButton) -> None:
         if dt.md_bg_color == COLOR_ORANGE_THEME:
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
-                    sheet.md_bg_color = COLOR_BUTTON
+                    sheet.md_bg_color = color_button
                     sheet.text_color = COLOR_ORANGE_THEME
         else:
             for sheet in self.sheets_widget.children:
-                sheet.md_bg_color = COLOR_BUTTON
+                sheet.md_bg_color = color_button
                 sheet.text_color = COLOR_ORANGE_THEME
             self.worksheet_input = dt.text
             dt.md_bg_color = COLOR_ORANGE_THEME
-            dt.text_color = COLOR_BUTTON
+            dt.text_color = color_button
 
     def modify(self, dt: ButtonC) -> None:
         if self.workbook is not None:
@@ -303,7 +303,7 @@ class ModifyCoin(BoxLayout):
             sheet_ok = True
         else:
             for sheet in self.sheets_widget.children:
-                sheet.color = COLOR_ERROR
+                sheet.color = color_error
         ##############################################
         cell_pattern = r"^[A-Za-z]\d+$"
         if re.match(cell_pattern, self.cell_input.text):

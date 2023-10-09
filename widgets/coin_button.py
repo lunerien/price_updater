@@ -1,24 +1,29 @@
 from typing import Any
 from kivymd.uix.button import MDRaisedButton
-from kivy.uix.popup import Popup
+from kivymd.font_definitions import theme_font_styles
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDLabel
+from kivy.uix.popup import Popup
 from kivy.uix.image import AsyncImage
 from kivy.uix.behaviors import ButtonBehavior
-from kivymd.font_definitions import theme_font_styles
 
 from widgets.modify_coin import ModifyCoin
 from lib.asset import Asset
 from lib.language import language, Text
 from lib.currency import Currency
-from lib.config import *
+from lib.config import (
+            color_button, 
+            COLOR_ORANGE_THEME, 
+            COLOR_BEHIND_WINDOW, 
+            COLOR_WINDOW, 
+            font_config)
 
 
 class CoinButton(MDRaisedButton):
     def __init__(self, scrollapp: Any, coin: Asset) -> None:
         super().__init__()
-        self.SPACING: int = 2
-        self.COIN_HEIGHT: int = 40
+        self.spacing: int = 2
+        self.coin_height: int = 40
         self.currency_logo: str = ""
         self.coin_price: str = ""
         match coin.chosen_currency:
@@ -34,7 +39,7 @@ class CoinButton(MDRaisedButton):
             case Currency.EUR:
                 self.currency_logo = "€"
                 self.coin_price = coin.price_eur
-        self.size_hint: tuple[int, int] = (1, self.COIN_HEIGHT)
+        self.size_hint: tuple[int, int] = (1, self.coin_height)
         self.coin: Asset = coin
         self.asset_round_logo: str | None = self.coin.asset_logo
         self.scrollapp: Any = scrollapp
@@ -44,8 +49,8 @@ class CoinButton(MDRaisedButton):
         self.halign: str = "left"
         self.cell: str = self.coin.cell
         self.font_name: str = font_config
-        self.height: int = self.COIN_HEIGHT
-        self.md_bg_color: list[float] = COLOR_BUTTON
+        self.height: int = self.coin_height
+        self.md_bg_color: list[float] = color_button
 
         self.coin_frame = MDBoxLayout(orientation="horizontal")
         self.logo_async = AsyncImage(source=self.asset_round_logo, fit_mode="fill")

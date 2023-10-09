@@ -1,22 +1,20 @@
 import json
-from typing import List, Any
+from typing import Any
+from tkinter.filedialog import askopenfilename
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
-from tkinter.filedialog import askopenfilename
 from openpyxl import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException
 
 from widgets.scroll_app import ScrollApp
 from lib.language import language, Text
-from lib.asset import Asset
 from lib.text_input import TextInputC
 from lib.button import ButtonC
-from lib.config import *
 
 
 class ChangeXlsxMenu(BoxLayout):
     def __init__(self, scrollApp: ScrollApp, popup: Popup, **kwargs: Any) -> None:
-        super(ChangeXlsxMenu, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.scrollapp: ScrollApp = scrollApp
         self.popup: Popup = popup
         self.orientation: str = "vertical"
@@ -47,15 +45,16 @@ class ChangeXlsxMenu(BoxLayout):
         if self.path_xlsx_input.text != self.load_current_path():
             try:
                 wb = load_workbook(self.path_xlsx_input.text)
-                with open("data.json", "r+") as file:
-                    data = json.load(file)
-                    data["path_to_xlsx"] = self.path_xlsx_input.text
-                    file.seek(0)
-                    json.dump(data, file, indent=4)
-                    file.truncate()
-                self.popup.dismiss()
-                self.scrollapp.coins_tab = self.scrollapp.get_coins_from_xlsx()
-                self.scrollapp.initialize_coins()
+                if wb is not None:
+                    with open("data.json", "r+", encoding="utf-8") as file:
+                        data = json.load(file)
+                        data["path_to_xlsx"] = self.path_xlsx_input.text
+                        file.seek(0)
+                        json.dump(data, file, indent=4)
+                        file.truncate()
+                    self.popup.dismiss()
+                    self.scrollapp.coins_tab = self.scrollapp.get_coins_from_xlsx()
+                    self.scrollapp.initialize_coins()
             except InvalidFileException:
                 self.path_xlsx_input.text_error()
                 print("we need xlsx file!")
@@ -69,13 +68,12 @@ class ChangeXlsxMenu(BoxLayout):
             self.popup.dismiss()
 
     def load_current_path(self) -> str:
-        file: Any = open("data.json")
-        data: Any = json.load(file)
+        with open("data.json","r", encoding="utf-8") as file:
+            data: Any = json.load(file)
         path: str = data["path_to_xlsx"]
         if path == "":
             return language.get_text(Text.PATH_TO_XLSX.value)
-        else:
-            return data["path_to_xlsx"]
+        return data["path_to_xlsx"]
 
     def choose_path(self, dt: ButtonC) -> None:
         path: str = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))

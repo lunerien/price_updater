@@ -6,10 +6,10 @@ from kivy.clock import Clock
 
 from lib.language import language, Text
 from lib.config import (
-    COLOR_BACKGROUND_INPUT,
+    color_background_input,
     COLOR_ORANGE_THEME,
-    COLOR_ERROR,
-    COLOR_BUTTON,
+    color_error,
+    color_button,
     font_config,
 )
 
@@ -24,7 +24,7 @@ class AutoSuggestionText(TextInput):
         self.dropdown: DropDown = None
         self.multiline: bool = False
         self.size_hint: tuple = (1, 0.2)
-        self.background_color: list[float] = COLOR_BACKGROUND_INPUT
+        self.background_color: list[float] = color_background_input
         self.foreground_color: list[float] = COLOR_ORANGE_THEME
         self.focus: bool = True
         self.cursor_color: list[float] = COLOR_ORANGE_THEME
@@ -37,7 +37,7 @@ class AutoSuggestionText(TextInput):
         self.foreground_color = COLOR_ORANGE_THEME
 
     def text_error(self) -> None:
-        self.foreground_color = COLOR_ERROR
+        self.foreground_color = color_error
 
     @staticmethod
     def on_text(inst: TextInput, value: str) -> None:
@@ -63,7 +63,7 @@ class AutoSuggestionText(TextInput):
                             size_hint_y=None,
                             height=32,
                             on_release=push,
-                            background_color=COLOR_BUTTON,
+                            background_color=color_button,
                             font_name=font_config,
                             font_size=14,
                             color=COLOR_ORANGE_THEME,

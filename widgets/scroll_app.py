@@ -63,11 +63,11 @@ class ScrollApp(MDScrollView):
             self.coins.add_widget(BoxLayout(size_hint=(1, 0.005)))
             for coin in self.coins_tab:
                 coin_button = CoinButton(scrollapp=self, coin=coin)
-                coin_button.text_color = COLOR_BUTTON
+                coin_button.text_color = color_button
                 coin_button.md_bg_color = COLOR_ASSET_BUTTON
                 i += 1
                 if coin.price_eur == "0,0":
-                    coin_button.text_color = COLOR_ERROR
+                    coin_button.text_color = color_error
                 self.coins.add_widget(coin_button)
         else:
             self.coins.add_widget(self.empty_list)
@@ -167,7 +167,7 @@ class ScrollApp(MDScrollView):
                 if currency.connection_lost
                 else language.get_text(Text.FETCH_ERROR_MSG.value),
                 font_name=font_config,
-                color=COLOR_ERROR,
+                color=color_error,
             )
             warning_msg.content = warning_content
             warning_msg.open(animation=True)

@@ -19,7 +19,7 @@ class Menu(MDRelativeLayout):
         self.button_add = MDFloatingActionButton(
             icon="pencil",
             on_release=self.add_new_coin,
-            md_bg_color=COLOR_BUTTON,
+            md_bg_color=color_button,
             icon_color=COLOR_ORANGE_THEME,
             icon_size="25sp",
         )

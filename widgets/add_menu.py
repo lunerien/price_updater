@@ -1,13 +1,13 @@
+import re
+from typing import Any, Dict
 from dataclasses import dataclass
-from kivy.uix.boxlayout import BoxLayout
+from openpyxl.workbook import Workbook
 from kivymd.uix.button import MDRaisedButton
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.label import Label
-import re
-from typing import Any, Dict
-from openpyxl.workbook import Workbook
 
 from widgets.scroll_app import ScrollApp
 from lib.update import Update
@@ -17,7 +17,7 @@ from lib.text_input import TextInputC
 from lib.button import ButtonC
 from lib.language import language, Text
 from lib.auto_suggestion_text import AutoSuggestionText
-from lib.config import *
+from lib.config import font_config, COLOR_ORANGE_THEME, color_button, COLOR_CHECKBOX, color_error
 from coins_list import assets_list
 
 
@@ -29,15 +29,16 @@ class Info:
 
 class AddMenu(BoxLayout):
     def __init__(self, scrollApp: ScrollApp, popup: Popup, **kwargs: Any) -> None:
-        super(AddMenu, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.scrollapp: ScrollApp = scrollApp
         self.popup: Popup = popup
         self.orientation: str = "vertical"
         self.opacity: float = 0.8
         self.spacing: int = 5
         self.workbook: Workbook = Update().try_load_workbook()
+        self.worksheet_input: str = ""
 
-        if self.workbook != None:
+        if self.workbook is not None:
             self.build()
         else:
             self.no_workbook_label = Label(
@@ -57,7 +58,6 @@ class AddMenu(BoxLayout):
         self.sheets: list[str] = self.workbook.sheetnames
         self.sheets.remove("data")
 
-        self.worksheet_input: str = ""
         self.scroll_sheets = ScrollView()
         self.sheets_widget = BoxLayout(
             orientation="vertical", size_hint_y=None, spacing=2
@@ -68,7 +68,7 @@ class AddMenu(BoxLayout):
         for sheet in self.sheets:
             sheet_button = MDRaisedButton(
                 text=sheet,
-                md_bg_color=COLOR_BUTTON,
+                md_bg_color=color_button,
                 size_hint=(1, None),
                 height=35,
                 on_release=self.chosen_sheet,
@@ -79,7 +79,7 @@ class AddMenu(BoxLayout):
             if i == 0:
                 self.worksheet_input = sheet
                 sheet_button.md_bg_color = COLOR_ORANGE_THEME
-                sheet_button.text_color = COLOR_BUTTON
+                sheet_button.text_color = color_button
             self.sheets_widget.add_widget(sheet_button)
             i += 1
         self.coin_name_input = AutoSuggestionText(
@@ -171,35 +171,32 @@ class AddMenu(BoxLayout):
             self.label_gbp.color = COLOR_ORANGE_THEME
             self.label_pln.color = COLOR_ORANGE_THEME
         else:
-            self.label_usd.color = COLOR_ERROR
-            self.label_eur.color = COLOR_ERROR
-            self.label_gbp.color = COLOR_ERROR
-            self.label_pln.color = COLOR_ERROR
+            self.label_usd.color = color_error
+            self.label_eur.color = color_error
+            self.label_gbp.color = color_error
+            self.label_pln.color = color_error
 
     def chosen_sheet(self, dt: MDRaisedButton) -> None:
         if dt.md_bg_color == COLOR_ORANGE_THEME:
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
-                    sheet.md_bg_color = COLOR_BUTTON
+                    sheet.md_bg_color = color_button
                     sheet.text_color = COLOR_ORANGE_THEME
         else:
             for sheet in self.sheets_widget.children:
-                sheet.md_bg_color = COLOR_BUTTON
+                sheet.md_bg_color = color_button
                 sheet.text_color = COLOR_ORANGE_THEME
             self.worksheet_input = dt.text
             dt.md_bg_color = COLOR_ORANGE_THEME
-            dt.text_color = COLOR_BUTTON
+            dt.text_color = color_button
 
     def add_this_coin(self, dt: ButtonC) -> None:
         info = self.check_input_data()
         if info.check:
             data = self.workbook["data"]
             i = 1
-            while (
-                data.cell(row=1, column=i).value != "-"
-                and data.cell(row=1, column=i).value != None
-            ):
+            while data.cell(row=1, column=i).value not in ('-', None):
                 i += 1
 
             chosen_currency: Currency
@@ -279,7 +276,7 @@ class AddMenu(BoxLayout):
             sheet_ok = True
         else:
             for sheet in self.sheets_widget.children:
-                sheet.color = COLOR_ERROR
+                sheet.color = color_error
         ##############################################
         cell_pattern = r"^[A-Za-z]\d+$"
         if re.match(cell_pattern, self.cell_input.text):
