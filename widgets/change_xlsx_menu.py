@@ -68,7 +68,7 @@ class ChangeXlsxMenu(BoxLayout):
             self.popup.dismiss()
 
     def load_current_path(self) -> str:
-        with open("data.json","r", encoding="utf-8") as file:
+        with open("data.json", "r", encoding="utf-8") as file:
             data: Any = json.load(file)
         path: str = data["path_to_xlsx"]
         if path == "":

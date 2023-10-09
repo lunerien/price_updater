@@ -12,11 +12,12 @@ from lib.asset import Asset
 from lib.language import language, Text
 from lib.currency import Currency
 from lib.config import (
-            color_button, 
-            COLOR_ORANGE_THEME, 
-            COLOR_BEHIND_WINDOW, 
-            COLOR_WINDOW, 
-            font_config)
+    color_button,
+    color_orange_theme,
+    color_behind_window,
+    color_window,
+    font_config,
+)
 
 
 class CoinButton(MDRaisedButton):
@@ -79,14 +80,14 @@ class CoinButton(MDRaisedButton):
 
     def on_press(self) -> None:
         modify_coin_menu = Popup(
-            title_color=COLOR_ORANGE_THEME,
-            overlay_color=COLOR_BEHIND_WINDOW,
-            separator_color=COLOR_ORANGE_THEME,
+            title_color=color_orange_theme,
+            overlay_color=color_behind_window,
+            separator_color=color_orange_theme,
             size_hint=(None, None),
             size=(400, 400),
             auto_dismiss=True,
             title=f"{language.get_text(Text.EDIT_COIN.value)} {self.coin.name}",
-            background_color=COLOR_WINDOW,
+            background_color=color_window,
             title_font=font_config,
         )
         add_menu = ModifyCoin(

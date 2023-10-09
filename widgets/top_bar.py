@@ -5,16 +5,22 @@ from kivy.uix.dropdown import DropDown
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
-from lib.button import ButtonC
 from widgets.change_xlsx_menu import ChangeXlsxMenu
+from lib.button import ButtonC
 from lib.language import language, Languages, Text
 from lib.update import Update
-from lib.config import *
+from lib.config import (
+    color_top_bar,
+    color_orange_theme,
+    color_behind_window,
+    color_window,
+    font_config,
+)
 
 
 class TopBar(BoxLayout):
     def __init__(self, scrollapp: ScrollApp, right_side: Menu, **kwargs: Any) -> None:
-        super(TopBar, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = 35
         self.scrollapp = scrollapp
         self.right_side = right_side
@@ -79,14 +85,14 @@ class TopBar(BoxLayout):
 
     def change_loc(self, dt: ButtonC) -> None:
         change_xlsx_menu = Popup(
-            title_color=COLOR_ORANGE_THEME,
-            overlay_color=COLOR_BEHIND_WINDOW,
-            separator_color=COLOR_ORANGE_THEME,
+            title_color=color_orange_theme,
+            overlay_color=color_behind_window,
+            separator_color=color_orange_theme,
             size_hint=(None, None),
             size=(500, 150),
             auto_dismiss=True,
             title=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
-            background_color=COLOR_WINDOW,
+            background_color=color_window,
             title_font=font_config,
         )
         add_menu = ChangeXlsxMenu(self.scrollapp, change_xlsx_menu)

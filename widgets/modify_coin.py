@@ -1,13 +1,15 @@
 from dataclasses import dataclass
 import re
 from typing import Dict, Any
-from kivy.uix.popup import Popup
 from kivymd.uix.button import MDRaisedButton
+from kivy.uix.popup import Popup
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 
+from coins_list import assets_list
+from lib.on_check_box_active import OnCheckBoxActive
 from lib.asset import Asset
 from lib.update import Update
 from lib.text_input import TextInputC
@@ -15,8 +17,13 @@ from lib.button import ButtonC
 from lib.language import language, Text
 from lib.currency import Currency
 from lib.auto_suggestion_text import AutoSuggestionText
-from lib.config import *
-from coins_list import assets_list
+from lib.config import (
+    color_checkbox,
+    color_orange_theme,
+    color_button,
+    color_error,
+    font_config,
+)
 
 
 @dataclass
@@ -25,9 +32,9 @@ class Info:
     price: Dict[Currency, str]
 
 
-class ModifyCoin(BoxLayout):
+class ModifyCoin(BoxLayout, OnCheckBoxActive):
     def __init__(self, scrollapp: Any, popup: Popup, coin: Asset) -> None:
-        super(ModifyCoin, self).__init__()
+        super().__init__()
         self.scrollapp: Any = scrollapp
         self.popup: Popup = popup
         self.coin: Asset = coin
@@ -51,36 +58,36 @@ class ModifyCoin(BoxLayout):
             orientation="horizontal", size_hint=(1, 0.07)
         )
         self.checkbox_usd = CheckBox(
-            active=True if chosen_currency == Currency.USD else False,
-            color=COLOR_CHECKBOX,
+            active=chosen_currency == Currency.USD,
+            color=color_checkbox,
         )
         self.checkbox_usd.bind(active=self.on_checkbox_active)
         self.checkbox_eur = CheckBox(
-            active=True if chosen_currency == Currency.EUR else False,
-            color=COLOR_CHECKBOX,
+            active=chosen_currency == Currency.EUR,
+            color=color_checkbox,
         )
         self.checkbox_eur.bind(active=self.on_checkbox_active)
         self.checkbox_gbp = CheckBox(
-            active=True if chosen_currency == Currency.GBP else False,
-            color=COLOR_CHECKBOX,
+            active=chosen_currency == Currency.GBP,
+            color=color_checkbox,
         )
         self.checkbox_gbp.bind(active=self.on_checkbox_active)
         self.checkbox_pln = CheckBox(
-            active=True if chosen_currency == Currency.PLN else False,
-            color=COLOR_CHECKBOX,
+            active=chosen_currency == Currency.PLN,
+            color=color_checkbox,
         )
         self.checkbox_pln.bind(active=self.on_checkbox_active)
         self.label_usd = Label(
-            text="USD", color=COLOR_ORANGE_THEME, font_name=font_config
+            text="USD", color=color_orange_theme, font_name=font_config
         )
         self.label_eur = Label(
-            text="EUR", color=COLOR_ORANGE_THEME, font_name=font_config
+            text="EUR", color=color_orange_theme, font_name=font_config
         )
         self.label_gbp = Label(
-            text="GBP", color=COLOR_ORANGE_THEME, font_name=font_config
+            text="GBP", color=color_orange_theme, font_name=font_config
         )
         self.label_pln = Label(
-            text="PLN", color=COLOR_ORANGE_THEME, font_name=font_config
+            text="PLN", color=color_orange_theme, font_name=font_config
         )
         self.checkbox_currency_labels.add_widget(self.label_usd)
         self.checkbox_currency_labels.add_widget(self.label_eur)
@@ -109,11 +116,11 @@ class ModifyCoin(BoxLayout):
                 on_release=self.chosen_sheet,
                 font_name=font_config,
                 font_size=17,
-                text_color=COLOR_ORANGE_THEME,
+                text_color=color_orange_theme,
             )
             if self.coin.worksheet == sheet:
                 self.worksheet_input = sheet
-                sheet_button.md_bg_color = COLOR_ORANGE_THEME
+                sheet_button.md_bg_color = color_orange_theme
                 sheet_button.text_color = color_button
             self.sheets_widget.add_widget(sheet_button)
         self.add_widget(self.coin_name_input)
@@ -143,56 +150,19 @@ class ModifyCoin(BoxLayout):
     def get_chosen_currency(self) -> Currency:
         return Currency(self.coin.chosen_currency)
 
-    def on_checkbox_active(self, instance: CheckBox, value: bool) -> None:
-        if instance == self.checkbox_usd:
-            if value:
-                self.checkbox_eur.active = False
-                self.checkbox_gbp.active = False
-                self.checkbox_pln.active = False
-        if instance == self.checkbox_eur:
-            if value:
-                self.checkbox_usd.active = False
-                self.checkbox_gbp.active = False
-                self.checkbox_pln.active = False
-        if instance == self.checkbox_gbp:
-            if value:
-                self.checkbox_usd.active = False
-                self.checkbox_eur.active = False
-                self.checkbox_pln.active = False
-        if instance == self.checkbox_pln:
-            if value:
-                self.checkbox_usd.active = False
-                self.checkbox_gbp.active = False
-                self.checkbox_eur.active = False
-        if (
-            self.checkbox_usd.active
-            or self.checkbox_gbp.active
-            or self.checkbox_eur.active
-            or self.checkbox_pln.active
-        ):
-            self.label_usd.color = COLOR_ORANGE_THEME
-            self.label_eur.color = COLOR_ORANGE_THEME
-            self.label_gbp.color = COLOR_ORANGE_THEME
-            self.label_pln.color = COLOR_ORANGE_THEME
-        else:
-            self.label_usd.color = color_error
-            self.label_eur.color = color_error
-            self.label_gbp.color = color_error
-            self.label_pln.color = color_error
-
     def chosen_sheet(self, dt: MDRaisedButton) -> None:
-        if dt.md_bg_color == COLOR_ORANGE_THEME:
+        if dt.md_bg_color == color_orange_theme:
             self.worksheet_input = dt.text
             for sheet in self.sheets_widget.children:
                 if dt is not sheet:
                     sheet.md_bg_color = color_button
-                    sheet.text_color = COLOR_ORANGE_THEME
+                    sheet.text_color = color_orange_theme
         else:
             for sheet in self.sheets_widget.children:
                 sheet.md_bg_color = color_button
-                sheet.text_color = COLOR_ORANGE_THEME
+                sheet.text_color = color_orange_theme
             self.worksheet_input = dt.text
-            dt.md_bg_color = COLOR_ORANGE_THEME
+            dt.md_bg_color = color_orange_theme
             dt.text_color = color_button
 
     def modify(self, dt: ButtonC) -> None:
