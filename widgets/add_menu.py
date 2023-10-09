@@ -247,7 +247,7 @@ class AddMenu(BoxLayout):
                 Currency.PLN: "0,0",
                 Currency.GBP: "0,0",
                 Currency.EUR: "0,0",
-                Currency._LOGO: "",
+                Currency.LOGO: "",
             }
 
         name_ok: bool = False
@@ -262,7 +262,7 @@ class AddMenu(BoxLayout):
                 Currency.PLN: "0,0",
                 Currency.GBP: "0,0",
                 Currency.EUR: "0,0",
-                Currency._LOGO: "",
+                Currency.LOGO: "",
             },
         ):
             self.coin_name_input.text_ok()

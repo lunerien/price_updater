@@ -9,5 +9,4 @@ python3 -m pylint \
     --fail-on=W,E \
     lib \
     widgets \
-    .
     $@

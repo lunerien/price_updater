@@ -5,7 +5,13 @@ from kivy.uix.dropdown import DropDown
 from kivy.clock import Clock
 
 from lib.language import language, Text
-from lib.config import *
+from lib.config import (
+    COLOR_BACKGROUND_INPUT,
+    COLOR_ORANGE_THEME,
+    COLOR_ERROR,
+    COLOR_BUTTON,
+    font_config,
+)
 
 
 class AutoSuggestionText(TextInput):
@@ -34,23 +40,23 @@ class AutoSuggestionText(TextInput):
         self.foreground_color = COLOR_ERROR
 
     @staticmethod
-    def on_text(cls: TextInput, value: str) -> None:
+    def on_text(inst: TextInput, value: str) -> None:
         if (
             value != language.get_text(Text.COIN_NAME.value)
             and value != AutoSuggestionText.modified_coin
         ):
-            if cls.dropdown:
-                cls.dropdown.dismiss()
-            cls.dropdown = DropDown()
+            if inst.dropdown:
+                inst.dropdown.dismiss()
+            inst.dropdown = DropDown()
 
-            def push(dt: Button) -> None:
-                cls.dropdown.dismiss()
-                cls.text_chosen = dt.text
-                cls.push_text(dt)
+            def push(textinput: Button) -> None:
+                inst.dropdown.dismiss()
+                inst.text_chosen = textinput.text
+                inst.push_text(textinput)
 
-            if cls.text_chosen != value and cls.text != "":
-                Clock.unschedule(cls.dropdown.open)
-                for suggestion in cls.suggestion_coins:
+            if inst.text_chosen != value and inst.text != "":
+                Clock.unschedule(inst.dropdown.open)
+                for suggestion in inst.suggestion_coins:
                     if suggestion.startswith(value.lower()):
                         button = Button(
                             text=suggestion,
@@ -62,10 +68,10 @@ class AutoSuggestionText(TextInput):
                             font_size=14,
                             color=COLOR_ORANGE_THEME,
                         )
-                        cls.dropdown.add_widget(button)
-                if cls.dropdown.children:
-                    cls.dropdown.open(cls)
+                        inst.dropdown.add_widget(button)
+                if inst.dropdown.children:
+                    inst.dropdown.open(inst)
 
-    def push_text(self, dt: TextInput) -> None:
-        self.text = dt.text
+    def push_text(self, textinput: TextInput) -> None:
+        self.text = textinput.text
         self.dropdown = None

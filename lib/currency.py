@@ -5,7 +5,7 @@ from requests import exceptions
 
 
 class Currency(Enum):
-    _LOGO = "_LOGO"
+    LOGO = "_LOGO"
     USD = "USD"
     EUR = "EUR"
     GBP = "GBP"
@@ -19,15 +19,15 @@ class CCurrency:
         self.eur_pln: float = 0.0
         self.gbp_pln: float = 0.0
 
-    def get_currency(self, currency: Currency) -> float:
+    def get_currency(self, currencyy: Currency) -> float:
         try:
             url: str = (
-                f"https://www.biznesradar.pl/notowania/{currency.value}PLN#1d_lin_lin"
+                f"https://www.biznesradar.pl/notowania/{currencyy.value}PLN#1d_lin_lin"
             )
-            page: Response = get(url)
-            bs = BeautifulSoup(page.content, "html.parser")
+            page: Response = get(url, timeout=5)
+            page_content = BeautifulSoup(page.content, "html.parser")
 
-            for nastronie in bs.find_all("span", class_="profile_quotation"):
+            for nastronie in page_content.find_all("span", class_="profile_quotation"):
                 price: str = nastronie.find("span", class_="q_ch_act")
                 price = str(price)
                 price = price.replace('<span class="q_ch_act">', "")
@@ -39,14 +39,14 @@ class CCurrency:
             ZeroDivisionError,
             TypeError,
             exceptions.ConnectionError,
-        ) as e:
-            if isinstance(e, exceptions.ConnectionError):
+        ) as error:
+            if isinstance(error, exceptions.ConnectionError):
                 self.connection_lost = True
             return 0.0
         return 0.0
 
-    def return_price(self, currency: Currency) -> float:
-        match currency:
+    def return_price(self, currencyy: Currency) -> float:
+        match currencyy:
             case Currency.PLN:
                 return 1.0
             case Currency.USD:

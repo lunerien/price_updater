@@ -41,12 +41,12 @@ class Language:
         return self.language_file[self.get_current_language()][word]
 
     def read_file(self) -> Any:
-        file = open("data.json")
-        data = json.load(file)
+        with open("data.json", encoding="utf-8") as file:
+            data = json.load(file)
         return data
 
     def change_language(self, new_language: Languages) -> None:
-        with open("data.json", "r+") as file:
+        with open("data.json", "r+", encoding="utf-8") as file:
             data: Any = json.load(file)
             data["chosen_language"] = new_language.value
             file.seek(0)

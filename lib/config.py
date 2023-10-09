@@ -3,7 +3,7 @@ from kivy.core.text import LabelBase
 
 VERSION: str = "Price Updater© 1.4b"
 
-LabelBase.register(name="standard", fn_regular=".\Gabarito-SemiBold.ttf")
+LabelBase.register(name="standard", fn_regular="./gabarito-SemiBold.ttf")
 font_config: str = "standard"
 
 COLOR_ERROR: list[float] = get_color_from_hex("#FF0000")

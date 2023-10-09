@@ -1,12 +1,12 @@
 from typing import Any
 from kivy.uix.textinput import TextInput
 
-from lib.config import *
+from lib.config import COLOR_BACKGROUND_INPUT, COLOR_ORANGE_THEME, COLOR_ERROR
 
 
 class TextInputC(TextInput):
     def __init__(self, **kwargs: Any) -> None:
-        super(TextInputC, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.size_hint: tuple = (1, 0.2)
         self.multiline: bool = False
         self.background_color: list[float] = COLOR_BACKGROUND_INPUT

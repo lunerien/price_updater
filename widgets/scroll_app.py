@@ -123,7 +123,7 @@ class ScrollApp(MDScrollView):
                                     Currency.PLN: "0,0",
                                     Currency.EUR: "0,0",
                                     Currency.GBP: "0,0",
-                                    Currency._LOGO: price[Currency._LOGO],
+                                    Currency.LOGO: price[Currency.LOGO],
                                 },
                                 currency=Currency(currency),
                             )
@@ -141,7 +141,7 @@ class ScrollApp(MDScrollView):
                                 Currency.PLN: "0,0",
                                 Currency.EUR: "0,0",
                                 Currency.GBP: "0,0",
-                                Currency._LOGO: price[Currency._LOGO],
+                                Currency.LOGO: price[Currency.LOGO],
                             },
                             currency=Currency(currency),
                         )

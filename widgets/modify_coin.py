@@ -224,7 +224,7 @@ class ModifyCoin(BoxLayout):
             data.cell(row=4, column=self.coin.asset_id).value = chosen_currency.name
             self.workbook.save(language.read_file()["path_to_xlsx"])
             for coin in self.scrollapp.coins_tab:
-                if coin.id == self.coin.asset_id:
+                if coin.asset_id == self.coin.asset_id:
                     coin.name = (
                         self.coin_name_input.text.lower()
                         if self.coin_name_input.text != ""
@@ -236,7 +236,7 @@ class ModifyCoin(BoxLayout):
                     coin.price_pln = info.price[Currency.PLN]
                     coin.price_gbp = info.price[Currency.GBP]
                     coin.price_eur = info.price[Currency.EUR]
-                    coin.asset_logo = info.price[Currency._LOGO]
+                    coin.asset_logo = info.price[Currency.LOGO]
                     break
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
@@ -249,7 +249,7 @@ class ModifyCoin(BoxLayout):
             data.cell(row=3, column=self.coin.asset_id).value = ""
             self.workbook.save(language.read_file()["path_to_xlsx"])
         for coin in self.scrollapp.coins_tab:
-            if coin.id == self.coin.asset_id:
+            if coin.asset_id == self.coin.asset_id:
                 self.scrollapp.coins_tab.remove(coin)
                 break
         self.scrollapp.initialize_coins()
@@ -270,7 +270,7 @@ class ModifyCoin(BoxLayout):
                 Currency.PLN: self.coin.price_pln,
                 Currency.GBP: self.coin.price_gbp,
                 Currency.EUR: self.coin.price_eur,
-                Currency._LOGO: self.coin.asset_logo,
+                Currency.LOGO: self.coin.asset_logo,
             }
 
         name_ok: bool = False
@@ -285,7 +285,7 @@ class ModifyCoin(BoxLayout):
                 Currency.PLN: "0,0",
                 Currency.GBP: "0,0",
                 Currency.EUR: "0,0",
-                Currency._LOGO: self.coin.asset_logo,
+                Currency.LOGO: self.coin.asset_logo,
             },
         ):
             self.coin_name_input.text_ok()

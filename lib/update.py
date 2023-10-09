@@ -1,9 +1,9 @@
+from typing import Tuple, List, Any
 from openpyxl import load_workbook
 from openpyxl.workbook import Workbook
 from openpyxl.utils.exceptions import InvalidFileException
 from bs4 import BeautifulSoup
-from requests import get, exceptions, get, Response
-from typing import Tuple, List, Any
+from requests import get, exceptions, Response
 
 from lib.language import language
 from lib.currency import currency, Currency
@@ -16,10 +16,10 @@ class Update:
         self.dec: int = 3
 
     def update(self, coins: List[Asset]) -> None:
-        if self.workbook != None:
+        if self.workbook is not None:
             data = self.workbook["data"]
             i: int = 1
-            while data.cell(row=1, column=i).value != None:
+            while data.cell(row=1, column=i).value is not None:
                 if data.cell(row=1, column=i).value != "-":
                     price = next(
                         self.get_price(coin)
@@ -52,12 +52,11 @@ class Update:
 
         if ticker in fiat_assets:
             return self.get_fiat_price(ticker)
-        elif ticker in metal_assets:
+        if ticker in metal_assets:
             return self.get_metal_price(ticker)
-        elif ticker in etf_assets:
+        if ticker in etf_assets:
             return self.get_etf_price(ticker)
-        else:
-            return self.get_crypto_price(ticker)
+        return self.get_crypto_price(ticker)
 
     def try_load_workbook(self) -> Workbook | None:
         try:
@@ -70,8 +69,8 @@ class Update:
             print("file missing :D")
         return workbook
 
-    def _exception_catch(self, e: Any) -> float:
-        if isinstance(e, exceptions.ConnectionError):
+    def _exception_catch(self, error: Any) -> float:
+        if isinstance(error, exceptions.ConnectionError):
             currency.connection_lost = True
         return 0.0
 
@@ -88,7 +87,7 @@ class Update:
                         Currency.GBP: str(
                             round(currency.usd_pln / currency.gbp_pln, self.dec)
                         ).replace(".", ","),
-                        Currency._LOGO: f"./images/asset_logo/{ticker}.png",
+                        Currency.LOGO: f"./images/asset_logo/{ticker}.png",
                     }
                 case "gbp":
                     return {
@@ -100,7 +99,7 @@ class Update:
                             round(currency.gbp_pln / currency.eur_pln, self.dec)
                         ).replace(".", ","),
                         Currency.GBP: "1,0",
-                        Currency._LOGO: f"./images/asset_logo/{ticker}.png",
+                        Currency.LOGO: f"./images/asset_logo/{ticker}.png",
                     }
                 case "eur":
                     return {
@@ -112,7 +111,7 @@ class Update:
                         Currency.GBP: str(
                             round(currency.eur_pln / currency.gbp_pln, self.dec)
                         ).replace(".", ","),
-                        Currency._LOGO: f"./images/asset_logo/{ticker}.png",
+                        Currency.LOGO: f"./images/asset_logo/{ticker}.png",
                     }
                 case _:
                     return {
@@ -120,24 +119,24 @@ class Update:
                         Currency.PLN: "0,0",
                         Currency.EUR: "0,0",
                         Currency.GBP: "0,0",
-                        Currency._LOGO: f"./images/asset_logo/{ticker}.png",
+                        Currency.LOGO: f"./images/asset_logo/{ticker}.png",
                     }
-        except:
+        except ZeroDivisionError:
             return {
                 Currency.USD: "0,0",
                 Currency.PLN: "0,0",
                 Currency.EUR: "0,0",
                 Currency.GBP: "0,0",
-                Currency._LOGO: f"./images/asset_logo/{ticker}.png",
+                Currency.LOGO: f"./images/asset_logo/{ticker}.png",
             }
 
     def get_metal_price(self, ticker: str) -> dict[Currency, str]:
         def get_price() -> float:
             try:
                 url = f"https://www.kitco.com/charts/live{ticker}.html"
-                page = get(url)
-                bs = BeautifulSoup(page.content, "html.parser")
-                onpage = bs.find("div", class_="data-blk bid")
+                page = get(url, timeout=5)
+                page_content = BeautifulSoup(page.content, "html.parser")
+                onpage = page_content.find("div", class_="data-blk bid")
                 price = onpage.find("span").get_text()
                 price = price.replace(",", "")
                 return float(price)
@@ -146,8 +145,8 @@ class Update:
                 ZeroDivisionError,
                 TypeError,
                 exceptions.ConnectionError,
-            ) as e:
-                value = self._exception_catch(e)
+            ) as error:
+                value = self._exception_catch(error)
                 return value
 
         price_exact: float = get_price()
@@ -163,30 +162,35 @@ class Update:
                 Currency.GBP: str(
                     round(price_exact * (currency.usd_pln / currency.gbp_pln), self.dec)
                 ).replace(".", ","),
-                Currency._LOGO: f"./images/asset_logo/{ticker}.png",
+                Currency.LOGO: f"./images/asset_logo/{ticker}.png",
             }
-        except:
+        except ZeroDivisionError:
             return {
                 Currency.USD: "0,0",
                 Currency.PLN: "0,0",
                 Currency.EUR: "0,0",
                 Currency.GBP: "0,0",
-                Currency._LOGO: f"./images/asset_logo/{ticker}.png",
+                Currency.LOGO: f"./images/asset_logo/{ticker}.png",
             }
 
     def get_etf_price(self, ticker: str) -> dict[Currency, str]:
         link: str
-        id: str
         if ticker == "swda-etf":
-            link = "https://www.hl.co.uk/shares/shares-search-results/i/ishares-core-msci-world-ucits-etf-usd-acc"
+            link = (
+                "https://www.hl.co.uk/shares/shares-search-results/i/"
+                "ishares-core-msci-world-ucits-etf-usd-acc"
+            )
         else:
-            link = "https://www.hl.co.uk/shares/shares-search-results/i/ishares-core-msci-emerging-markets-imi-ucit"
+            link = (
+                "https://www.hl.co.uk/shares/shares-search-results/i/"
+                "ishares-core-msci-emerging-markets-imi-ucit"
+            )
 
         def get_price() -> float:
             try:
-                page = get(link)
-                bs = BeautifulSoup(page.content, "html.parser")
-                for onpage in bs.find("span", class_="bid price-divide"):
+                page = get(link, timeout=5)
+                page_content = BeautifulSoup(page.content, "html.parser")
+                for onpage in page_content.find("span", class_="bid price-divide"):
                     page_str = str(onpage)
                     page_str = page_str.replace("p", "")
                     page_str = page_str.replace(",", "")
@@ -197,8 +201,8 @@ class Update:
                 ZeroDivisionError,
                 TypeError,
                 exceptions.ConnectionError,
-            ) as e:
-                value = self._exception_catch(e)
+            ) as error:
+                value = self._exception_catch(error)
                 return value
             return 0.0
 
@@ -215,31 +219,33 @@ class Update:
                     round(price_exact * (currency.gbp_pln / currency.eur_pln), self.dec)
                 ).replace(".", ","),
                 Currency.GBP: str(price_exact).replace(".", ","),
-                Currency._LOGO: f"./images/asset_logo/ishares.png",
+                Currency.LOGO: "./images/asset_logo/ishares.png",
             }
-        except:
+        except ZeroDivisionError:
             return {
                 Currency.USD: "0,0",
                 Currency.PLN: "0,0",
                 Currency.EUR: "0,0",
                 Currency.GBP: "0,0",
-                Currency._LOGO: f"./images/asset_logo/ishares.png",
+                Currency.LOGO: "./images/asset_logo/ishares.png",
             }
 
     def get_crypto_price(self, ticker: str) -> dict[Currency, str]:
         try:
             http_logo: str = ""
             url: str = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
-            page: Response = get(url)
-            bs = BeautifulSoup(page.content, "html.parser")
+            page: Response = get(url, timeout=5)
+            page_content = BeautifulSoup(page.content, "html.parser")
             try:
-                data = bs.find("div", class_="sc-16891c57-0 gYEgxU")
+                data = page_content.find("div", class_="sc-16891c57-0 gYEgxU")
                 raw_data = data.find("img", src=True)
                 http_logo = raw_data["src"]
-            except:
+            except exceptions.ConnectionError:
                 pass
 
-            web = bs.find("div", class_="sc-16891c57-0 hqcKQB flexStart alignBaseline")
+            web = page_content.find(
+                "div", class_="sc-16891c57-0 hqcKQB flexStart alignBaseline"
+            )
             price_str = str(web.find("span", class_="sc-16891c57-0 dxubiK base-text"))
             price_str = price_str.replace(
                 '<span class="sc-16891c57-0 dxubiK base-text">$', ""
@@ -290,7 +296,7 @@ class Update:
                 Currency.PLN: price_pln,
                 Currency.EUR: price_eur,
                 Currency.GBP: price_gbp,
-                Currency._LOGO: http_logo,
+                Currency.LOGO: http_logo,
             }
         except (
             AttributeError,
@@ -298,12 +304,12 @@ class Update:
             ZeroDivisionError,
             TypeError,
             exceptions.ConnectionError,
-        ) as e:
-            self._exception_catch(e)
+        ) as error:
+            self._exception_catch(error)
             return {
                 Currency.USD: "0,0",
                 Currency.PLN: "0,0",
                 Currency.EUR: "0,0",
                 Currency.GBP: "0,0",
-                Currency._LOGO: http_logo,
+                Currency.LOGO: http_logo,
             }
