@@ -200,6 +200,7 @@ class Update:
             ) as e:
                 value = self._exception_catch(e)
                 return value
+            return 0.0
 
         price_exact = get_price()
         try:

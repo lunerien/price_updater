@@ -219,7 +219,7 @@ class AddMenu(BoxLayout):
             self.workbook.save(language.read_file()["path_to_xlsx"])
             self.scrollapp.coins_tab.append(
                 Asset(
-                    id=i,
+                    asset_id=i,
                     name=self.coin_name_input.text.lower(),
                     worksheet=self.worksheet_input,
                     cell=self.cell_input.text.upper(),

@@ -3,7 +3,7 @@ from kivymd.uix.gridlayout import MDGridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
-from typing import List
+from typing import List, Any
 from openpyxl import load_workbook
 from kivy.clock import Clock
 
@@ -19,7 +19,7 @@ class ScrollApp(MDScrollView):
     SPACING = 2
     COIN_HEIGHT = 40
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.coins_tab: List[Asset] = list()
         self.coins = MDGridLayout(cols=1, spacing=self.SPACING, size_hint_y=None)
@@ -42,18 +42,18 @@ class ScrollApp(MDScrollView):
         self.fetch_error: bool = False
         Clock.schedule_interval(self.show_coins, 3)
 
-    def show_coins(self, dt):
+    def show_coins(self, dt: Any) -> None:
         Clock.unschedule(self.show_coins)
         currency.usd_pln = currency.get_currency(Currency.USD)
         currency.eur_pln = currency.get_currency(Currency.EUR)
         currency.gbp_pln = currency.get_currency(Currency.GBP)
-        self.coins_tab: List[Asset] = self.get_coins_from_xlsx()
+        self.coins_tab = self.get_coins_from_xlsx()
         self.initialize_coins()
         self.clear_widgets()
         self.add_widget(self.coins)
         self.fetch_error_msg()
 
-    def initialize_coins(self):
+    def initialize_coins(self) -> None:
         self.coins.height = ScrollApp.SPACING + ScrollApp.COIN_HEIGHT * len(
             self.coins_tab
         )
@@ -73,7 +73,7 @@ class ScrollApp(MDScrollView):
             self.coins.add_widget(self.empty_list)
             self.coins.height = self.SPACING + self.COIN_HEIGHT * len(self.coins_tab)
 
-    def get_coins_from_xlsx(self):
+    def get_coins_from_xlsx(self) -> list[Asset]:
         try:
             workbook = load_workbook(language.read_file()["path_to_xlsx"])
         except:
@@ -102,7 +102,7 @@ class ScrollApp(MDScrollView):
                     if price[Currency.PLN] != "0,0":
                         coins.append(
                             Asset(
-                                id=i,
+                                asset_id=i,
                                 name=ticker,
                                 worksheet=worksheet,
                                 cell=cell,
@@ -114,7 +114,7 @@ class ScrollApp(MDScrollView):
                         self.fetch_error = True
                         coins.append(
                             Asset(
-                                id=i,
+                                asset_id=i,
                                 name=ticker,
                                 worksheet=worksheet,
                                 cell=cell,
@@ -132,7 +132,7 @@ class ScrollApp(MDScrollView):
                     self.fetch_error = True
                     coins.append(
                         Asset(
-                            id=i,
+                            asset_id=i,
                             name=ticker,
                             worksheet=worksheet,
                             cell=cell,

@@ -6,14 +6,14 @@ from lib.currency import Currency
 class Asset:
     def __init__(
         self,
-        id: int,
+        asset_id: int,
         name: str,
         worksheet: str,
         cell: str,
         price: Dict[Currency, str],
         currency: Currency,
-    ):
-        self.id: int = id
+    ) -> None:
+        self.asset_id: int = asset_id
         self.name: str = name
         self.worksheet: str = worksheet
         self.cell: str = cell

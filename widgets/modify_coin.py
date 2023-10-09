@@ -1,5 +1,6 @@
+from dataclasses import dataclass
 import re
-from typing import List, Union, Dict, Any
+from typing import Dict, Any
 from kivy.uix.popup import Popup
 from kivymd.uix.button import MDRaisedButton
 from kivy.uix.checkbox import CheckBox
@@ -14,8 +15,14 @@ from lib.button import ButtonC
 from lib.language import language, Text
 from lib.currency import Currency
 from lib.auto_suggestion_text import AutoSuggestionText
-from coins_list import assets_list
 from lib.config import *
+from coins_list import assets_list
+
+
+@dataclass
+class Info:
+    check: bool
+    price: Dict[Currency, str]
 
 
 class ModifyCoin(BoxLayout):
@@ -24,11 +31,16 @@ class ModifyCoin(BoxLayout):
         self.scrollapp: Any = scrollapp
         self.popup: Popup = popup
         self.coin: Asset = coin
+        AutoSuggestionText.modified_coin = self.coin.name
         self.orientation = "vertical"
         self.opacity: float = 0.8
         self.spacing: int = 5
         self.workbook = Update().try_load_workbook()
-        self.coin_name_input = AutoSuggestionText(text="", suggestions=assets_list)
+        self.coin_name_input = AutoSuggestionText(
+            text=self.coin.name, suggestions=assets_list
+        )
+        self.coin_name_input.select_all()
+        self.coin_name_input.focus = True
         self.worksheet_input: str = ""
         self.cell_input = TextInputC(text=self.coin.cell)
         chosen_currency: Currency = self.get_chosen_currency()
@@ -85,7 +97,8 @@ class ModifyCoin(BoxLayout):
         )
         self.sheets_widget.bind(minimum_height=self.sheets_widget.setter("height"))
         self.scroll_sheets.add_widget(self.sheets_widget)
-        self.sheets: list[str] = self.workbook.sheetnames
+        if self.workbook is not None:
+            self.sheets: list[str] = self.workbook.sheetnames
         self.sheets.remove("data")
         for sheet in self.sheets:
             sheet_button = MDRaisedButton(
@@ -130,7 +143,7 @@ class ModifyCoin(BoxLayout):
     def get_chosen_currency(self) -> Currency:
         return Currency(self.coin.chosen_currency)
 
-    def on_checkbox_active(self, instance, value) -> None:
+    def on_checkbox_active(self, instance: CheckBox, value: bool) -> None:
         if instance == self.checkbox_usd:
             if value:
                 self.checkbox_eur.active = False
@@ -183,9 +196,10 @@ class ModifyCoin(BoxLayout):
             dt.text_color = COLOR_BUTTON
 
     def modify(self, dt: ButtonC) -> None:
-        data = self.workbook["data"]
-        price = self.check_input_data()
-        if price[0]:
+        if self.workbook is not None:
+            data = self.workbook["data"]
+        info = self.check_input_data()
+        if info.check:
             chosen_currency: Currency
             if self.checkbox_usd.active:
                 chosen_currency = Currency.USD
@@ -198,17 +212,19 @@ class ModifyCoin(BoxLayout):
             self.coin.chosen_currency = chosen_currency
 
             data = self.workbook["data"]
-            data.cell(row=1, column=self.coin.id).value = (
+            data.cell(row=1, column=self.coin.asset_id).value = (
                 self.coin_name_input.text.lower()
                 if self.coin_name_input.text != ""
                 else self.coin.name.lower()
             )
-            data.cell(row=2, column=self.coin.id).value = self.worksheet_input
-            data.cell(row=3, column=self.coin.id).value = self.cell_input.text.upper()
-            data.cell(row=4, column=self.coin.id).value = chosen_currency.name
+            data.cell(row=2, column=self.coin.asset_id).value = self.worksheet_input
+            data.cell(
+                row=3, column=self.coin.asset_id
+            ).value = self.cell_input.text.upper()
+            data.cell(row=4, column=self.coin.asset_id).value = chosen_currency.name
             self.workbook.save(language.read_file()["path_to_xlsx"])
             for coin in self.scrollapp.coins_tab:
-                if coin.id == self.coin.id:
+                if coin.id == self.coin.asset_id:
                     coin.name = (
                         self.coin_name_input.text.lower()
                         if self.coin_name_input.text != ""
@@ -216,22 +232,24 @@ class ModifyCoin(BoxLayout):
                     )
                     coin.worksheet = self.worksheet_input
                     coin.cell = self.cell_input.text.upper()
-                    coin.price_usd = price[1][Currency.USD]
-                    coin.price_pln = price[1][Currency.PLN]
-                    coin.price_gbp = price[1][Currency.GBP]
-                    coin.price_eur = price[1][Currency.EUR]
+                    coin.price_usd = info.price[Currency.USD]
+                    coin.price_pln = info.price[Currency.PLN]
+                    coin.price_gbp = info.price[Currency.GBP]
+                    coin.price_eur = info.price[Currency.EUR]
+                    coin.asset_logo = info.price[Currency._LOGO]
                     break
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
 
     def delete(self, dt: ButtonC) -> None:
-        data = self.workbook["data"]
-        data.cell(row=1, column=self.coin.id).value = "-"
-        data.cell(row=2, column=self.coin.id).value = ""
-        data.cell(row=3, column=self.coin.id).value = ""
-        self.workbook.save(language.read_file()["path_to_xlsx"])
+        if self.workbook is not None:
+            data = self.workbook["data"]
+            data.cell(row=1, column=self.coin.asset_id).value = "-"
+            data.cell(row=2, column=self.coin.asset_id).value = ""
+            data.cell(row=3, column=self.coin.asset_id).value = ""
+            self.workbook.save(language.read_file()["path_to_xlsx"])
         for coin in self.scrollapp.coins_tab:
-            if coin.id == self.coin.id:
+            if coin.id == self.coin.asset_id:
                 self.scrollapp.coins_tab.remove(coin)
                 break
         self.scrollapp.initialize_coins()
@@ -241,7 +259,7 @@ class ModifyCoin(BoxLayout):
         )
         self.popup.dismiss()
 
-    def check_input_data(self) -> List[Union[bool, Dict[Currency, str]]]:
+    def check_input_data(self) -> Info:
         if not self.coin_name_input.text in (self.coin.name, ""):
             test_price: Dict[Currency, str] = Update().get_asset_price(
                 self.coin_name_input.text
@@ -252,6 +270,7 @@ class ModifyCoin(BoxLayout):
                 Currency.PLN: self.coin.price_pln,
                 Currency.GBP: self.coin.price_gbp,
                 Currency.EUR: self.coin.price_eur,
+                Currency._LOGO: self.coin.asset_logo,
             }
 
         name_ok: bool = False
@@ -266,6 +285,7 @@ class ModifyCoin(BoxLayout):
                 Currency.PLN: "0,0",
                 Currency.GBP: "0,0",
                 Currency.EUR: "0,0",
+                Currency._LOGO: self.coin.asset_logo,
             },
         ):
             self.coin_name_input.text_ok()
@@ -273,11 +293,12 @@ class ModifyCoin(BoxLayout):
         else:
             self.coin_name_input.text_error()
         ##############################################
-        if "data" not in self.workbook.sheetnames:
-            self.workbook.create_sheet("data")
-            hidden = self.workbook["data"]
-            hidden.sheet_state = "hidden"
-            self.workbook.save(language.read_file()["path_to_xlsx"])
+        if self.workbook is not None:
+            if "data" not in self.workbook.sheetnames:
+                self.workbook.create_sheet("data")
+                hidden = self.workbook["data"]
+                hidden.sheet_state = "hidden"
+                self.workbook.save(language.read_file()["path_to_xlsx"])
         if self.worksheet_input != "":
             sheet_ok = True
         else:
@@ -299,4 +320,4 @@ class ModifyCoin(BoxLayout):
         ):
             currency_ok = True
         ##############################################
-        return [name_ok & sheet_ok & cell_ok & currency_ok, test_price]
+        return Info(check=name_ok & sheet_ok & cell_ok & currency_ok, price=test_price)

@@ -23,11 +23,14 @@ class Menu(MDRelativeLayout):
             icon_color=COLOR_ORANGE_THEME,
             icon_size="25sp",
         )
-        self.button_add.pos_hint: dict[str, float] = {"center_x": 1.67, "center_y": 0.09}
+        self.button_add.pos_hint = {
+            "center_x": 1.67,
+            "center_y": 0.09,
+        }
         self.info = Label(
             text=VERSION, font_name="standard", font_size=13, color=COLOR_ORANGE_THEME
         )
-        self.info.pos_hint: dict[str, float] = {"center_x": 0.25, "center_y": 0.023}
+        self.info.pos_hint = {"center_x": 0.25, "center_y": 0.023}
         self.add_widget(self.button_add)
         self.add_widget(self.info)
 
@@ -44,5 +47,5 @@ class Menu(MDRelativeLayout):
             title_font=font_config,
         )
         add_menu = AddMenu(self.scrollapp, add_coin_menu)
-        add_coin_menu.content: AddMenu = add_menu
+        add_coin_menu.content = add_menu
         add_coin_menu.open(animation=True)

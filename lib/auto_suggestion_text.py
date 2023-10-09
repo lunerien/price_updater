@@ -9,8 +9,10 @@ from lib.config import *
 
 
 class AutoSuggestionText(TextInput):
+    modified_coin: str = ""
+
     def __init__(self, suggestions: Tuple[str, ...], **kwargs: Any) -> None:
-        super(AutoSuggestionText, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.suggestion_coins: Tuple[str, ...] = suggestions
         self.text_chosen: str = ""
         self.dropdown: DropDown = None
@@ -23,6 +25,7 @@ class AutoSuggestionText(TextInput):
         self.font_name: str = "standard"
         self.font_size: int = 16
         self.select_all()
+        self.focus = True
 
     def text_ok(self) -> None:
         self.foreground_color = COLOR_ORANGE_THEME
@@ -31,20 +34,23 @@ class AutoSuggestionText(TextInput):
         self.foreground_color = COLOR_ERROR
 
     @staticmethod
-    def on_text(self: TextInput, value: str) -> None:
-        if value != language.get_text(Text.COIN_NAME.value):
-            if self.dropdown:
-                self.dropdown.dismiss()
-
-            self.dropdown = DropDown()
+    def on_text(cls: TextInput, value: str) -> None:
+        if (
+            value != language.get_text(Text.COIN_NAME.value)
+            and value != AutoSuggestionText.modified_coin
+        ):
+            if cls.dropdown:
+                cls.dropdown.dismiss()
+            cls.dropdown = DropDown()
 
             def push(dt: Button) -> None:
-                self.dropdown.dismiss()
-                self.text_chosen = dt.text
-                self.push_text(dt)
+                cls.dropdown.dismiss()
+                cls.text_chosen = dt.text
+                cls.push_text(dt)
 
-            if self.text_chosen != value and self.text != "":
-                for suggestion in self.suggestion_coins:
+            if cls.text_chosen != value and cls.text != "":
+                Clock.unschedule(cls.dropdown.open)
+                for suggestion in cls.suggestion_coins:
                     if suggestion.startswith(value.lower()):
                         button = Button(
                             text=suggestion,
@@ -56,9 +62,9 @@ class AutoSuggestionText(TextInput):
                             font_size=14,
                             color=COLOR_ORANGE_THEME,
                         )
-                        self.dropdown.add_widget(button)
-                if self.dropdown.children:
-                    Clock.schedule_once(lambda dt: self.dropdown.open(self))
+                        cls.dropdown.add_widget(button)
+                if cls.dropdown.children:
+                    cls.dropdown.open(cls)
 
     def push_text(self, dt: TextInput) -> None:
         self.text = dt.text

@@ -24,8 +24,8 @@ class ChangeXlsxMenu(BoxLayout):
         self.input_and_ask_open_file = BoxLayout(orientation="horizontal")
         self.add_widget(self.input_and_ask_open_file)
         self.path_xlsx_input = TextInputC(text=self.load_current_path())
-        self.path_xlsx_input.focus: bool = True
-        self.path_xlsx_input.size_hint: tuple[float, ...] = (0.85, 0.75)
+        self.path_xlsx_input.focus = True
+        self.path_xlsx_input.size_hint = (0.85, 0.75)
         self.input_and_ask_open_file.add_widget(self.path_xlsx_input)
         self.open_file_button = ButtonC(
             text=language.get_text(Text.SEARCH.value),
@@ -54,9 +54,7 @@ class ChangeXlsxMenu(BoxLayout):
                     json.dump(data, file, indent=4)
                     file.truncate()
                 self.popup.dismiss()
-                self.scrollapp.coins_tab: List[
-                    Asset
-                ] = self.scrollapp.get_coins_from_xlsx()
+                self.scrollapp.coins_tab = self.scrollapp.get_coins_from_xlsx()
                 self.scrollapp.initialize_coins()
             except InvalidFileException:
                 self.path_xlsx_input.text_error()
@@ -83,4 +81,3 @@ class ChangeXlsxMenu(BoxLayout):
         path: str = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))
         if path != "":
             self.path_xlsx_input.text = path
-

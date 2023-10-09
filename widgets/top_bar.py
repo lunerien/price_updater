@@ -1,3 +1,4 @@
+from typing import Any
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -12,7 +13,7 @@ from lib.config import *
 
 
 class TopBar(BoxLayout):
-    def __init__(self, scrollapp: ScrollApp, right_side: Menu, **kwargs) -> None:
+    def __init__(self, scrollapp: ScrollApp, right_side: Menu, **kwargs: Any) -> None:
         super(TopBar, self).__init__(**kwargs)
         self.height = 35
         self.scrollapp = scrollapp
@@ -94,8 +95,8 @@ class TopBar(BoxLayout):
 
     def change_language(self, dt: ButtonC) -> None:
         self.language_list_buttons.dismiss()
-        self.language_button.text: str = dt.text
+        self.language_button.text = dt.text
         language.change_language(Languages(dt.text))
-        self.scrollapp.empty_list.text: str = language.get_text(Text.EMPTY_LIST_TEXT.value)
-        self.change_loc_button.text: str = language.get_text(Text.CHANGE_XLSX_WORKBOOK.value)
-        self.update_button.text: str = language.get_text(Text.UPDATE.value)
+        self.scrollapp.empty_list.text = language.get_text(Text.EMPTY_LIST_TEXT.value)
+        self.change_loc_button.text = language.get_text(Text.CHANGE_XLSX_WORKBOOK.value)
+        self.update_button.text = language.get_text(Text.UPDATE.value)

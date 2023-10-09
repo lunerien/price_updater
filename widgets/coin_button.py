@@ -34,7 +34,7 @@ class CoinButton(MDRaisedButton):
             case Currency.EUR:
                 self.currency_logo = "€"
                 self.coin_price = coin.price_eur
-        self.size_hint: tuple[int] = (1, self.COIN_HEIGHT)
+        self.size_hint: tuple[int, int] = (1, self.COIN_HEIGHT)
         self.coin: Asset = coin
         self.asset_round_logo: str | None = self.coin.asset_logo
         self.scrollapp: Any = scrollapp
