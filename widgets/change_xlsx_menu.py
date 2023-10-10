@@ -41,11 +41,11 @@ class ChangeXlsxMenu(BoxLayout):
             )
         )
 
-    def add_path(self, dt: ButtonC) -> None:
+    def add_path(self, instance: ButtonC) -> None:
         if self.path_xlsx_input.text != self.load_current_path():
             try:
-                wb = load_workbook(self.path_xlsx_input.text)
-                if wb is not None:
+                workbook = load_workbook(self.path_xlsx_input.text)
+                if workbook is not None:
                     with open("data.json", "r+", encoding="utf-8") as file:
                         data = json.load(file)
                         data["path_to_xlsx"] = self.path_xlsx_input.text
@@ -75,7 +75,7 @@ class ChangeXlsxMenu(BoxLayout):
             return language.get_text(Text.PATH_TO_XLSX.value)
         return data["path_to_xlsx"]
 
-    def choose_path(self, dt: ButtonC) -> None:
+    def choose_path(self, instance: ButtonC) -> None:
         path: str = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))
         if path != "":
             self.path_xlsx_input.text = path

@@ -40,7 +40,7 @@ class Menu(MDRelativeLayout):
         self.add_widget(self.button_add)
         self.add_widget(self.info)
 
-    def add_new_coin(self, dt: ButtonC) -> None:
+    def add_new_coin(self, instance: ButtonC) -> None:
         add_coin_menu = Popup(
             title_color=color_orange_theme,
             overlay_color=color_behind_window,

@@ -50,7 +50,7 @@ class ScrollApp(MDScrollView):
         self.fetch_error: bool = False
         Clock.schedule_interval(self.show_coins, 3)
 
-    def show_coins(self, dt: Any) -> None:
+    def show_coins(self, instance: Any) -> None:
         Clock.unschedule(self.show_coins)
         currency.usd_pln = currency.get_currency(Currency.USD)
         currency.eur_pln = currency.get_currency(Currency.EUR)
@@ -84,7 +84,7 @@ class ScrollApp(MDScrollView):
     def get_coins_from_xlsx(self) -> list[Asset]:
         try:
             workbook = load_workbook(language.read_file()["path_to_xlsx"])
-        except KeyError:
+        except FileNotFoundError:
             return []
 
         if "data" not in workbook.sheetnames:

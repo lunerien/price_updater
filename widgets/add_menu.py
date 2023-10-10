@@ -146,22 +146,22 @@ class AddMenu(BoxLayout, OnCheckBoxActive):
         )
         buttons.add_widget(button_add)
 
-    def chosen_sheet(self, dt: MDRaisedButton) -> None:
-        if dt.md_bg_color == color_orange_theme:
-            self.worksheet_input = dt.text
+    def chosen_sheet(self, instance: MDRaisedButton) -> None:
+        if instance.md_bg_color == color_orange_theme:
+            self.worksheet_input = instance.text
             for sheet in self.sheets_widget.children:
-                if dt is not sheet:
+                if instance is not sheet:
                     sheet.md_bg_color = color_button
                     sheet.text_color = color_orange_theme
         else:
             for sheet in self.sheets_widget.children:
                 sheet.md_bg_color = color_button
                 sheet.text_color = color_orange_theme
-            self.worksheet_input = dt.text
-            dt.md_bg_color = color_orange_theme
-            dt.text_color = color_button
+            self.worksheet_input = instance.text
+            instance.md_bg_color = color_orange_theme
+            instance.text_color = color_button
 
-    def add_this_coin(self, dt: ButtonC) -> None:
+    def add_this_coin(self, instance: ButtonC) -> None:
         info = self.check_input_data()
         if info.check:
             data = self.workbook["data"]

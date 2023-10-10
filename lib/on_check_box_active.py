@@ -2,8 +2,9 @@ from kivy.uix.checkbox import CheckBox
 
 from lib.config import color_orange_theme, color_error
 
+
 class OnCheckBoxActive:
-    def on_checkbox_active(self, instance: CheckBox, value: bool) -> None:
+    def on_checkbox_active(self: CheckBox, instance: CheckBox, value: bool) -> None:
         if instance == self.checkbox_usd:
             if value:
                 self.checkbox_eur.active = False
@@ -39,4 +40,3 @@ class OnCheckBoxActive:
             self.label_eur.color = color_error
             self.label_gbp.color = color_error
             self.label_pln.color = color_error
-

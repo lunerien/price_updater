@@ -13,7 +13,7 @@ from widgets.top_bar import TopBar
 from widgets.menu import Menu
 
 
-TITLE: str = "Price Updater©"
+title: str = "Price Updater©"
 
 
 if sys.platform == "win32":
@@ -36,17 +36,17 @@ class MainApp(MDApp):
         )
 
     def on_start(self, *args: Any) -> None:
-        HEIGHT: int = 450
-        WIDTH: int = 800
-        Window.minimum_width, Window.minimum_height = WIDTH, HEIGHT
-        Window.set_title(TITLE)
-        Window.size = (WIDTH, HEIGHT)
+        height: int = 450
+        width: int = 800
+        Window.minimum_width, Window.minimum_height = width, height
+        Window.set_title(title)
+        Window.size = (width, height)
         user32 = ctypes.windll.user32
         screen_width = user32.GetSystemMetrics(0)
         screen_height = user32.GetSystemMetrics(1)
-        Window.size = (WIDTH, HEIGHT)
-        Window.top = screen_height - HEIGHT * 2
-        Window.left = screen_width - WIDTH * 2
+        Window.size = (width, height)
+        Window.top = screen_height - height * 2
+        Window.left = screen_width - width * 2
         Window.borderless = False
 
     def build(self) -> BoxLayout:

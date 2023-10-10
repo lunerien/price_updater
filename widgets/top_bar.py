@@ -80,10 +80,10 @@ class TopBar(BoxLayout):
         self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.language_button)
 
-    def update(self, dt: ButtonC) -> None:
+    def update(self, instance: ButtonC) -> None:
         Update().update(self.scrollapp.coins_tab)
 
-    def change_loc(self, dt: ButtonC) -> None:
+    def change_loc(self, instance: ButtonC) -> None:
         change_xlsx_menu = Popup(
             title_color=color_orange_theme,
             overlay_color=color_behind_window,
@@ -99,10 +99,10 @@ class TopBar(BoxLayout):
         change_xlsx_menu.content = add_menu
         change_xlsx_menu.open(animation=True)
 
-    def change_language(self, dt: ButtonC) -> None:
+    def change_language(self, instance: ButtonC) -> None:
         self.language_list_buttons.dismiss()
-        self.language_button.text = dt.text
-        language.change_language(Languages(dt.text))
+        self.language_button.text = instance.text
+        language.change_language(Languages(instance.text))
         self.scrollapp.empty_list.text = language.get_text(Text.EMPTY_LIST_TEXT.value)
         self.change_loc_button.text = language.get_text(Text.CHANGE_XLSX_WORKBOOK.value)
         self.update_button.text = language.get_text(Text.UPDATE.value)

@@ -150,22 +150,22 @@ class ModifyCoin(BoxLayout, OnCheckBoxActive):
     def get_chosen_currency(self) -> Currency:
         return Currency(self.coin.chosen_currency)
 
-    def chosen_sheet(self, dt: MDRaisedButton) -> None:
-        if dt.md_bg_color == color_orange_theme:
-            self.worksheet_input = dt.text
+    def chosen_sheet(self, instance: MDRaisedButton) -> None:
+        if instance.md_bg_color == color_orange_theme:
+            self.worksheet_input = instance.text
             for sheet in self.sheets_widget.children:
-                if dt is not sheet:
+                if instance is not sheet:
                     sheet.md_bg_color = color_button
                     sheet.text_color = color_orange_theme
         else:
             for sheet in self.sheets_widget.children:
                 sheet.md_bg_color = color_button
                 sheet.text_color = color_orange_theme
-            self.worksheet_input = dt.text
-            dt.md_bg_color = color_orange_theme
-            dt.text_color = color_button
+            self.worksheet_input = instance.text
+            instance.md_bg_color = color_orange_theme
+            instance.text_color = color_button
 
-    def modify(self, dt: ButtonC) -> None:
+    def modify(self, instance: ButtonC) -> None:
         if self.workbook is not None:
             data = self.workbook["data"]
         info = self.check_input_data()
@@ -211,7 +211,7 @@ class ModifyCoin(BoxLayout, OnCheckBoxActive):
             self.scrollapp.initialize_coins()
             self.popup.dismiss()
 
-    def delete(self, dt: ButtonC) -> None:
+    def delete(self, instance: ButtonC) -> None:
         if self.workbook is not None:
             data = self.workbook["data"]
             data.cell(row=1, column=self.coin.asset_id).value = "-"
@@ -224,8 +224,8 @@ class ModifyCoin(BoxLayout, OnCheckBoxActive):
                 break
         self.scrollapp.initialize_coins()
         self.scrollapp.coins.height = (
-            self.scrollapp.SPACING
-            + self.scrollapp.COIN_HEIGHT * len(self.scrollapp.coins_tab)
+            self.scrollapp.spacing
+            + self.scrollapp.coin_height * len(self.scrollapp.coins_tab)
         )
         self.popup.dismiss()
 
