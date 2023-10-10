@@ -248,6 +248,7 @@ class ModifyCoin(BoxLayout, OnCheckBoxActive):
         cell_ok: bool = False
         currency_ok: bool = False
         ##############################################
+        print(test_price)
         if test_price not in (
             None,
             {
@@ -255,7 +256,7 @@ class ModifyCoin(BoxLayout, OnCheckBoxActive):
                 Currency.PLN: "0,0",
                 Currency.GBP: "0,0",
                 Currency.EUR: "0,0",
-                Currency.LOGO: self.coin.asset_logo,
+                Currency.LOGO: "",
             },
         ):
             self.coin_name_input.text_ok()

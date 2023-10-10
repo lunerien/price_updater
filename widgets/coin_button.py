@@ -64,7 +64,7 @@ class CoinButton(MDRaisedButton):
             size_hint=(1, 1),
             text=f"  {self.coin.name}",
             halign="left",
-            theme_text_color="Secondary",
+            theme_text_color="Secondary" if self.coin_price != "0,0" else "Error",
             font_style=theme_font_styles[5],
         )
         self.price_label = MDLabel(

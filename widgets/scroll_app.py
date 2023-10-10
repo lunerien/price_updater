@@ -74,8 +74,6 @@ class ScrollApp(MDScrollView):
                 coin_button.text_color = color_button
                 coin_button.md_bg_color = color_asset_button
                 i += 1
-                if coin.price_eur == "0,0":
-                    coin_button.text_color = color_error
                 self.coins.add_widget(coin_button)
         else:
             self.coins.add_widget(self.empty_list)

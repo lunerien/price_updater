@@ -23,15 +23,15 @@ class Menu(MDRelativeLayout):
         super().__init__(**kwargs)
         self.scrollapp: ScrollApp = scrollapp
         self.button_add = MDFloatingActionButton(
-            icon="pencil",
+            icon="plus",
             on_release=self.add_new_coin,
             md_bg_color=color_button,
             icon_color=color_orange_theme,
-            icon_size="25sp",
+            icon_size="35sp",
         )
         self.button_add.pos_hint = {
-            "center_x": 1.67,
-            "center_y": 0.09,
+            "center_x": 3.12,
+            "center_y": 0.11,
         }
         self.info = Label(
             text=VERSION, font_name="standard", font_size=13, color=color_orange_theme
