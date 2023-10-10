@@ -1,5 +1,5 @@
 {
-    "path_to_xlsx": "C:/Users/user/Documents/visual_studio_code/price_updater/test.xlsx",
+    "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/test.xlsx",
     "chosen_language": "EN",
     "EN": {
         "update": "Update!",
@@ -19,7 +19,9 @@
         "please_select_workbook": "Please select workbook first",
         "fetch_error_title": "Fetching some data failed!",
         "fetch_error_msg": "   Fetching some data failed!\nPlease contact with developer",
-        "connection_lost": "Check your Internet connection!"
+        "connection_lost": "Check your Internet connection!",
+        "data_saving_successful": "          data saving successful",
+        "data_saving_failed": "             data saving failed"
     },
     "PL": {
         "update": "Aktualizuj!",
@@ -39,7 +41,9 @@
         "please_select_workbook": "Wybierz najpierw arkusz xlsx",
         "fetch_error_title": "Pobranie niekt\u00f3rych danych nie powiod\u0142o si\u0119",
         "fetch_error_msg": "Pobranie niekt\u00f3rych danych nie powiod\u0142o si\u0119!\n            Skontaktuj si\u0119 z programist\u0105",
-        "connection_lost": "Sprawd\u017a po\u0142\u0105czenie z Internetem!"
+        "connection_lost": "Sprawd\u017a po\u0142\u0105czenie z Internetem!",
+        "data_saving_successful": "       zapis danych powi\u00f3d\u0142 si\u0119",
+        "data_saving_failed": "          zapis nie powi\u00f3d\u0142 si\u0119"
     },
     "DE": {
         "update": "Aktualisieren!",
@@ -59,6 +63,8 @@
         "please_select_workbook": "Bitte wahlen Sie zuerst die Arbeitsmappe aus",
         "fetch_error_title": "Fehler beim Abrufen von Daten!",
         "fetch_error_msg": " Beim Abrufen von Daten ist ein Fehler aufgetreten!\n                     Bitte kontaktieren Sie den Entwickler",
-        "connection_lost": "Prufe deine Internetverbindung!"
+        "connection_lost": "Prufe deine Internetverbindung!",
+        "data_saving_successful": "   Datenspeicherung erfolgreich",
+        "data_saving_failed": "Datenspeicherung fehlgeschlagen"
     }
 }

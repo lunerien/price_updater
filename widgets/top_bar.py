@@ -2,6 +2,8 @@ from typing import Any
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
+from kivy.uix.label import Label
+from kivy.clock import Clock
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
@@ -14,6 +16,9 @@ from lib.config import (
     color_orange_theme,
     color_behind_window,
     color_window,
+    color_behind_info,
+    color_success_info,
+    color_error_info,
     font_config,
 )
 
@@ -81,7 +86,43 @@ class TopBar(BoxLayout):
         self.add_widget(self.language_button)
 
     def update(self, instance: ButtonC) -> None:
-        Update().update(self.scrollapp.coins_tab)
+        response: bool = Update().update(self.scrollapp.coins_tab)
+        update_info = Popup(
+            title_color=color_orange_theme,
+            overlay_color=color_behind_info,
+            separator_color=color_behind_info,
+            size_hint=(None, None),
+            size=(260, 60),
+            auto_dismiss=True,
+            title="",
+            background_color=color_success_info,
+            title_font=font_config,
+        )
+        update_info.pos_hint = {
+            "center_x": 0.5,
+            "center_y": 0.1,
+        }
+        if response:
+            update_info.title = language.get_text(Text.DATA_SAVING_SUCCESSFUL.value)
+            update_success = Label(
+                text="",
+                font_name=font_config,
+                color=color_orange_theme,
+            )
+            update_info.content = update_success
+            update_info.open(animation=True)
+            Clock.schedule_once(update_info.dismiss, 2.5)
+        else:
+            update_info.background_color = color_error_info
+            update_info.title = language.get_text(Text.DATA_SAVING_FAILED.value)
+            update_fail = Label(
+                text="",
+                font_name=font_config,
+                color=color_orange_theme,
+            )
+            update_info.content = update_fail
+            update_info.open(animation=True)
+            Clock.schedule_once(update_info.dismiss, 2.5)
 
     def change_loc(self, instance: ButtonC) -> None:
         change_xlsx_menu = Popup(

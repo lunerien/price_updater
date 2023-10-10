@@ -28,6 +28,8 @@ class Text(Enum):
     FETCH_ERROR_TITLE = "fetch_error_title"
     FETCH_ERROR_MSG = "fetch_error_msg"
     CONNECTION_LOST = "connection_lost"
+    DATA_SAVING_SUCCESSFUL = "data_saving_successful"
+    DATA_SAVING_FAILED = "data_saving_failed"
 
 
 class Language:

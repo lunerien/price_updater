@@ -12,26 +12,31 @@ from lib.asset import Asset
 
 class Update:
     def __init__(self) -> None:
-        self.workbook: Workbook = self.try_load_workbook()
         self.dec: int = 3
 
-    def update(self, coins: List[Asset]) -> None:
-        if self.workbook is not None:
-            data = self.workbook["data"]
-            i: int = 1
-            while data.cell(row=1, column=i).value is not None:
-                if data.cell(row=1, column=i).value != "-":
-                    price = next(
-                        self.get_price(coin)
-                        for coin in coins
-                        if coin.name == data.cell(row=1, column=i).value
-                    )
-                    sheet = self.workbook[data.cell(row=2, column=i).value]
-                    if price != "0,0":
-                        print(price)
-                        sheet[data.cell(row=3, column=i).value] = price
-                i += 1
-            self.workbook.save(language.read_file()["path_to_xlsx"])
+    def update(self, coins: List[Asset]) -> bool:
+        try:
+            workbook: Workbook = self.try_load_workbook()
+            if workbook is not None:
+                data = workbook["data"]
+                i: int = 1
+                while data.cell(row=1, column=i).value is not None:
+                    if data.cell(row=1, column=i).value != "-":
+                        price = next(
+                            self.get_price(coin)
+                            for coin in coins
+                            if coin.name == data.cell(row=1, column=i).value
+                        )
+                        sheet = workbook[data.cell(row=2, column=i).value]
+                        if price != "0,0":
+                            print(price)
+                            sheet[data.cell(row=3, column=i).value] = price
+                    i += 1
+                workbook.save(language.read_file()["path_to_xlsx"])
+                return True
+            return False
+        except UnboundLocalError:
+            return False
 
     def get_price(self, coin: Asset) -> str:
         match coin.chosen_currency:

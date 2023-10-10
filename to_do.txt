@@ -1,4 +1,3 @@
 pobranie danych gdy wroci polaczenie z Internetem
-informacja o prawidlowym zapisie do xlsx
-poprawic wizualne odczucia apki
 po dodaniu nowego assetu/zmianie arkusza nie sprawdza czy pobralo dane
+poprawic wizualne odczucia apki
