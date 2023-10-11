@@ -59,7 +59,6 @@ class ScrollApp(MDScrollView):
         self.initialize_coins()
         self.clear_widgets()
         self.add_widget(self.coins)
-        self.fetch_error_msg()
 
     def initialize_coins(self) -> None:
         self.coins.height = ScrollApp.spacing + ScrollApp.coin_height * len(
@@ -78,8 +77,10 @@ class ScrollApp(MDScrollView):
         else:
             self.coins.add_widget(self.empty_list)
             self.coins.height = self.spacing + self.coin_height * len(self.coins_tab)
+        self.fetch_error_msg()
 
     def get_coins_from_xlsx(self) -> list[Asset]:
+        self.fetch_error = False
         try:
             workbook = load_workbook(language.read_file()["path_to_xlsx"])
         except FileNotFoundError:

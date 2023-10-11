@@ -1,3 +1,1 @@
 pobranie danych gdy wroci polaczenie z Internetem
-po dodaniu nowego assetu/zmianie arkusza nie sprawdza czy pobralo dane
-poprawic wizualne odczucia apki

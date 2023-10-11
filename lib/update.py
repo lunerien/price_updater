@@ -66,13 +66,14 @@ class Update:
     def try_load_workbook(self) -> Workbook | None:
         try:
             workbook: Workbook = load_workbook(language.read_file()["path_to_xlsx"])
+            return workbook
         except InvalidFileException:
             print("we need xlsx file!")
         except KeyError:
             print("please check xlsx format file!")
         except FileNotFoundError:
             print("file missing :D")
-        return workbook
+        return None
 
     def _exception_catch(self, error: Any) -> float:
         if isinstance(error, exceptions.ConnectionError):
