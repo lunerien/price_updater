@@ -76,7 +76,7 @@ class Update:
         return None
 
     def _exception_catch(self, error: Any) -> float:
-        if isinstance(error, exceptions.ConnectionError):
+        if isinstance(error, (exceptions.ConnectionError, exceptions.ReadTimeout)):
             currency.connection_lost = True
         return 0.0
 
@@ -140,17 +140,19 @@ class Update:
         def get_price() -> float:
             try:
                 url = f"https://www.kitco.com/charts/live{ticker}.html"
-                page = get(url, timeout=5)
+                page = get(url, timeout=7)
                 page_content = BeautifulSoup(page.content, "html.parser")
                 onpage = page_content.find("div", class_="data-blk bid")
                 price = onpage.find("span").get_text()
                 price = price.replace(",", "")
                 return float(price)
+            
             except (
                 ValueError,
                 ZeroDivisionError,
                 TypeError,
                 exceptions.ConnectionError,
+                exceptions.ReadTimeout
             ) as error:
                 value = self._exception_catch(error)
                 return value
@@ -194,7 +196,7 @@ class Update:
 
         def get_price() -> float:
             try:
-                page = get(link, timeout=5)
+                page = get(link, timeout=7)
                 page_content = BeautifulSoup(page.content, "html.parser")
                 for onpage in page_content.find("span", class_="bid price-divide"):
                     page_str = str(onpage)
@@ -207,6 +209,7 @@ class Update:
                 ZeroDivisionError,
                 TypeError,
                 exceptions.ConnectionError,
+                exceptions.ReadTimeout
             ) as error:
                 value = self._exception_catch(error)
                 return value
@@ -240,7 +243,7 @@ class Update:
         try:
             http_logo: str = ""
             url: str = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
-            page: Response = get(url, timeout=5)
+            page: Response = get(url, timeout=7)
             page_content = BeautifulSoup(page.content, "html.parser")
             try:
                 data = page_content.find("div", class_="sc-16891c57-0 gYEgxU")
@@ -310,6 +313,7 @@ class Update:
             ZeroDivisionError,
             TypeError,
             exceptions.ConnectionError,
+            exceptions.ReadTimeout
         ) as error:
             self._exception_catch(error)
             return {
