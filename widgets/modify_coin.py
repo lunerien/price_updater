@@ -208,7 +208,7 @@ class ModifyCoin(BoxLayout, OnCheckBoxActive):
                     coin.price_eur = info.price[Currency.EUR]
                     coin.asset_logo = info.price[Currency.LOGO]
                     break
-            self.scrollapp.initialize_coins()
+            self.scrollapp.initialize_coins(False)
             self.popup.dismiss()
 
     def delete(self, instance: ButtonC) -> None:
@@ -222,7 +222,7 @@ class ModifyCoin(BoxLayout, OnCheckBoxActive):
             if coin.asset_id == self.coin.asset_id:
                 self.scrollapp.coins_tab.remove(coin)
                 break
-        self.scrollapp.initialize_coins()
+        self.scrollapp.initialize_coins(False)
         self.scrollapp.coins.height = (
             self.scrollapp.spacing
             + self.scrollapp.coin_height * len(self.scrollapp.coins_tab)

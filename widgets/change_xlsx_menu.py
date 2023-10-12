@@ -3,6 +3,7 @@ from typing import Any
 from tkinter.filedialog import askopenfilename
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
+from kivy.clock import Clock
 from openpyxl import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException
 
@@ -53,8 +54,7 @@ class ChangeXlsxMenu(BoxLayout):
                         json.dump(data, file, indent=4)
                         file.truncate()
                     self.popup.dismiss()
-                    self.scrollapp.coins_tab = self.scrollapp.get_coins_from_xlsx()
-                    self.scrollapp.initialize_coins()
+                    Clock.schedule_once(self._load_assets, 0.7)
             except InvalidFileException:
                 self.path_xlsx_input.text_error()
                 print("we need xlsx file!")
@@ -66,6 +66,10 @@ class ChangeXlsxMenu(BoxLayout):
                 print("file missing :D")
         else:
             self.popup.dismiss()
+
+    def _load_assets(self, instance: Any) -> None:
+        self.scrollapp.coins_tab = self.scrollapp.get_coins_from_xlsx()
+        self.scrollapp.initialize_coins()
 
     def load_current_path(self) -> str:
         with open("data.json", "r", encoding="utf-8") as file:
