@@ -222,7 +222,7 @@ class AddMenu(BoxLayout, OnCheckBoxActive):
         cell_ok: bool = False
         currency_ok: bool = False
         ##############################################
-        if test_price != None and test_price[Currency.EUR] != "0,0":
+        if test_price is not None and test_price[Currency.EUR] != "0,0":
             self.coin_name_input.text_ok()
             name_ok = True
         else:

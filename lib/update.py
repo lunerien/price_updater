@@ -146,13 +146,13 @@ class Update:
                 price = onpage.find("span").get_text()
                 price = price.replace(",", "")
                 return float(price)
-            
+
             except (
                 ValueError,
                 ZeroDivisionError,
                 TypeError,
                 exceptions.ConnectionError,
-                exceptions.ReadTimeout
+                exceptions.ReadTimeout,
             ) as error:
                 value = self._exception_catch(error)
                 return value
@@ -202,7 +202,7 @@ class Update:
                 ZeroDivisionError,
                 TypeError,
                 exceptions.ConnectionError,
-                exceptions.ReadTimeout
+                exceptions.ReadTimeout,
             ) as error:
                 value = self._exception_catch(error)
                 return value
@@ -306,7 +306,7 @@ class Update:
             ZeroDivisionError,
             TypeError,
             exceptions.ConnectionError,
-            exceptions.ReadTimeout
+            exceptions.ReadTimeout,
         ) as error:
             self._exception_catch(error)
             return {
