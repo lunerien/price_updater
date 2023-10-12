@@ -39,9 +39,9 @@ class CCurrency:
             ZeroDivisionError,
             TypeError,
             exceptions.ConnectionError,
-            exceptions.ReadTimeout
+            exceptions.ReadTimeout,
         ) as error:
-            if isinstance(error, exceptions.ConnectionError, exceptions.ReadTimeout):
+            if isinstance(error, (exceptions.ConnectionError, exceptions.ReadTimeout)):
                 self.connection_lost = True
             return 0.0
         return 0.0
