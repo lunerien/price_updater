@@ -184,16 +184,15 @@ class Update:
     def get_etf_price(self, ticker: str) -> dict[Currency, str]:
         link: str
         if ticker == "swda-etf":
-            link = "https://www.marketwatch.com/investing/fund/swda?countrycode=uk"
+            link = "https://markets.ft.com/data/etfs/tearsheet/summary?s=SWDA:LSE:GBX"
         else:
-            link = "https://www.marketwatch.com/investing/fund/emim?countrycode=uk"
+            link = "https://markets.ft.com/data/etfs/tearsheet/summary?s=EMIM:LSE:GBX"
 
         def get_price() -> float:
             try:
                 page = get(link, timeout=7)
                 page_content = BeautifulSoup(page.content, "html.parser")
-                for onpage in page_content.find("bg-quote", class_="value"):
-                    print(onpage)
+                for onpage in page_content.find("span", class_="mod-ui-data-list__value"):
                     page_str = str(onpage)
                     page_str = page_str.replace(",", "")
                     price = page_str[0:4]

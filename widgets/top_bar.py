@@ -3,8 +3,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
-from kivymd.uix.button import MDIconButton
 from kivy.clock import Clock
+from kivymd.uix.button import MDIconButton
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
