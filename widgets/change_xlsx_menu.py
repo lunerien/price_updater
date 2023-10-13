@@ -69,7 +69,7 @@ class ChangeXlsxMenu(BoxLayout):
 
     def _load_assets(self, instance: Any) -> None:
         self.scrollapp.coins_tab = self.scrollapp.get_coins_from_xlsx()
-        self.scrollapp.initialize_coins()
+        self.scrollapp.initialize_coins(check_fetch=True)
 
     def load_current_path(self) -> str:
         with open("data.json", "r", encoding="utf-8") as file:

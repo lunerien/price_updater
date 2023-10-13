@@ -194,7 +194,7 @@ class AddMenu(BoxLayout, OnCheckBoxActive):
                     currency=chosen_currency,
                 )
             )
-            self.scrollapp.initialize_coins(False)
+            self.scrollapp.initialize_coins()
             self.scrollapp.coins.height = (
                 ScrollApp.spacing
                 + ScrollApp.coin_height * len(self.scrollapp.coins_tab)

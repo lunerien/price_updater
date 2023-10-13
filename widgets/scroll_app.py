@@ -56,11 +56,11 @@ class ScrollApp(MDScrollView):
         currency.eur_pln = currency.get_currency(Currency.EUR)
         currency.gbp_pln = currency.get_currency(Currency.GBP)
         self.coins_tab = self.get_coins_from_xlsx()
-        self.initialize_coins()
+        self.initialize_coins(check_fetch=True)
         self.clear_widgets()
         self.add_widget(self.coins)
 
-    def initialize_coins(self, check_fetch: bool = True) -> None:
+    def initialize_coins(self, check_fetch: bool = False) -> None:
         self.coins.height = ScrollApp.spacing + ScrollApp.coin_height * len(
             self.coins_tab
         )
@@ -155,7 +155,16 @@ class ScrollApp(MDScrollView):
             i += 1
         return coins
 
+    def try_fetch_data_connection_lost(self, instance: Any) -> None:
+        test_value: float = currency.get_currency(Currency.USD)
+        if test_value != 0.0:
+            Clock.unschedule(self.try_fetch_data_connection_lost)
+            currency.connection_lost = False
+            self.show_coins(self)
+
     def fetch_error_msg(self) -> None:
+        if currency.connection_lost:
+            Clock.schedule_interval(self.try_fetch_data_connection_lost, 5)
         if self.fetch_error:
             warning_msg = Popup(
                 title_color=color_orange_theme,

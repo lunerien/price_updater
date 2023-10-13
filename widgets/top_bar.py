@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
+from kivymd.uix.button import MDIconButton
 from kivy.clock import Clock
 
 from widgets.menu import Menu
@@ -12,13 +13,14 @@ from lib.button import ButtonC
 from lib.language import language, Languages, Text
 from lib.update import Update
 from lib.config import (
-    color_top_bar,
     color_orange_theme,
     color_behind_window,
     color_window,
     color_behind_info,
     color_success_info,
     color_error_info,
+    color_top_bar_button,
+    color_top_bar,
     font_config,
 )
 
@@ -29,16 +31,31 @@ class TopBar(BoxLayout):
         self.height = 35
         self.scrollapp = scrollapp
         self.right_side = right_side
-        self.change_loc_button = ButtonC(
-            text=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
-            size_hint=(0.45, 1),
+        self.change_loc_button = MDIconButton(
+            icon="application-cog",
+            md_bg_color=color_top_bar_button,
+            theme_icon_color="Custom",
+            icon_color=color_orange_theme,
+            icon_size="28sp",
+            size_hint=(0.12, 1),
         )
-        self.change_loc_button.md_bg_color = color_top_bar
-        self.update_button = ButtonC(
-            text=language.get_text(Text.UPDATE.value),
-            size_hint=(0.45, 1),
+        self.update_button = MDIconButton(
+            icon="file-download",
+            md_bg_color=color_top_bar_button,
+            theme_icon_color="Custom",
+            icon_color=color_orange_theme,
+            icon_size="28sp",
+            size_hint=(0.12, 1),
         )
-        self.update_button.md_bg_color = color_top_bar
+        self.refresh_button = MDIconButton(
+            icon="web-refresh",
+            md_bg_color=color_top_bar_button,
+            theme_icon_color="Custom",
+            icon_color=color_orange_theme,
+            icon_size="28sp",
+            size_hint=(0.12, 1),
+        )
+        self.refresh_button.bind(on_release=self.scrollapp.show_coins)
         self.language_list_buttons = DropDown()
         self.btn_en = ButtonC(
             text=Languages.EN.value,
@@ -64,12 +81,15 @@ class TopBar(BoxLayout):
         self.language_list_buttons.add_widget(self.btn_en)
         self.language_list_buttons.add_widget(self.btn_pl)
         self.language_list_buttons.add_widget(self.btn_de)
-        self.language_button = ButtonC(
-            text=language.get_current_language(),
-            size_hint=(0.1, 1),
+        self.language_button = MDIconButton(
+            icon="translate",
+            md_bg_color=color_top_bar_button,
+            theme_icon_color="Custom",
+            icon_color=color_orange_theme,
+            icon_size="28sp",
+            size_hint=(0.12, 1),
             pos=(350, 300),
         )
-        self.language_button.md_bg_color = color_top_bar
         self.language_button.bind(on_release=self.language_list_buttons.open)
         self.language_list_buttons.bind(
             on_select=lambda instance, x: setattr(
@@ -83,7 +103,10 @@ class TopBar(BoxLayout):
         self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.update_button)
         self.add_widget(BoxLayout(size_hint=(0.002, 1)))
+        self.add_widget(self.refresh_button)
+        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.language_button)
+        self.add_widget(BoxLayout(size_hint=(1, 1)))
 
     def update(self, instance: ButtonC) -> None:
         response: bool = Update().update(self.scrollapp.coins_tab)
