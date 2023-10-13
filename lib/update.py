@@ -192,7 +192,8 @@ class Update:
             try:
                 page = get(link, timeout=7)
                 page_content = BeautifulSoup(page.content, "html.parser")
-                for onpage in page_content.find("span", class_="value"):
+                for onpage in page_content.find("bg-quote", class_="value"):
+                    print(onpage)
                     page_str = str(onpage)
                     page_str = page_str.replace(",", "")
                     price = page_str[0:4]

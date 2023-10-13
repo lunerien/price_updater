@@ -1,6 +1,6 @@
 from typing import Any
 from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.button import MDFloatingActionButton
+from kivymd.uix.button import MDIconButton
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 
@@ -10,7 +10,7 @@ from lib.language import language, Text
 from lib.button import ButtonC
 from lib.config import VERSION
 from lib.config import (
-    color_button,
+    color_top_bar_button,
     color_orange_theme,
     color_behind_window,
     color_window,
@@ -22,12 +22,13 @@ class Menu(MDRelativeLayout):
     def __init__(self, scrollapp: ScrollApp, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.scrollapp: ScrollApp = scrollapp
-        self.button_add = MDFloatingActionButton(
+        self.button_add = MDIconButton(
             icon="pen-plus",
             on_release=self.add_new_coin,
-            md_bg_color=color_button,
+            md_bg_color=color_top_bar_button,
+            theme_icon_color="Custom",
             icon_color=color_orange_theme,
-            icon_size="28sp",
+            icon_size="40sp",
         )
         self.button_add.pos_hint = {
             "center_x": 3.12,

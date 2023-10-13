@@ -104,9 +104,8 @@ class TopBar(BoxLayout):
         self.add_widget(self.update_button)
         self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.refresh_button)
-        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
-        self.add_widget(self.language_button)
         self.add_widget(BoxLayout(size_hint=(1, 1)))
+        self.add_widget(self.language_button)
 
     def update(self, instance: ButtonC) -> None:
         response: bool = Update().update(self.scrollapp.coins_tab)
