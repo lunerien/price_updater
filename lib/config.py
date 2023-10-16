@@ -18,4 +18,4 @@ color_behind_info: list[float] = get_color_from_hex("#00000000")
 color_success_info: list[float] = get_color_from_hex("#00FF00DD")
 color_error_info: list[float] = get_color_from_hex("#FF0000DD")
 color_checkbox: list[float] = [80, 80, 80, 1]
-color_asset_button: list[float] = get_color_from_hex("#FFFDF5BB")
+color_asset_button: list[float] = get_color_from_hex("#EBE6D5CC")

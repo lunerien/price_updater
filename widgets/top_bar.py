@@ -55,7 +55,7 @@ class TopBar(BoxLayout):
             icon_size="28sp",
             size_hint=(0.12, 1),
         )
-        self.refresh_button.bind(on_release=self.scrollapp.show_coins)
+        self.refresh_button.bind(on_release=self.scrollapp.refresh_assets)
         self.language_list_buttons = DropDown()
         self.btn_en = ButtonC(
             text=Languages.EN.value,
