@@ -1,7 +1,6 @@
 from typing import List, Any
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.spinner import MDSpinner
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
@@ -38,10 +37,10 @@ class ScrollApp(MDScrollView):
             font_size=21,
             color=color_orange_theme,
         )
-        self.loading_list = MDSpinner(
-            pos_hint={"center_x": 0.5, "center_y": 0.5},
-            size_hint=(0.08, 0.08),
-            active=True,
+        self.loading_list = Label(
+            text=language.get_text(Text.LOADING_LIST_TEXT.value),
+            font_name=font_config,
+            font_size=21,
             color=color_orange_theme,
         )
         self.add_widget(self.loading_list)
@@ -54,8 +53,7 @@ class ScrollApp(MDScrollView):
     def refresh_assets(self, instance: Any) -> None:
         self.coins.clear_widgets()
         self.clear_widgets()
-        self.add_widget(self.loading_list)
-        Clock.schedule_once(self.show_coins, 0.2)
+        self.show_coins(self)
 
     def show_coins(self, instance: Any) -> None:
         Clock.unschedule(self.show_coins)
