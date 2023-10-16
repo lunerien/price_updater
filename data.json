@@ -21,7 +21,9 @@
         "fetch_error_msg": "   Fetching some data failed!\nPlease contact with developer",
         "connection_lost": "Check your Internet connection!",
         "data_saving_successful": "          data saving successful",
-        "data_saving_failed": "             data saving failed"
+        "data_saving_failed": "             data saving failed",
+        "refresh_data": "Refresh data",
+        "change_language": "Change language"
     },
     "PL": {
         "update": "Aktualizuj!",
@@ -43,7 +45,9 @@
         "fetch_error_msg": "Pobranie niekt\u00f3rych danych nie powiod\u0142o si\u0119!\n            Skontaktuj si\u0119 z programist\u0105",
         "connection_lost": "Sprawd\u017a po\u0142\u0105czenie z Internetem!",
         "data_saving_successful": "       zapis danych powi\u00f3d\u0142 si\u0119",
-        "data_saving_failed": "          zapis nie powi\u00f3d\u0142 si\u0119"
+        "data_saving_failed": "          zapis nie powi\u00f3d\u0142 si\u0119",
+        "refresh_data": "Od\u015bwie\u017c dane",
+        "change_language": "Zmie\u0144 j\u0119zyk"
     },
     "DE": {
         "update": "Aktualisieren!",
@@ -65,6 +69,8 @@
         "fetch_error_msg": " Beim Abrufen von Daten ist ein Fehler aufgetreten!\n                     Bitte kontaktieren Sie den Entwickler",
         "connection_lost": "Prufe deine Internetverbindung!",
         "data_saving_successful": "   Datenspeicherung erfolgreich",
-        "data_saving_failed": "Datenspeicherung fehlgeschlagen"
+        "data_saving_failed": "Datenspeicherung fehlgeschlagen",
+        "refresh_data": "Daten aktualisieren",
+        "change_language": "Sprache \u00e4ndern"
     }
 }

@@ -30,6 +30,8 @@ class Text(Enum):
     CONNECTION_LOST = "connection_lost"
     DATA_SAVING_SUCCESSFUL = "data_saving_successful"
     DATA_SAVING_FAILED = "data_saving_failed"
+    REFRESH_DATA = "refresh_data"
+    CHANGE_LANGUAGE = "change_language"
 
 
 class Language:

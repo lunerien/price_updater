@@ -4,12 +4,11 @@ from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.clock import Clock
-from kivymd.uix.button import MDIconButton
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
 from widgets.change_xlsx_menu import ChangeXlsxMenu
-from lib.button import ButtonC
+from lib.button import ButtonC, TooltipMDIconButton
 from lib.language import language, Languages, Text
 from lib.update import Update
 from lib.config import (
@@ -31,7 +30,8 @@ class TopBar(BoxLayout):
         self.height = 35
         self.scrollapp = scrollapp
         self.right_side = right_side
-        self.change_loc_button = MDIconButton(
+        self.change_loc_button = TooltipMDIconButton(
+            tooltip_text=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
             icon="application-cog",
             md_bg_color=color_top_bar_button,
             theme_icon_color="Custom",
@@ -39,7 +39,8 @@ class TopBar(BoxLayout):
             icon_size="28sp",
             size_hint=(0.12, 1),
         )
-        self.update_button = MDIconButton(
+        self.update_button = TooltipMDIconButton(
+            tooltip_text=language.get_text(Text.UPDATE.value),
             icon="file-download",
             md_bg_color=color_top_bar_button,
             theme_icon_color="Custom",
@@ -47,7 +48,8 @@ class TopBar(BoxLayout):
             icon_size="28sp",
             size_hint=(0.12, 1),
         )
-        self.refresh_button = MDIconButton(
+        self.refresh_button = TooltipMDIconButton(
+            tooltip_text=language.get_text(Text.REFRESH_DATA.value),
             icon="web-refresh",
             md_bg_color=color_top_bar_button,
             theme_icon_color="Custom",
@@ -81,7 +83,8 @@ class TopBar(BoxLayout):
         self.language_list_buttons.add_widget(self.btn_en)
         self.language_list_buttons.add_widget(self.btn_pl)
         self.language_list_buttons.add_widget(self.btn_de)
-        self.language_button = MDIconButton(
+        self.language_button = TooltipMDIconButton(
+            tooltip_text=language.get_text(Text.CHANGE_LANGUAGE.value),
             icon="translate",
             md_bg_color=color_top_bar_button,
             theme_icon_color="Custom",
@@ -164,8 +167,13 @@ class TopBar(BoxLayout):
 
     def change_language(self, instance: ButtonC) -> None:
         self.language_list_buttons.dismiss()
-        self.language_button.text = instance.text
         language.change_language(Languages(instance.text))
         self.scrollapp.empty_list.text = language.get_text(Text.EMPTY_LIST_TEXT.value)
-        self.change_loc_button.text = language.get_text(Text.CHANGE_XLSX_WORKBOOK.value)
-        self.update_button.text = language.get_text(Text.UPDATE.value)
+        self.refresh_button.tooltip_text = language.get_text(Text.REFRESH_DATA.value)
+        self.change_loc_button.tooltip_text = language.get_text(
+            Text.CHANGE_XLSX_WORKBOOK.value
+        )
+        self.update_button.tooltip_text = language.get_text(Text.UPDATE.value)
+        self.language_button.tooltip_text = language.get_text(
+            Text.CHANGE_LANGUAGE.value
+        )

@@ -1,11 +1,11 @@
 from typing import Any
 from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.button import MDIconButton
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 
 from widgets.add_menu import AddMenu
 from widgets.scroll_app import ScrollApp
+from lib.button import TooltipMDIconButton
 from lib.language import language, Text
 from lib.button import ButtonC
 from lib.config import VERSION
@@ -22,7 +22,8 @@ class Menu(MDRelativeLayout):
     def __init__(self, scrollapp: ScrollApp, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.scrollapp: ScrollApp = scrollapp
-        self.button_add = MDIconButton(
+        self.button_add = TooltipMDIconButton(
+            tooltip_text=language.get_text(Text.ADD_NEW_COIN.value),
             icon="pen-plus",
             on_release=self.add_new_coin,
             md_bg_color=color_top_bar_button,
