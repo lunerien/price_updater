@@ -241,18 +241,18 @@ class Update:
             page: Response = get(url, timeout=7)
             page_content = BeautifulSoup(page.content, "html.parser")
             try:
-                data = page_content.find("div", class_="sc-16891c57-0 gYEgxU")
+                data = page_content.find("div", class_="sc-f70bb44c-0 jImtlI")
                 raw_data = data.find("img", src=True)
                 http_logo = raw_data["src"]
             except exceptions.ConnectionError:
                 pass
 
             web = page_content.find(
-                "div", class_="sc-16891c57-0 hqcKQB flexStart alignBaseline"
+                "div", class_="sc-f70bb44c-0 flfGQp flexStart alignBaseline"
             )
-            price_str = str(web.find("span", class_="sc-16891c57-0 dxubiK base-text"))
+            price_str = str(web.find("span", class_="sc-f70bb44c-0 jxpCgO base-text"))
             price_str = price_str.replace(
-                '<span class="sc-16891c57-0 dxubiK base-text">$', ""
+                '<span class="sc-f70bb44c-0 jxpCgO base-text">$', ""
             )
             price_str = price_str.replace("</span>", "")
             price_str = price_str.replace(",", "")

@@ -1,6 +1,6 @@
 {
-    "path_to_xlsx": "C:/Users/user/Documents/visual_studio_code/price_updater/test0.xlsx",
-    "chosen_language": "PL",
+    "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/test0.xlsx",
+    "chosen_language": "EN",
     "EN": {
         "update": "Update!",
         "edit_asset": "Editing asset: ",
