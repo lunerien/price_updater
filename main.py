@@ -28,7 +28,7 @@ class MainApp(MDApp):
         self.scroll_and_menu = BoxLayout(orientation="horizontal")
         self.top_bar_and_menu = BoxLayout(orientation="vertical")
         self.left_side = FloatLayout(size_hint=(1, 1))
-        self.background = Image(source="images/background_logo.jpg", fit_mode="fill")
+        self.background = Image(source="images/background_sode.jpg", fit_mode="fill")
         self.scrollview = ScrollApp()
         self.right_side = Menu(self.scrollview, size_hint=(0.3, 1))
         self.top_bar = TopBar(
