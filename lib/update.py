@@ -52,7 +52,7 @@ class Update:
 
     def get_asset_price(self, ticker: str) -> dict[Currency, str]:
         fiat_assets: Tuple[str, ...] = ("eur", "gbp", "usd")
-        metal_assets: Tuple[str, ...] = ("gold", "silver")
+        metal_assets: Tuple[str, ...] = ("xau", "xag")
         etf_assets: Tuple[str, ...] = ("swda-etf", "emim-etf")
 
         if ticker in fiat_assets:
@@ -139,14 +139,14 @@ class Update:
     def get_metal_price(self, ticker: str) -> dict[Currency, str]:
         def get_price() -> float:
             try:
-                url = f"https://www.kitco.com/charts/live{ticker}.html"
+                url = f"https://www.cnbc.com/quotes/{ticker}="
                 page = get(url, timeout=7)
                 page_content = BeautifulSoup(page.content, "html.parser")
-                onpage = page_content.find("div", class_="data-blk bid")
-                price = onpage.find("span").get_text()
-                price = price.replace(",", "")
+                onpage = str(page_content.find("span", class_="QuoteStrip-lastPrice"))
+                onpage = onpage.replace('<span class="QuoteStrip-lastPrice">', "")
+                onpage = onpage.replace('</span>', "")
+                price = onpage.replace(",", "")
                 return float(price)
-
             except (
                 ValueError,
                 ZeroDivisionError,

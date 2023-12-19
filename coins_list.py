@@ -1137,8 +1137,8 @@ assets_list: Tuple[str, ...] = (
     "usd",
     "eur",
     "gbp",
-    "gold",
-    "silver",
+    "xau",
+    "xag",
     "swda-etf",
     "emim-etf",
 )
