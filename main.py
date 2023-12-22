@@ -36,8 +36,8 @@ class MainApp(MDApp):
         )
 
     def on_start(self, *args: Any) -> None:
-        height: int = 438
-        width: int = 800
+        height: int = 500
+        width: int = 850
         Window.minimum_width, Window.minimum_height = width, height
         Window.set_title(title)
         Window.size = (width, height)

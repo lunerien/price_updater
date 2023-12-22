@@ -30,7 +30,6 @@ class Update:
                         )
                         sheet = workbook[data.cell(row=2, column=i).value]
                         if price != "0,0":
-                            print(price)
                             sheet[data.cell(row=3, column=i).value] = price
                     i += 1
                 workbook.save(language.read_file()["path_to_xlsx"])
@@ -268,8 +267,9 @@ class Update:
                 if response.status_code == 200:
                     data = response.json()
                     price = data[ticker]["usd"]
-                return float(price)
-            
+                    return float(price)
+                else:
+                    return 0.0
             except (
             AttributeError,
             ValueError,
