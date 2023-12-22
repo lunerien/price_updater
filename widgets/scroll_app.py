@@ -89,7 +89,7 @@ class ScrollApp(MDScrollView):
         self.fetch_error = False
         try:
             workbook = load_workbook(language.read_file()["path_to_xlsx"])
-        except FileNotFoundError:
+        except:
             return []
 
         if "data" not in workbook.sheetnames:

@@ -19,9 +19,9 @@ from lib.config import (
     color_success_info,
     color_error_info,
     color_top_bar_button,
+    color_background_input,
     color_top_bar,
     font_config,
-    color_error,
 )
 
 
@@ -89,7 +89,7 @@ class TopBar(BoxLayout):
             icon=language.get_text(Text.CHANGE_API.value),
             md_bg_color=color_top_bar_button,
             theme_icon_color="Custom",
-            icon_color = color_orange_theme if language.get_api_status() == "api-on" else color_error,
+            icon_color = color_orange_theme if language.get_api_status() == "api-on" else color_background_input,
             icon_size="28sp",
             size_hint=(0.12, 1),
             pos=(350, 300),
@@ -129,7 +129,7 @@ class TopBar(BoxLayout):
             self.api_button.icon_color = color_orange_theme
         else:
             language.change_api_status("api-off")
-            self.api_button.icon_color = color_error
+            self.api_button.icon_color = color_background_input
 
     def update(self, instance: ButtonC) -> None:
         response: bool = Update().update(self.scrollapp.coins_tab)
