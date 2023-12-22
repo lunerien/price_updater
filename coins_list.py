@@ -1133,7 +1133,7 @@ assets_list: Tuple[str, ...] = (
     "swingby",
     "polylastic",
     "bistroo",
-    "mover",
+    "holyheld-2",
     "usd",
     "eur",
     "gbp",
