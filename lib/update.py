@@ -13,6 +13,7 @@ from lib.asset import Asset
 class Update:
     def __init__(self) -> None:
         self.dec: int = 3
+        self.api_status: str = language.get_api_status()
 
     def update(self, coins: List[Asset]) -> bool:
         try:
@@ -235,82 +236,96 @@ class Update:
             }
 
     def get_crypto_price(self, ticker: str) -> dict[Currency, str]:
-        try:
-            http_logo: str = ""
-            url: str = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
-            page: Response = get(url, timeout=7)
-            page_content = BeautifulSoup(page.content, "html.parser")
+        url: str = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
+        page: Response = get(url, timeout=7)
+        page_content = BeautifulSoup(page.content, "html.parser")
+        
+        def get_logo(ticker: str) -> str:
             try:
                 data = page_content.find("div", class_="sc-f70bb44c-0 jImtlI")
                 raw_data = data.find("img", src=True)
-                http_logo = raw_data["src"]
+                return raw_data["src"]
             except exceptions.ConnectionError:
                 pass
+            return ""
 
-            web = page_content.find(
-                "div", class_="sc-f70bb44c-0 flfGQp flexStart alignBaseline"
-            )
-            price_str = str(web.find("span", class_="sc-f70bb44c-0 jxpCgO base-text"))
-            price_str = price_str.replace(
-                '<span class="sc-f70bb44c-0 jxpCgO base-text">$', ""
-            )
-            price_str = price_str.replace("</span>", "")
-            price_str = price_str.replace(",", "")
-            price_float = float(price_str)
-            ######################################################
-            price_usd = (
-                str(round(price_float, 6))
-                if price_str[:2] == "0."
-                else str(round(price_float, 2))
-            )
-            price_usd = price_usd.replace(".", ",")
-            ######################################################
-            price_pln_float = price_float * currency.return_price(Currency.USD)
-            price_pln = (
-                str(round(price_pln_float, 6))
-                if price_str[:2] == "0."
-                else str(round(price_pln_float, 2))
-            )
-            price_pln = price_pln.replace(".", ",")
-            ######################################################
-            price_eur_float = price_float * (
-                currency.return_price(Currency.USD)
-                / currency.return_price(Currency.EUR)
-            )
-            price_eur = (
-                str(round(price_eur_float, 6))
-                if price_str[:2] == "0."
-                else str(round(price_eur_float, 2))
-            )
-            price_eur = price_eur.replace(".", ",")
-            ######################################################
-            price_gbp_float = price_float * (
-                currency.return_price(Currency.USD)
-                / currency.return_price(Currency.GBP)
-            )
-            price_gbp = (
-                str(round(price_gbp_float, 6))
-                if price_str[:2] == "0."
-                else str(round(price_gbp_float, 2))
-            )
-            price_gbp = price_gbp.replace(".", ",")
-            ######################################################
-            return {
-                Currency.USD: price_usd,
-                Currency.PLN: price_pln,
-                Currency.EUR: price_eur,
-                Currency.GBP: price_gbp,
-                Currency.LOGO: http_logo,
-            }
-        except (
-            AttributeError,
-            ValueError,
-            ZeroDivisionError,
-            TypeError,
-            exceptions.ConnectionError,
-            exceptions.ReadTimeout,
-        ) as error:
-            self._exception_catch(error)
+        http_logo: str = get_logo(ticker)
+        
+        if self.api_status == "api-off":
+            try:
+                web = page_content.find(
+                    "div", class_="sc-f70bb44c-0 flfGQp flexStart alignBaseline"
+                )
+                price_str = str(web.find("span", class_="sc-f70bb44c-0 jxpCgO base-text"))
+                price_str = price_str.replace(
+                    '<span class="sc-f70bb44c-0 jxpCgO base-text">$', ""
+                )
+                price_str = price_str.replace("</span>", "")
+                price_str = price_str.replace(",", "")
+                price_float = float(price_str)
+                ######################################################
+                price_usd = (
+                    str(round(price_float, 6))
+                    if price_str[:2] == "0."
+                    else str(round(price_float, 2))
+                )
+                price_usd = price_usd.replace(".", ",")
+                ######################################################
+                price_pln_float = price_float * currency.return_price(Currency.USD)
+                price_pln = (
+                    str(round(price_pln_float, 6))
+                    if price_str[:2] == "0."
+                    else str(round(price_pln_float, 2))
+                )
+                price_pln = price_pln.replace(".", ",")
+                ######################################################
+                price_eur_float = price_float * (
+                    currency.return_price(Currency.USD)
+                    / currency.return_price(Currency.EUR)
+                )
+                price_eur = (
+                    str(round(price_eur_float, 6))
+                    if price_str[:2] == "0."
+                    else str(round(price_eur_float, 2))
+                )
+                price_eur = price_eur.replace(".", ",")
+                ######################################################
+                price_gbp_float = price_float * (
+                    currency.return_price(Currency.USD)
+                    / currency.return_price(Currency.GBP)
+                )
+                price_gbp = (
+                    str(round(price_gbp_float, 6))
+                    if price_str[:2] == "0."
+                    else str(round(price_gbp_float, 2))
+                )
+                price_gbp = price_gbp.replace(".", ",")
+                ######################################################
+                return {
+                    Currency.USD: price_usd,
+                    Currency.PLN: price_pln,
+                    Currency.EUR: price_eur,
+                    Currency.GBP: price_gbp,
+                    Currency.LOGO: http_logo,
+                }
+            except (
+                AttributeError,
+                ValueError,
+                ZeroDivisionError,
+                TypeError,
+                exceptions.ConnectionError,
+                exceptions.ReadTimeout,
+            ) as error:
+                self._exception_catch(error)
+                return {
+                    Currency.USD: "0,0",
+                    Currency.PLN: "0,0",
+                    Currency.EUR: "0,0",
+                    Currency.GBP: "0,0",
+                    Currency.LOGO: http_logo,
+                }
+        else:
+            #tutaj API
             return {
                 Currency.USD: "0,0",
                 Currency.PLN: "0,0",

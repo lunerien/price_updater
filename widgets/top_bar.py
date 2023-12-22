@@ -21,6 +21,7 @@ from lib.config import (
     color_top_bar_button,
     color_top_bar,
     font_config,
+    color_error,
 )
 
 
@@ -83,6 +84,17 @@ class TopBar(BoxLayout):
         self.language_list_buttons.add_widget(self.btn_en)
         self.language_list_buttons.add_widget(self.btn_pl)
         self.language_list_buttons.add_widget(self.btn_de)
+        self.api_button = TooltipMDIconButton(
+            tooltip_text = language.get_text(Text.CHANGE_API.value),
+            icon=language.get_text(Text.CHANGE_API.value),
+            md_bg_color=color_top_bar_button,
+            theme_icon_color="Custom",
+            icon_color = color_orange_theme if language.get_api_status() == "api-on" else color_error,
+            icon_size="28sp",
+            size_hint=(0.12, 1),
+            pos=(350, 300),
+        )
+        self.api_button.bind(on_release=self.change_api_status)
         self.language_button = TooltipMDIconButton(
             tooltip_text=language.get_text(Text.CHANGE_LANGUAGE.value),
             icon="translate",
@@ -108,7 +120,16 @@ class TopBar(BoxLayout):
         self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.refresh_button)
         self.add_widget(BoxLayout(size_hint=(1, 1)))
+        self.add_widget(self.api_button)
         self.add_widget(self.language_button)
+    
+    def change_api_status(self, instance: ButtonC) -> None:
+        if language.get_api_status() == "api-off":
+            language.change_api_status("api-on")
+            self.api_button.icon_color = color_orange_theme
+        else:
+            language.change_api_status("api-off")
+            self.api_button.icon_color = color_error
 
     def update(self, instance: ButtonC) -> None:
         response: bool = Update().update(self.scrollapp.coins_tab)
@@ -170,6 +191,7 @@ class TopBar(BoxLayout):
         language.change_language(Languages(instance.text))
         self.scrollapp.empty_list.text = language.get_text(Text.EMPTY_LIST_TEXT.value)
         self.refresh_button.tooltip_text = language.get_text(Text.REFRESH_DATA.value)
+        self.api_button.tooltip_text = language.get_text(Text.CHANGE_API.value)
         self.change_loc_button.tooltip_text = language.get_text(
             Text.CHANGE_XLSX_WORKBOOK.value
         )

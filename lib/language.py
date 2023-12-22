@@ -32,6 +32,7 @@ class Text(Enum):
     DATA_SAVING_FAILED = "data_saving_failed"
     REFRESH_DATA = "refresh_data"
     CHANGE_LANGUAGE = "change_language"
+    CHANGE_API = "change_api"
 
 
 class Language:
@@ -53,6 +54,20 @@ class Language:
         with open("data.json", "r+", encoding="utf-8") as file:
             data: Any = json.load(file)
             data["chosen_language"] = new_language.value
+            file.seek(0)
+            json.dump(data, file, indent=4)
+            file.truncate()
+        self.language_file = self.read_file()
+
+    # api methods
+        
+    def get_api_status(self) -> str:
+        return self.language_file["api"]
+    
+    def change_api_status(self, status: str) -> None:
+        with open("data.json", "r+", encoding="utf-8") as file:
+            data: Any = json.load(file)
+            data["api"] = status
             file.seek(0)
             json.dump(data, file, indent=4)
             file.truncate()

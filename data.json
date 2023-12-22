@@ -1,6 +1,7 @@
 {
     "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/test0.xlsx",
-    "chosen_language": "EN",
+    "chosen_language": "PL",
+    "api": "api-on",
     "EN": {
         "update": "Update!",
         "edit_asset": "Editing asset: ",
@@ -23,7 +24,8 @@
         "data_saving_successful": "          data saving successful",
         "data_saving_failed": "             data saving failed",
         "refresh_data": "Refresh data",
-        "change_language": "Change language"
+        "change_language": "Change language",
+        "change_api": "api"
     },
     "PL": {
         "update": "Aktualizuj!",
@@ -47,7 +49,8 @@
         "data_saving_successful": "       zapis danych powi\u00f3d\u0142 si\u0119",
         "data_saving_failed": "          zapis nie powi\u00f3d\u0142 si\u0119",
         "refresh_data": "Od\u015bwie\u017c dane",
-        "change_language": "Zmie\u0144 j\u0119zyk"
+        "change_language": "Zmie\u0144 j\u0119zyk",
+        "change_api": "api"
     },
     "DE": {
         "update": "Aktualisieren!",
@@ -71,6 +74,7 @@
         "data_saving_successful": "   Datenspeicherung erfolgreich",
         "data_saving_failed": "Datenspeicherung fehlgeschlagen",
         "refresh_data": "Daten aktualisieren",
-        "change_language": "Sprache \u00e4ndern"
+        "change_language": "Sprache \u00e4ndern",
+        "change_api": "api"
     }
 }
