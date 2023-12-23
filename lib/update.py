@@ -4,6 +4,7 @@ from openpyxl.workbook import Workbook
 from openpyxl.utils.exceptions import InvalidFileException
 from bs4 import BeautifulSoup
 from requests import get, exceptions, Response
+from time import sleep
 
 from lib.language import language
 from lib.currency import currency, Currency
@@ -257,9 +258,10 @@ class Update:
             except (exceptions.ConnectionError, AttributeError):
                 pass
             return ""
-        
+
         def get_price_from_api() -> float:
             try:
+                sleep(0.2)
                 url_api: str = "https://api.coingecko.com/api/v3/simple/price"
                 params: dict[str, str] = {"ids": ticker, "vs_currencies": "USD"}
 
