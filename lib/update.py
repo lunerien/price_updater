@@ -261,7 +261,7 @@ class Update:
 
         def get_price_from_api() -> float:
             try:
-                sleep(0.2)
+                sleep(1)
                 url_api: str = "https://api.coingecko.com/api/v3/simple/price"
                 params: dict[str, str] = {"ids": ticker, "vs_currencies": "USD"}
 
@@ -312,9 +312,9 @@ class Update:
         if self.api_status == "api-off":
             price_float = get_price()
         else:
-            price_float = get_price_from_api()
+            price_float = get_price()
             if price_float == 0.0:
-                price_float = get_price()
+                price_float = get_price_from_api()
         ######################################################
         price_usd = (
             str(round(price_float, 6))
