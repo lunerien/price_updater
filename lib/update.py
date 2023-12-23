@@ -245,29 +245,32 @@ class Update:
         def get_logo() -> str:
             try:
                 if ticker == "holyheld-2":
-                    urla: str = "https://coinmarketcap.com/currencies/mover"
-                    pagea: Response = get(urla, timeout=5)
-                    page_contenta = BeautifulSoup(pagea.content, "html.parser")
-                    dataa = page_contenta.find("div", class_="sc-f70bb44c-0 jImtlI")
-                    raw_dataa = dataa.find("img", src=True)
-                    return raw_dataa["src"]
-                data = page_content.find("div", class_="sc-f70bb44c-0 jImtlI")
-                raw_data = data.find("img", src=True)
-                return raw_data["src"]
+                    cmc_ticker = "mover"
+                else:
+                    cmc_ticker = ticker
+                urla: str = f"https://coinmarketcap.com/currencies/{cmc_ticker}"
+                pagea: Response = get(urla, timeout=5)
+                page_contenta = BeautifulSoup(pagea.content, "html.parser")
+                dataa = page_contenta.find("div", class_="sc-f70bb44c-0 jImtlI")
+                raw_dataa = dataa.find("img", src=True)
+                return raw_dataa["src"]
             except (exceptions.ConnectionError, AttributeError):
                 pass
             return ""
 
         def get_price_from_api() -> float:
             try:
-                sleep(1)
+                if ticker == "chia-network":
+                    api_ticker = "chia"
+                else:
+                    api_ticker = ticker
                 url_api: str = "https://api.coingecko.com/api/v3/simple/price"
-                params: dict[str, str] = {"ids": ticker, "vs_currencies": "USD"}
+                params: dict[str, str] = {"ids": api_ticker, "vs_currencies": "USD"}
 
                 response: Response = get(url_api, params=params, timeout=5)
                 if response.status_code == 200:
                     data = response.json()
-                    price = data[ticker]["usd"]
+                    price = data[api_ticker]["usd"]
                     return float(price)
                 return 0.0
             except (
@@ -311,10 +314,16 @@ class Update:
 
         if self.api_status == "api-off":
             price_float = get_price()
-        else:
-            price_float = get_price()
             if price_float == 0.0:
                 price_float = get_price_from_api()
+        else:
+            i = 0
+            while i < 4 and price_float == 0.0:
+                sleep(0.2)
+                price_float = get_price_from_api()
+                i += 1
+            if price_float == 0.0:
+                price_float = get_price()
         ######################################################
         price_usd = (
             str(round(price_float, 6))
