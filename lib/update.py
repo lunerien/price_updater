@@ -236,6 +236,8 @@ class Update:
             }
 
     def get_crypto_price(self, ticker: str) -> dict[Currency, str]:
+        if ticker[-4:] == "_api":
+            ticker = ticker.replace(ticker[-4:], "")
         url: str = f"https://coinmarketcap.com/currencies/{ticker.lower()}"
         page: Response = get(url, timeout=7)
         page_content = BeautifulSoup(page.content, "html.parser")
@@ -244,11 +246,7 @@ class Update:
 
         def get_logo() -> str:
             try:
-                if ticker == "holyheld-2":
-                    cmc_ticker = "mover"
-                else:
-                    cmc_ticker = ticker
-                urla: str = f"https://coinmarketcap.com/currencies/{cmc_ticker}"
+                urla: str = f"https://coinmarketcap.com/currencies/{ticker}"
                 pagea: Response = get(urla, timeout=5)
                 page_contenta = BeautifulSoup(pagea.content, "html.parser")
                 dataa = page_contenta.find("div", class_="sc-f70bb44c-0 jImtlI")
@@ -256,21 +254,17 @@ class Update:
                 return raw_dataa["src"]
             except (exceptions.ConnectionError, AttributeError):
                 pass
-            return ""
+            return "./images/asset_logo/none.png"
 
         def get_price_from_api() -> float:
             try:
-                if ticker == "chia-network":
-                    api_ticker = "chia"
-                else:
-                    api_ticker = ticker
                 url_api: str = "https://api.coingecko.com/api/v3/simple/price"
-                params: dict[str, str] = {"ids": api_ticker, "vs_currencies": "USD"}
+                params: dict[str, str] = {"ids": ticker, "vs_currencies": "USD"}
 
                 response: Response = get(url_api, params=params, timeout=5)
                 if response.status_code == 200:
                     data = response.json()
-                    price = data[api_ticker]["usd"]
+                    price = data[ticker]["usd"]
                     return float(price)
                 return 0.0
             except (

@@ -1,7 +1,7 @@
 {
-    "path_to_xlsx": "C:/Users/Tomek/Documents/Finanse.xlsx",
+    "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/test.xlsx",
     "chosen_language": "PL",
-    "api": "api-off",
+    "api": "api-on",
     "EN": {
         "update": "Update!",
         "edit_asset": "Editing asset: ",
