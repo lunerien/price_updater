@@ -85,11 +85,13 @@ class TopBar(BoxLayout):
         self.language_list_buttons.add_widget(self.btn_pl)
         self.language_list_buttons.add_widget(self.btn_de)
         self.api_button = TooltipMDIconButton(
-            tooltip_text = language.get_text(Text.CHANGE_API.value),
+            tooltip_text=language.get_text(Text.CHANGE_API.value),
             icon=language.get_text(Text.CHANGE_API.value),
             md_bg_color=color_top_bar_button,
             theme_icon_color="Custom",
-            icon_color = color_orange_theme if language.get_api_status() == "api-on" else color_background_input,
+            icon_color=color_orange_theme
+            if language.get_api_status() == "api-on"
+            else color_background_input,
             icon_size="28sp",
             size_hint=(0.12, 1),
             pos=(350, 300),
@@ -122,7 +124,7 @@ class TopBar(BoxLayout):
         self.add_widget(BoxLayout(size_hint=(1, 1)))
         self.add_widget(self.api_button)
         self.add_widget(self.language_button)
-    
+
     def change_api_status(self, instance: ButtonC) -> None:
         if language.get_api_status() == "api-off":
             language.change_api_status("api-on")

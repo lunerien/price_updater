@@ -1,10 +1,10 @@
 from typing import Tuple, List, Any
+from time import sleep
 from openpyxl import load_workbook
 from openpyxl.workbook import Workbook
 from openpyxl.utils.exceptions import InvalidFileException
 from bs4 import BeautifulSoup
 from requests import get, exceptions, Response
-from time import sleep
 
 from lib.language import language
 from lib.currency import currency, Currency
@@ -145,7 +145,7 @@ class Update:
                 page_content = BeautifulSoup(page.content, "html.parser")
                 onpage = str(page_content.find("span", class_="QuoteStrip-lastPrice"))
                 onpage = onpage.replace('<span class="QuoteStrip-lastPrice">', "")
-                onpage = onpage.replace('</span>', "")
+                onpage = onpage.replace("</span>", "")
                 price = onpage.replace(",", "")
                 return float(price)
             except (
@@ -241,20 +241,19 @@ class Update:
         page_content = BeautifulSoup(page.content, "html.parser")
 
         price_float: float = 0.0
-        
+
         def get_logo() -> str:
             try:
                 if ticker == "holyheld-2":
-                    urla: str = f"https://coinmarketcap.com/currencies/mover"
-                    pagea: Response = get(urla, timeout=7)
+                    urla: str = "https://coinmarketcap.com/currencies/mover"
+                    pagea: Response = get(urla, timeout=5)
                     page_contenta = BeautifulSoup(pagea.content, "html.parser")
                     dataa = page_contenta.find("div", class_="sc-f70bb44c-0 jImtlI")
                     raw_dataa = dataa.find("img", src=True)
                     return raw_dataa["src"]
-                else:
-                    data = page_content.find("div", class_="sc-f70bb44c-0 jImtlI")
-                    raw_data = data.find("img", src=True)
-                    return raw_data["src"]
+                data = page_content.find("div", class_="sc-f70bb44c-0 jImtlI")
+                raw_data = data.find("img", src=True)
+                return raw_data["src"]
             except (exceptions.ConnectionError, AttributeError):
                 pass
             return ""
@@ -265,22 +264,21 @@ class Update:
                 url_api: str = "https://api.coingecko.com/api/v3/simple/price"
                 params: dict[str, str] = {"ids": ticker, "vs_currencies": "USD"}
 
-                response: Response = get(url_api, params = params)
+                response: Response = get(url_api, params=params, timeout=5)
                 if response.status_code == 200:
                     data = response.json()
                     price = data[ticker]["usd"]
                     return float(price)
-                else:
-                    return 0.0
+                return 0.0
             except (
-            AttributeError,
-            ValueError,
-            ZeroDivisionError,
-            TypeError,
-            KeyError,
-            exceptions.ConnectionError,
-            exceptions.ReadTimeout,
-                ) as error:
+                AttributeError,
+                ValueError,
+                ZeroDivisionError,
+                TypeError,
+                KeyError,
+                exceptions.ConnectionError,
+                exceptions.ReadTimeout,
+            ) as error:
                 self._exception_catch(error)
                 return 0.0
 
@@ -289,7 +287,9 @@ class Update:
                 web = page_content.find(
                     "div", class_="sc-f70bb44c-0 flfGQp flexStart alignBaseline"
                 )
-                price_str = str(web.find("span", class_="sc-f70bb44c-0 jxpCgO base-text"))
+                price_str = str(
+                    web.find("span", class_="sc-f70bb44c-0 jxpCgO base-text")
+                )
                 price_str = price_str.replace(
                     '<span class="sc-f70bb44c-0 jxpCgO base-text">$', ""
                 )
@@ -298,14 +298,14 @@ class Update:
                 price = float(price_str)
                 return price
             except (
-            AttributeError,
-            ValueError,
-            ZeroDivisionError,
-            TypeError,
-            KeyError,
-            exceptions.ConnectionError,
-            exceptions.ReadTimeout,
-                ) as error:
+                AttributeError,
+                ValueError,
+                ZeroDivisionError,
+                TypeError,
+                KeyError,
+                exceptions.ConnectionError,
+                exceptions.ReadTimeout,
+            ) as error:
                 self._exception_catch(error)
                 return 0.0
 
@@ -332,8 +332,7 @@ class Update:
         price_pln = price_pln.replace(".", ",")
         ######################################################
         price_eur_float = price_float * (
-            currency.return_price(Currency.USD)
-            / currency.return_price(Currency.EUR)
+            currency.return_price(Currency.USD) / currency.return_price(Currency.EUR)
         )
         price_eur = (
             str(round(price_eur_float, 6))
@@ -343,8 +342,7 @@ class Update:
         price_eur = price_eur.replace(".", ",")
         ######################################################
         price_gbp_float = price_float * (
-            currency.return_price(Currency.USD)
-            / currency.return_price(Currency.GBP)
+            currency.return_price(Currency.USD) / currency.return_price(Currency.GBP)
         )
         price_gbp = (
             str(round(price_gbp_float, 6))
@@ -354,7 +352,7 @@ class Update:
         price_gbp = price_gbp.replace(".", ",")
         ######################################################
         http_logo: str = get_logo()
-        
+
         return {
             Currency.USD: price_usd,
             Currency.PLN: price_pln,
@@ -362,4 +360,3 @@ class Update:
             Currency.GBP: price_gbp,
             Currency.LOGO: http_logo,
         }
-

@@ -60,10 +60,10 @@ class Language:
         self.language_file = self.read_file()
 
     # api methods
-        
+
     def get_api_status(self) -> str:
         return self.language_file["api"]
-    
+
     def change_api_status(self, status: str) -> None:
         with open("data.json", "r+", encoding="utf-8") as file:
             data: Any = json.load(file)
