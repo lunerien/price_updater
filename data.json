@@ -1,7 +1,7 @@
 {
-    "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/test.xlsx",
+    "path_to_xlsx": "C:/Users/user/Documents/dupa.xlsx",
     "chosen_language": "PL",
-    "api": "api-on",
+    "api": "api-off",
     "EN": {
         "update": "Update!",
         "edit_asset": "Editing asset: ",
@@ -25,7 +25,8 @@
         "data_saving_failed": "             data saving failed",
         "refresh_data": "Refresh data",
         "change_language": "Change language",
-        "change_api": "api"
+        "change_api": "api",
+        "open_xlsx": "Open xlsx file"
     },
     "PL": {
         "update": "Aktualizuj!",
@@ -50,7 +51,8 @@
         "data_saving_failed": "          zapis nie powi\u00f3d\u0142 si\u0119",
         "refresh_data": "Od\u015bwie\u017c dane",
         "change_language": "Zmie\u0144 j\u0119zyk",
-        "change_api": "api"
+        "change_api": "api",
+        "open_xlsx": "Otw\u00f3rz plik xlsx"
     },
     "DE": {
         "update": "Aktualisieren!",
@@ -75,6 +77,7 @@
         "data_saving_failed": "Datenspeicherung fehlgeschlagen",
         "refresh_data": "Daten aktualisieren",
         "change_language": "Sprache \u00e4ndern",
-        "change_api": "api"
+        "change_api": "api",
+        "open_xlsx": "\u00d6ffnen Sie die xlsx-Datei"
     }
 }

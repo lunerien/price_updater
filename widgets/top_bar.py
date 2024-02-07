@@ -1,9 +1,15 @@
 from typing import Any
+import time
+import sys
+import atexit
+import os
+from kivymd.app import MDApp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.clock import Clock
+import subprocess
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
@@ -28,9 +34,24 @@ from lib.config import (
 class TopBar(BoxLayout):
     def __init__(self, scrollapp: ScrollApp, right_side: Menu, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self.height = 35
         self.scrollapp = scrollapp
         self.right_side = right_side
+
+        self.create_gui()
+
+        self.add_widget(self.change_loc_button)
+        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
+        self.add_widget(self.update_button)
+        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
+        self.add_widget(self.refresh_button)
+        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
+        self.add_widget(self.open_xlsx)
+        self.add_widget(BoxLayout(size_hint=(1, 1)))
+        self.add_widget(self.api_button)
+        self.add_widget(self.language_button)
+
+    def create_gui(self) -> None:
+        self.height = 35
         self.change_loc_button = TooltipMDIconButton(
             tooltip_text=language.get_text(Text.CHANGE_XLSX_WORKBOOK.value),
             icon="application-cog",
@@ -59,6 +80,16 @@ class TopBar(BoxLayout):
             size_hint=(0.12, 1),
         )
         self.refresh_button.bind(on_release=self.scrollapp.refresh_assets)
+        self.open_xlsx = TooltipMDIconButton(
+            tooltip_text=language.get_text(Text.OPEN_XLSX.value),
+            icon="microsoft-excel",
+            md_bg_color=color_top_bar_button,
+            theme_icon_color="Custom",
+            icon_color=color_orange_theme,
+            icon_size="28sp",
+            size_hint=(0.12, 1),
+        )
+        self.open_xlsx.bind(on_release=self.open_xlsx_file)
         self.language_list_buttons = DropDown()
         self.btn_en = ButtonC(
             text=Languages.EN.value,
@@ -89,9 +120,11 @@ class TopBar(BoxLayout):
             icon=language.get_text(Text.CHANGE_API.value),
             md_bg_color=color_top_bar_button,
             theme_icon_color="Custom",
-            icon_color=color_orange_theme
-            if language.get_api_status() == "api-on"
-            else color_background_input,
+            icon_color=(
+                color_orange_theme
+                if language.get_api_status() == "api-on"
+                else color_background_input
+            ),
             icon_size="28sp",
             size_hint=(0.12, 1),
             pos=(350, 300),
@@ -116,14 +149,6 @@ class TopBar(BoxLayout):
 
         self.change_loc_button.bind(on_release=self.change_loc)
         self.update_button.bind(on_release=self.update)
-        self.add_widget(self.change_loc_button)
-        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
-        self.add_widget(self.update_button)
-        self.add_widget(BoxLayout(size_hint=(0.002, 1)))
-        self.add_widget(self.refresh_button)
-        self.add_widget(BoxLayout(size_hint=(1, 1)))
-        self.add_widget(self.api_button)
-        self.add_widget(self.language_button)
 
     def change_api_status(self, instance: ButtonC) -> None:
         if language.get_api_status() == "api-off":
@@ -193,6 +218,7 @@ class TopBar(BoxLayout):
         language.change_language(Languages(instance.text))
         self.scrollapp.empty_list.text = language.get_text(Text.EMPTY_LIST_TEXT.value)
         self.refresh_button.tooltip_text = language.get_text(Text.REFRESH_DATA.value)
+        self.open_xlsx.tooltip_text = language.get_text(Text.OPEN_XLSX.value)
         self.api_button.tooltip_text = language.get_text(Text.CHANGE_API.value)
         self.change_loc_button.tooltip_text = language.get_text(
             Text.CHANGE_XLSX_WORKBOOK.value
@@ -201,3 +227,24 @@ class TopBar(BoxLayout):
         self.language_button.tooltip_text = language.get_text(
             Text.CHANGE_LANGUAGE.value
         )
+
+    def open_xlsx_file(self, instance: ButtonC) -> None:
+        source = language.read_file()["path_to_xlsx"]
+        full_path = os.path.abspath(source)
+        folder, file = os.path.split(full_path)
+        try:
+            ss = subprocess.Popen(
+                [
+                    "start",
+                    file,
+                    folder,
+                ],
+                stdout=subprocess.PIPE,
+                shell=True,
+                bufsize=0,
+            )
+        except Exception as e:
+            print(f"Could not open a xlsx file: {e}")
+        atexit.unregister(ss)
+        time.sleep(1)
+        sys.exit()

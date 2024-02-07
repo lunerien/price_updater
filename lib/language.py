@@ -33,6 +33,7 @@ class Text(Enum):
     REFRESH_DATA = "refresh_data"
     CHANGE_LANGUAGE = "change_language"
     CHANGE_API = "change_api"
+    OPEN_XLSX = "open_xlsx"
 
 
 class Language:
