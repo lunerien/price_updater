@@ -1,0 +1,1 @@
+start C:/Users/Tomek/Documents/development/price_updater/boo.xlsx

@@ -230,21 +230,11 @@ class TopBar(BoxLayout):
 
     def open_xlsx_file(self, instance: ButtonC) -> None:
         source = language.read_file()["path_to_xlsx"]
-        full_path = os.path.abspath(source)
-        folder, file = os.path.split(full_path)
-        try:
-            ss = subprocess.Popen(
-                [
-                    "start",
-                    file,
-                    folder,
-                ],
-                stdout=subprocess.PIPE,
-                shell=True,
-                bufsize=0,
-            )
-        except Exception as e:
-            print(f"Could not open a xlsx file: {e}")
-        atexit.unregister(ss)
+    
+        sh_script_path = 'run.sh'
+        with open(sh_script_path, 'w') as sh_file:
+            sh_file.write(f'start {source}')
+
+        subprocess.run(["run.sh"], shell=True)
         time.sleep(1)
         sys.exit()
