@@ -1,9 +1,5 @@
 from typing import Any
-import time
 import sys
-import atexit
-import os
-from kivymd.app import MDApp
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -236,5 +232,4 @@ class TopBar(BoxLayout):
             sh_file.write(f'start {source}')
 
         subprocess.run(["run.sh"], shell=True)
-        time.sleep(1)
         sys.exit()
