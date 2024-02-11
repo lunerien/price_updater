@@ -229,7 +229,7 @@ class TopBar(BoxLayout):
         if source:
             sh_script_path = "run.sh"
             with open(sh_script_path, "w", encoding="utf-8") as sh_file:
-                sh_file.write(f"start {source}")
+                sh_file.write(f"{source}")
 
-            subprocess.run(["run.sh"], shell=True, check=False)
+            subprocess.run(["./run.sh"], shell=True, check=False)
             sys.exit()

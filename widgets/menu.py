@@ -38,7 +38,7 @@ class Menu(MDRelativeLayout):
         self.info = Label(
             text=VERSION, font_name="standard", font_size=13, color=color_orange_theme
         )
-        self.info.pos_hint = {"center_x": 0.25, "center_y": 0.023}
+        self.info.pos_hint = {"center_x": 0.4, "center_y": 0.023}
         self.add_widget(self.button_add)
         self.add_widget(self.info)
 

@@ -1,6 +1,6 @@
 {
-    "path_to_xlsx": "C:/Users/Tomek/Documents/development/price_updater/boo.xlsx",
-    "chosen_language": "EN",
+    "path_to_xlsx": "/home/tomek/Documents/price_updater/boo.xlsx",
+    "chosen_language": "PL",
     "api": "api-off",
     "EN": {
         "update": "Update!",

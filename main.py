@@ -1,6 +1,7 @@
-import sys
 import os
 import ctypes
+from Xlib import display
+import platform
 from typing import Any
 from kivymd.app import MDApp
 from kivy.core.window import Window
@@ -17,9 +18,9 @@ from widgets.menu import Menu
 title: str = "Price Updater©"
 
 
-if sys.platform == "win32":
+if platform.system() == "Windows":
     ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
-elif sys.platform.startswith("Linux"):
+elif platform.system() == "Linux":
     os.system("clear")
 
 class MainApp(MDApp):
@@ -43,9 +44,15 @@ class MainApp(MDApp):
         Window.minimum_width, Window.minimum_height = width, height
         Window.set_title(title)
         Window.size = (width, height)
-        user32 = ctypes.windll.user32
-        screen_width = user32.GetSystemMetrics(0)
-        screen_height = user32.GetSystemMetrics(1)
+        if platform.system() == "Windows":
+            user32 = ctypes.windll.user32
+            screen_width = user32.GetSystemMetrics(0)
+            screen_height = user32.GetSystemMetrics(1)
+        elif platform.system() == "Linux":
+            disp = display.Display()
+            screen = disp.screen()
+            screen_height = screen.height_in_pixels
+            screen_width = screen.width_in_pixels
         Window.size = (width, height)
         Window.top = screen_height - height * 2
         Window.left = screen_width - width * 2

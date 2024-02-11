@@ -1,9 +1,9 @@
 from kivy.utils import get_color_from_hex
 from kivy.core.text import LabelBase
 
-VERSION: str = "Price Updater© 2.0b"
+VERSION: str = "Price Updater© 3.0b MultiPlatform"
 
-LabelBase.register(name="standard", fn_regular="./gabarito-SemiBold.ttf")
+LabelBase.register(name="standard", fn_regular="./Gabarito-SemiBold.ttf")
 font_config: str = "standard"
 
 color_error: list[float] = get_color_from_hex("#FF0000")

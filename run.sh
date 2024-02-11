@@ -1,1 +1,1 @@
-start C:/Users/Tomek/Documents/development/price_updater/boo.xlsx
+start /home/tomek/Documents/price_updater/boo.xlsx
