@@ -3,4 +3,8 @@ set -e
 PROJECT_ROOT="$(dirname "$0")/.."
 
 cd "$PROJECT_ROOT"
-python -m mypy .
+if [[ $(uname) == "Linux" ]]; then
+        mypy . $FLAGS
+    elif [[ $(uname) == "CYGWIN"* || $(uname) == "MINGW"* ]]; then
+        python -m mypy .
+    fi

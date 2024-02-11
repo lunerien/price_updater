@@ -1,4 +1,5 @@
 import sys
+import os
 import ctypes
 from typing import Any
 from kivymd.app import MDApp
@@ -18,7 +19,8 @@ title: str = "Price Updater©"
 
 if sys.platform == "win32":
     ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
-
+elif sys.platform.startswith("Linux"):
+    os.system("clear")
 
 class MainApp(MDApp):
     def __init__(self, *args: Any) -> None:
