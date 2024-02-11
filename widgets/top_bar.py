@@ -1,11 +1,11 @@
 from typing import Any
 import sys
+import subprocess
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.clock import Clock
-import subprocess
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
@@ -226,10 +226,10 @@ class TopBar(BoxLayout):
 
     def open_xlsx_file(self, instance: ButtonC) -> None:
         source = language.read_file()["path_to_xlsx"]
-    
-        sh_script_path = 'run.sh'
-        with open(sh_script_path, 'w') as sh_file:
-            sh_file.write(f'start {source}')
+        if source:
+            sh_script_path = "run.sh"
+            with open(sh_script_path, "w", encoding="utf-8") as sh_file:
+                sh_file.write(f"start {source}")
 
-        subprocess.run(["run.sh"], shell=True)
-        sys.exit()
+            subprocess.run(["run.sh"], shell=True, check=False)
+            sys.exit()
