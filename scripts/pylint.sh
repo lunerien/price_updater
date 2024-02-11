@@ -3,7 +3,6 @@ set -e
 PROJECT_ROOT="$(dirname "$0")/.."
 
 cd "$PROJECT_ROOT"
-source ./scripts/export.sh
 if [[ $(uname) == "Linux" ]]; then
         pylint .\
         --fail-under=9.0 \
@@ -19,4 +18,3 @@ if [[ $(uname) == "Linux" ]]; then
         widgets \
         $@
     fi
-
