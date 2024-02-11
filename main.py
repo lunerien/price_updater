@@ -23,6 +23,7 @@ if platform.system() == "Windows":
 elif platform.system() == "Linux":
     os.system("clear")
 
+
 class MainApp(MDApp):
     def __init__(self, *args: Any) -> None:
         super(MainApp, self).__init__(*args)

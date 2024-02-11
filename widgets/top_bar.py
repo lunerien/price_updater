@@ -1,6 +1,7 @@
 from typing import Any
 import sys
 import subprocess
+import platform
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
@@ -41,7 +42,8 @@ class TopBar(BoxLayout):
         self.add_widget(BoxLayout(size_hint=(0.002, 1)))
         self.add_widget(self.refresh_button)
         self.add_widget(BoxLayout(size_hint=(0.002, 1)))
-        self.add_widget(self.open_xlsx)
+        if platform.system() == "Windows":
+            self.add_widget(self.open_xlsx)
         self.add_widget(BoxLayout(size_hint=(1, 1)))
         self.add_widget(self.api_button)
         self.add_widget(self.language_button)
@@ -231,5 +233,5 @@ class TopBar(BoxLayout):
             with open(sh_script_path, "w", encoding="utf-8") as sh_file:
                 sh_file.write(f"{source}")
 
-            subprocess.run(["./run.sh"], shell=True, check=False)
+            subprocess.run(["run.sh"], shell=True, check=False)
             sys.exit()
