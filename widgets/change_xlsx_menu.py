@@ -81,5 +81,5 @@ class ChangeXlsxMenu(BoxLayout):
 
     def choose_path(self, instance: ButtonC) -> None:
         path: str = askopenfilename(title=language.get_text(Text.PATH_TO_XLSX.value))
-        if path != "" and type(path) != tuple:
+        if path != "" and not isinstance(path, tuple):
             self.path_xlsx_input.text = path
