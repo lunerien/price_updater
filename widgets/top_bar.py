@@ -7,6 +7,8 @@ from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 from kivy.clock import Clock
+from openpyxl import load_workbook
+from openpyxl.utils.exceptions import InvalidFileException
 
 from widgets.menu import Menu
 from widgets.scroll_app import ScrollApp
@@ -228,10 +230,14 @@ class TopBar(BoxLayout):
 
     def open_xlsx_file(self, instance: ButtonC) -> None:
         source = language.read_file()["path_to_xlsx"]
-        if source:
-            sh_script_path = "run.sh"
-            with open(sh_script_path, "w", encoding="utf-8") as sh_file:
-                sh_file.write(f"start {source}")
+        try:
+            workbook = load_workbook(source)
+            if workbook is not None:
+                sh_script_path = "run.sh"
+                with open(sh_script_path, "w", encoding="utf-8") as sh_file:
+                    sh_file.write(f"start {source}")
+                subprocess.run(["run.sh"], shell=True, check=False)
+                sys.exit()
+        except (InvalidFileException, FileNotFoundError):
+            print("we need xlsx file!")
 
-            subprocess.run(["run.sh"], shell=True, check=False)
-            sys.exit()
