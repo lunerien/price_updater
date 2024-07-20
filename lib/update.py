@@ -249,7 +249,7 @@ class Update:
                 urla: str = f"https://coinmarketcap.com/currencies/{ticker}"
                 pagea: Response = get(urla, timeout=5)
                 page_contenta = BeautifulSoup(pagea.content, "html.parser")
-                dataa = page_contenta.find("div", class_="sc-d1ede7e3-0 bqEaSQ")
+                dataa = page_contenta.find("div", class_="sc-65e7f566-0 kYcmYb")
                 raw_dataa = dataa.find("img", src=True)
                 return raw_dataa["src"]
             except (exceptions.ConnectionError, AttributeError):
@@ -282,10 +282,10 @@ class Update:
         def get_price() -> float:
             try:
                 web = str(page_content.find(
-                    "span", class_="sc-d1ede7e3-0 fsQm base-text"
+                    "span", class_="sc-65e7f566-0 clvjgF base-text"
                 ))
                 price_str = web.replace(
-                    '<span class="sc-d1ede7e3-0 fsQm base-text">$', ""
+                    '<span class="sc-65e7f566-0 clvjgF base-text">$', ""
                 )
                 price_str = price_str.replace("</span>", "")
                 price_str = price_str.replace(",", "")
