@@ -285,7 +285,7 @@ class Update:
                     "span", class_="sc-65e7f566-0 clvjgF base-text"
                 ))
                 price_str = web.replace(
-                    '<span class="sc-65e7f566-0 clvjgF base-text">$', ""
+                    '<span class="sc-65e7f566-0 clvjgF base-text" data-test="text-cdp-price-display">$', ""
                 )
                 price_str = price_str.replace("</span>", "")
                 price_str = price_str.replace(",", "")

@@ -1,7 +1,7 @@
 from kivy.utils import get_color_from_hex
 from kivy.core.text import LabelBase
 
-VERSION: str = "Price Updater© 3.0b MultiPlatform"
+VERSION: str = "Price Updater© 3.0.1 MultiPlatform"
 
 LabelBase.register(name="standard", fn_regular="./Gabarito-SemiBold.ttf")
 font_config: str = "standard"
