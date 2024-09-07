@@ -240,4 +240,3 @@ class TopBar(BoxLayout):
                 sys.exit()
         except (InvalidFileException, FileNotFoundError):
             print("we need xlsx file!")
-

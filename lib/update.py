@@ -281,11 +281,12 @@ class Update:
 
         def get_price() -> float:
             try:
-                web = str(page_content.find(
-                    "span", class_="sc-65e7f566-0 clvjgF base-text"
-                ))
+                web = str(
+                    page_content.find("span", class_="sc-65e7f566-0 clvjgF base-text")
+                )
                 price_str = web.replace(
-                    '<span class="sc-65e7f566-0 clvjgF base-text" data-test="text-cdp-price-display">$', ""
+                    '<span class="sc-65e7f566-0 clvjgF base-text" data-test="text-cdp-price-display">$',
+                    "",
                 )
                 price_str = price_str.replace("</span>", "")
                 price_str = price_str.replace(",", "")
