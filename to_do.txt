@@ -1,0 +1,5 @@
+* Add README.md with screenshots
+* Add android support
+* Make money
+* Get rich
+* Buy Lambo and Porche
